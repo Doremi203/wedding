@@ -19,14 +19,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `Wedding Invitation.dc.html` | **Прототип** UI/UX/анимаций/логики — источник истины по поведению, композиции и переходам, использован при переносе в React/Next.js | Reference only, не production code |
 | `support.js` | Сгенерированный runtime прототипирующего инструмента (`GENERATED from dc-runtime/src/*.ts — do not edit`). Реализует кастомный шаблонизатор (`<x-dc>`, `sc-if`, `sc-for`, `DCLogic`) поверх React UMD | **Не используется в production**, оставлен только как reference рядом с прототипом. Исключён из ESLint (`eslint.config.mjs`) |
 | `src/` | Production-код Next.js-приложения (App Router, компоненты, hooks, data-слой, lib) | Актуальный источник истины по коду |
-| `public/images/tower-dragons.webp` | Оптимизированный hero-арт (сконвертирован из `assets/tower-dragons.png` через `sharp`, ~900px, WebP, ~76KB вместо 1.9MB) | Production asset, используется в `Hero.tsx` через `next/image` |
+| `public/images/tower-dragons.webp` | Оптимизированный hero-арт (сконвертирован из `assets/tower-dragons.png` через `sharp`, ~900px, WebP, ~76KB вместо 1.9MB) | Production asset, используется в `EntryScreen.tsx` (фон) и `Hero.tsx` через `next/image` |
+| `public/images/entry-tree.webp` | Единая иллюстрация дерева (исходник 793×1983) для ENTRY — крона одним полотном, 39 %-координат под яблоки заданы вручную в `EntryScreen.tsx` | Production asset, готовый арт (не placeholder) |
+| `public/images/guest-tree.webp`, `public/images/apple.webp` | Иллюстрация дерева для финальной секции INVITATION («Дерево имён», `GuestTree.tsx`) и иконка яблока, используемая на ENTRY-дереве | Production asset, готовый арт (не placeholder) |
 | `assets/tower-dragons.png`, `uploads/ChatGPT Image ....png` | Исходный PNG hero-арта (байт-в-байт идентичны) | Архив/источник, production использует `public/images/tower-dragons.webp` |
 | `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
 | `data/guests.source.json` | Реальный plaintext-источник ответов гостей (сейчас — placeholder, все ответы `москва`/`moscow`, см. Open Questions) | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
+| `terraform/` | Инфраструктура деплоя в Yandex Cloud: Object Storage bucket со static website hosting (`frontend.tf`), сервисный аккаунт со статическим ключом для S3 API (`storage_sa.tf`), собственная DNS-зона и apex-запись на домен (`dns.tf`), управляемый TLS-сертификат с DNS-валидацией (`certs.tf`), remote state в отдельном S3-совместимом бакете (`state_backend.tf`) | Применено (см. Deployment ниже), не открытый вопрос |
+| `scripts/deploy.sh`, `Makefile` | Скрипт синхронизации `out/` в S3-бакет (раздельный кэш для `_next/static/**` и остального) + цели `make build`/`make deploy`/`make release` | Production tooling, реально используется для деплоя |
+| `README.md` | Инструкции по установке, dev-серверу, проверкам перед PR, сборке и деплою, обновлению данных гостей | Актуален, дублирует часть Development Commands ниже человекочитаемо |
 | `.thumbnail` | WebP-превью прототипа для инструмента прототипирования | Служебный файл, не продакшен-asset |
-| `github.md` | Заметка синка с `Doremi203/wedding` (репозиторий на момент записи был пуст) | Информационная, не является активной интеграцией. Не полагаться на неё как на источник кода |
+| `github.md` | Заметка синка с `Doremi203/wedding` на момент старта проекта (репозиторий тогда был пуст) | **Устарела фактически**: `Doremi203/wedding` — это и есть origin данного репозитория (`git remote -v`), не внешний источник для синка. Не полагаться на неё, не обновлять — исторический артефакт |
 
-Иллюстрации карты усадьбы, конверта среди ветвей и дерева с яблоками/змеем по-прежнему реализованы как текстовые placeholder'ы (`PlaceholderIllustration`), **арт не существует**. Не считать их готовыми — см. Open Questions.
+Иллюстрации дерева (ENTRY-дерево с 39 яблоками и финальное «Дерево имён» в INVITATION) — готовый арт, не placeholder. Карта усадьбы (`DateTimePlace.tsx`) и конверт среди ветвей (`Gifts.tsx`) по-прежнему реализованы как текстовые заглушки (`PlaceholderIllustration`) — этот арт ещё не создан, см. Open Questions.
 
 ## Product Goals
 
@@ -39,9 +44,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `ENTRY → VERIFICATION → INVITATION`. Не обязаны быть отдельными URL/роутами — прототип реализует всё как единый компонент с внутренним state (`screen: 'select' | 'invite'` + модалка verification поверх select-экрана) и fade/overlay-переходами между состояниями. Это рабочий паттерн, следуй ему, если нет причины делать иначе.
 
-- **ENTRY**: атмосферный фон, приветствие, поиск/grid имён гостей, скролл при большом списке.
+- **ENTRY**: атмосферный фон (`tower-dragons.webp`) + единая иллюстрация дерева (`entry-tree.webp`) с 39 кликабельными яблоками — имя гостя под каждым яблоком, тап открывает VERIFICATION для этого гостя. Не список/grid и не поиск — реализовано как дерево (см. `EntryScreen.tsx`, коммиты #10/#11).
 - **VERIFICATION**: модальное окно поверх ENTRY (не отдельный экран) — вопрос гостя, input, submit, кнопка возврата. Неограниченное число попыток, мягкая ошибка без формулировок "заблокировано".
-- **INVITATION**: единый vertical scroll — Hero → Date/Time/Place → Directions/Map CTA → Dress code → Gifts → Guest Tree. Доступ сохраняется минимум в рамках browser session (`sessionStorage`/in-memory).
+- **INVITATION**: единый vertical scroll — Hero → Date/Time/Place (включает CTA «Построить маршрут» и иллюстрацию карты) → Dress code → Gifts → Guest Tree (отдельная финальная иллюстрация дерева `guest-tree.webp`, тоже кликабельные яблоки — модалка с текстом пожелания вместо перехода к verification). Доступ сохраняется минимум в рамках browser session (`sessionStorage`/in-memory).
 
 ## Confirmed Content
 
@@ -97,7 +102,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Verification:** **клиентская** (см. подробный trade-off в разделе Verification & Privacy) — сервера для проверки ответа нет и не будет.
 - **Animations:** CSS keyframes/transitions + `IntersectionObserver` для scroll-reveal в первую очередь. GSAP/Framer Motion подключать только если CSS реально не хватает для нужного качества — не устанавливать заранее.
 - **Images:** `next/image` с `images.unoptimized: true` (обязательно для static export — на S3 нет сервера оптимизации изображений). Ассеты предварительно оптимизировать (resize/WebP/AVIF) до попадания в `public/`; `next/image` всё равно даёт lazy-loading, explicit dimensions (без layout shift) и `sizes`, даже без runtime-ресайза.
-- **Deployment:** ручной — `next build` → загрузка содержимого `out/` в S3 bucket, настроенный на static website hosting. HTTPS/custom domain/CDN (например CloudFront) поверх S3 — открытый вопрос, не решается этим документом (см. Open Questions).
+- **Deployment:** инфраструктура развёрнута через Terraform (`terraform/`, Yandex Cloud) и **применена** — не гипотетическая. Object Storage bucket на домене `sacred-castle-wedding.ru` со static website hosting (index/error document — `index.html`, т.к. приложение однострочное); собственная DNS-зона с apex ANAME на bucket-эндпоинт (домен делегирован на её NS-записи у регистратора); управляемый TLS-сертификат (Yandex Certificate Manager, DNS_CNAME challenge) подключён напрямую к bucket — **без CDN/CloudFront-аналога**, это осознанное решение, а не временное упрощение. Terraform state — в отдельном S3-совместимом бакете (`state_backend.tf`), без нативного locking (избегать параллельных `apply`). Доступ к bucket — через сервисный аккаунт со статическим ключом (`storage_sa.tf`, S3 API не принимает IAM-токены). Деплой самого контента — `next build` → `scripts/deploy.sh` (или `make deploy`/`make release`): раздельная синхронизация `_next/static/**` (immutable, долгий кэш) и всего остального (`must-revalidate`), с `--delete`. Подробности разовой настройки кредов — в `README.md`.
 
 Прототип (`Wedding Invitation.dc.html`) — источник поведения и композиции, но **не источник кода**: его шаблонизатор (`sc-if`/`sc-for`/`DCLogic`) специфичен для инструмента прототипирования и не переносится напрямую в React/Next.js компоненты. Переноси логику и анимационные тайминги осмысленно, а не копированием разметки.
 
@@ -118,13 +123,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Централизованная модель гостя (форма из ТЗ, адаптировать по необходимости, но не размазывать данные по компонентам):
 
+Фактическая реализация (`src/types/guest.ts`) выбрала вариант с `gender`, а не произвольным текстом greeting:
+
 ```
 Guest {
   id: string
   displayName: string
+  gender: "m" | "f"                // → greetingForGender() даёт "Дорогой"/"Дорогая", см. src/data/event.ts
   question: string
   acceptedAnswerHashes: string[]   // SHA-256(normalizeAnswer(answer)), не plaintext
-  greeting?: string                // либо gender для выбора "Дорогой/Дорогая"
 }
 ```
 
@@ -203,7 +210,13 @@ Framework для тестов ещё не выбран (нет package.json). К
 
 Тестовый фреймворк ещё не подключён (см. Testing).
 
-`next build` кладёт статику в `out/` — именно эту директорию заливать в S3 (руками или скриптом типа `aws s3 sync out/ s3://<bucket> --delete`, если/когда это понадобится автоматизировать). `next start` не задействуется — прод статичен.
+`next build` кладёт статику в `out/`. Деплой в S3-бакет (уже провизионирован Terraform'ом, см. Architecture → Deployment) — не гипотетический, а реальный:
+
+- `make build` — `npm run build`.
+- `make deploy` — эквивалент `./scripts/deploy.sh` (синкает уже собранный `out/`, требует креды — разовая настройка описана в `README.md`).
+- `make release` — build + deploy одним шагом.
+
+`next start` не задействуется — прод статичен. Подробная человекочитаемая инструкция по установке/dev/деплою/обновлению гостей — в `README.md` (дублирует часть этого раздела в более пошаговом виде).
 
 ## Coding Conventions
 
@@ -249,8 +262,7 @@ Framework для тестов ещё не выбран (нет package.json). К
 - Полный guest list, персональные вопросы и accepted answers для каждого гостя.
 - Общий или персональный greeting-текст для каждого гостя.
 - Только русский язык или RU+EN.
-- Финальный домен; нужен ли CloudFront (или аналог) поверх голого S3 для HTTPS/custom domain/кэширования, или сайт останется на стандартном S3 static website hosting endpoint.
-- Происхождение финальных иллюстраций (арт заказчика, иллюстратор, доработанный AI-арт) — сейчас есть только hero (башня+драконы); карта, конверт, дерево — не созданы.
+- Происхождение финальных иллюстраций карты усадьбы и конверта (арт заказчика, иллюстратор, доработанный AI-арт) — они всё ещё текстовые заглушки (`PlaceholderIllustration`). Hero (башня+драконы) и обе иллюстрации дерева (ENTRY и финальная секция) уже готовый production-арт, не открытый вопрос.
 - Visual references сверх уже описанной эстетики.
 - Допустимо ли показывать список всех имён до verification (текущий прототип — да, ENTRY показывает весь список сразу).
 - Сохранять ли unlock между визитами (сейчас — только в рамках session, per ТЗ).
