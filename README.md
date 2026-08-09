@@ -43,13 +43,15 @@ npm run build        # next build — собирает статику в out/
 npm run build
 ```
 
-Результат — статическая директория `out/`. Она целиком заливается в бакет (see `terraform/`), например:
+Результат — статическая директория `out/`. Она целиком заливается в бакет, созданный терраформом (`terraform/`), через S3-совместимый API Object Storage:
 
 ```bash
-aws s3 sync out/ s3://<bucket-name> --delete
+export AWS_ACCESS_KEY_ID=$(cd terraform && terraform output -raw storage_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(cd terraform && terraform output -raw storage_secret_access_key)
+aws s3 sync out/ s3://sacred-castle-wedding.ru --delete --endpoint-url https://storage.yandexcloud.net
 ```
 
-(или аналогичная команда для Yandex Object Storage — `yc storage s3` совместим с S3 API).
+(или аналогичная команда через `yc storage s3` — тоже совместим с S3 API).
 
 Сервер (`next start`) не используется — прод полностью статичен (`output: 'export'` в `next.config.ts`), никакого server-side рантайма (Route Handlers, Server Actions, middleware) на проде нет.
 

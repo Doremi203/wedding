@@ -3,3 +3,5 @@
 *.tfstate.*
 *.tfvars
 !*.tfvars.example
+*.tfplan
+tfplan*.out

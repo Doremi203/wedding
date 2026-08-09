@@ -11,3 +11,14 @@ output "bucket_website_endpoint" {
 output "bucket_name" {
   value = yandex_storage_bucket.frontend_s3.bucket
 }
+
+output "storage_access_key_id" {
+  description = "Access key id for the `aws s3 sync out/ s3://<bucket> --endpoint-url https://storage.yandexcloud.net` deploy step."
+  value       = yandex_iam_service_account_static_access_key.storage_admin_key.access_key
+}
+
+output "storage_secret_access_key" {
+  description = "Secret key for the deploy step. Retrieve with `terraform output -raw storage_secret_access_key`."
+  value       = yandex_iam_service_account_static_access_key.storage_admin_key.secret_key
+  sensitive   = true
+}
