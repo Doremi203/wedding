@@ -15,6 +15,8 @@
   object-fit: cover;
   object-position: center top;
   filter: brightness(0.95) contrast(1.1);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 42%, black 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 42%, black 100%);
 }
 
 .artStage::after {
@@ -23,10 +25,9 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    var(--color-bg-card) 0%,
-    oklch(0.08 0.01 270 / 0.15) 8%,
-    oklch(0.08 0.01 270 / 0.05) 20%,
-    oklch(0.08 0.01 270 / 0.05) 60%,
+    transparent 0%,
+    transparent 30%,
+    oklch(0.08 0.01 270 / 0.08) 55%,
     oklch(0.08 0.01 270 / 0.25) 82%,
     var(--color-bg-card) 100%
   );
