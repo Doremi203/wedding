@@ -1,23 +1,30 @@
-import { Diamond } from "@/components/Atmosphere/Atmosphere";
-import { DRESS_CODE_COLORS, DRESS_CODE_INTRO_TODO } from "@/data/event";
+import Image from "next/image";
+import { DRESS_CODE_COLORS_TEXT, DRESS_CODE_SUBTITLE } from "@/data/event";
+import { FloorEdge } from "./FloorEdge";
 import styles from "./DressCode.module.css";
 
 export function DressCode() {
   return (
-    <div className={styles.section}>
-      <div className={styles.diamond}>
-        <Diamond />
+    <section className={styles.section}>
+      <div className={styles.background} aria-hidden="true">
+        <Image
+          src="/images/dresscode-banners.webp"
+          alt=""
+          fill
+          sizes="430px"
+          className={styles.banners}
+        />
       </div>
-      <h2 className={styles.title}>Дресс-код</h2>
-      <p className={styles.intro}>{DRESS_CODE_INTRO_TODO}</p>
-      <div className={styles.swatches}>
-        {DRESS_CODE_COLORS.map((color) => (
-          <div key={color.label} className={styles.swatchItem}>
-            <div className={styles.swatch} style={{ background: `var(${color.swatchVar})` }} />
-            <div className={styles.swatchLabel}>{color.label}</div>
-          </div>
-        ))}
+
+      <FloorEdge />
+
+      <div className={styles.content}>
+        <h2 className={styles.title}>Дресс-код</h2>
+        <p className={styles.subtitle}>{DRESS_CODE_SUBTITLE}</p>
+        {/* Сама палитра показана баннерами на иллюстрации — дублируем текстом,
+            иначе секция нечитаема скринридером. */}
+        <p className="sr-only">{DRESS_CODE_COLORS_TEXT}</p>
       </div>
-    </div>
+    </section>
   );
 }

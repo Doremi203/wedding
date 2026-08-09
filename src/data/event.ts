@@ -3,34 +3,28 @@
 // (см. CLAUDE.md → Open Questions). Найти все: grep -rn "TODO" src/data
 
 export const COUPLE_NAMES = "ИРИНА & МАКСИМ";
-export const COUPLE_INITIALS = "И · М";
 
-export const EVENT_DATE_DAY = "13";
-export const EVENT_DATE_MONTH = "Сентября";
-export const EVENT_DATE_YEAR = "2026";
 export const EVENT_DATE_LABEL = "13 сентября 2026";
-export const EVENT_DATE_SHORT = "13.09.2026";
+
+export const CEREMONY_VENUE = "Церковь Покрова Пресвятой Богородицы";
+export const CEREMONY_ADDRESS = "Волоколамское шоссе, 52, корпус 1";
+export const CEREMONY_TIME = "13:30";
 
 export const VENUE_NAME = "Усадьба Братцево";
-export const VENUE_CITY = "Москва";
 export const VENUE_ADDRESS = "Светлогорский проезд, 13";
-// TODO: точное время сбора гостей не подтверждено заказчиком — сейчас правдоподобный placeholder.
-export const GATHERING_TIME_TODO = "Сбор гостей — 11:00";
 
-export const MAP_URL = `https://yandex.ru/maps/?text=${encodeURIComponent(
-  "Усадьба Братцево, Светлогорский проезд 13, Москва",
-)}`;
+// Время/адреса венчания и банкета нарисованы прямо в иллюстрации place-final.webp,
+// поэтому её alt должен нести тот же текст — это единственный способ прочитать
+// содержимое секции скринридером.
+export const PLACE_ILLUSTRATION_ALT =
+  `Ждём вас в ${CEREMONY_VENUE} на венчание в ${CEREMONY_TIME} ` +
+  `(${CEREMONY_ADDRESS}). А затем на банкет в усадьбе Братцево (${VENUE_ADDRESS})`;
 
-export const DRESS_CODE_COLORS = [
-  { label: "Чёрный", swatchVar: "--color-bg-card" },
-  { label: "Графит", swatchVar: "--color-graphite" },
-  { label: "Бежевый", swatchVar: "--color-text-secondary" },
-  { label: "Айвори", swatchVar: "--color-ivory" },
-] as const;
+export const DRESS_CODE_SUBTITLE = "Палитра нашего вечера";
 
-// TODO: полный текст дресс-кода не подтверждён — сейчас только цвета (чёрный/бежевый).
-export const DRESS_CODE_INTRO_TODO =
-  "Будем благодарны, если в своих образах вы поддержите палитру нашего вечера.";
+// Палитра показана баннерами на иллюстрации dresscode-banners.webp — дублируем её
+// текстом для скринридеров (см. DressCode.tsx).
+export const DRESS_CODE_COLORS_TEXT = "Чёрный и бежевый";
 
 export const GIFTS_TEXT = {
   main: "Ваше присутствие — главный подарок для нас.",
@@ -40,9 +34,6 @@ export const GIFTS_TEXT = {
 
 export const VERIFICATION_ERROR_TEXT =
   "Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.";
-
-export const GUEST_TREE_MODAL_TEXT =
-  "Спасибо, что в этот день вы будете рядом с нами.";
 
 export function greetingForGender(gender: "m" | "f"): string {
   return gender === "m" ? "Дорогой" : "Дорогая";

@@ -4,7 +4,6 @@ import { Hero } from "./Hero";
 import { DateTimePlace } from "./DateTimePlace";
 import { DressCode } from "./DressCode";
 import { Gifts } from "./Gifts";
-import { Finale } from "./Finale";
 import styles from "./InvitationScreen.module.css";
 
 interface InvitationScreenProps {
@@ -23,21 +22,11 @@ export function InvitationScreen({ guest, onBack }: InvitationScreenProps) {
         <Hero guestName={guest.displayName} guestGender={guest.gender} />
       </RevealSection>
 
-      <RevealSection>
-        <DateTimePlace />
-      </RevealSection>
-
-      <RevealSection>
-        <DressCode />
-      </RevealSection>
-
-      <RevealSection>
-        <Gifts />
-      </RevealSection>
-
-      <RevealSection>
-        <Finale />
-      </RevealSection>
+      {/* Арт-секции намеренно без scroll-reveal: фоны-кадры должны быть видны
+          сразу и статично, появление здесь читалось как мерцание фона. */}
+      <DateTimePlace />
+      <DressCode />
+      <Gifts />
     </div>
   );
 }

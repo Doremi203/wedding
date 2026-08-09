@@ -14,24 +14,22 @@
   opacity: 1;
 }
 
+/* Панель — арт-рамка (modal-frame.webp) с контентом, позиционированным поверх неё
+   в процентах. Ширина ограничена ещё и высотой вьюпорта, чтобы рамка целиком
+   помещалась в landscape; текст внутри задан в cqw и масштабируется вместе с рамкой. */
 .panel {
   position: fixed;
   left: 50%;
   top: 50%;
-  max-width: 340px;
-  width: calc(100% - 56px);
+  width: min(calc(100% - 36px), 348px, calc((100dvh - 32px) * 1024 / 1536));
+  aspect-ratio: 1024 / 1536;
+  container-type: inline-size;
   transform: translate(-50%, -50%) scale(0.94);
   opacity: 0;
   transition:
     opacity 0.4s ease,
     transform 0.4s ease;
-  background: var(--color-panel-bg);
-  border: 1px solid oklch(0.66 0.06 78 / 0.4);
-  box-shadow:
-    inset 0 0 0 1px oklch(0.66 0.06 78 / 0.15),
-    0 20px 60px rgba(0, 0, 0, 0.6);
-  padding: 36px 26px;
-  text-align: center;
+  filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.7));
   z-index: 61;
 }
 
@@ -40,34 +38,64 @@
   opacity: 1;
 }
 
+.frame {
+  object-fit: contain;
+  z-index: 0;
+}
+
+.head {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  top: 20.5%;
+  z-index: 1;
+  text-align: center;
+}
+
 .eyebrow {
   font-family: var(--font-cinzel), serif;
-  font-size: 11px;
-  letter-spacing: 0.28em;
+  font-size: 2.73cqw;
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
   color: var(--color-gold);
   text-transform: uppercase;
-  margin-bottom: 18px;
+  margin-bottom: 2.9cqw;
 }
 
 .guestName {
   font-family: var(--font-cormorant), serif;
   font-style: italic;
   font-weight: 600;
-  font-size: 32px;
+  font-size: 8.05cqw;
+  line-height: 1.1;
   color: var(--color-ivory);
-  margin-bottom: 22px;
 }
 
-.diamond {
-  margin: 0 auto 22px;
+.body {
+  position: absolute;
+  left: 17%;
+  right: 17%;
+  top: 37.5%;
+  bottom: 34.5%;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4.6cqw;
+  text-align: center;
+}
+
+/* С сообщением об ошибке блок выше — поджимаем интервалы, чтобы CTA не переехала
+   через нижнюю декоративную линию рамки. */
+.body:has(.error) {
+  gap: 3.6cqw;
 }
 
 .question {
   font-family: var(--font-eb-garamond), serif;
-  font-size: 18px;
+  font-size: 4.89cqw;
   line-height: 1.5;
   color: var(--color-text-secondary);
-  margin-bottom: 24px;
 }
 
 .input {
@@ -78,11 +106,10 @@
   color: var(--color-ivory);
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
-  font-size: 18px;
-  padding: 8px 4px 12px;
+  font-size: 4.89cqw;
+  padding: 1.7cqw 1.1cqw 2.3cqw;
   outline: none;
   text-align: center;
-  margin-bottom: 18px;
 }
 
 .input:focus-visible {
@@ -93,47 +120,71 @@
 .error {
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
-  font-size: 14px;
+  font-size: 3.45cqw;
   color: var(--color-wine-text);
-  line-height: 1.5;
-  margin-bottom: 18px;
+  line-height: 1.35;
+  padding: 0 2cqw;
 }
 
 .submit {
   cursor: pointer;
-  width: 100%;
-  background: oklch(0.33 0.09 18 / 0.5);
-  border: 1px solid oklch(0.66 0.06 78 / 0.5);
-  color: var(--color-ivory);
+  background: none;
+  border: none;
+  padding: 0;
   font-family: var(--font-cinzel), serif;
-  font-size: 12px;
-  letter-spacing: 0.2em;
+  font-size: 3.02cqw;
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
   text-transform: uppercase;
-  padding: 15px 0;
-  margin-bottom: 16px;
+  color: var(--color-ivory);
+  transition: opacity 0.35s ease;
+}
+
+.submit:disabled {
+  opacity: 0;
+  cursor: default;
 }
 
 .submit:focus-visible {
   outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
-.submit:disabled {
-  opacity: 0.6;
-  cursor: default;
+.footer {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 65.5%;
+  bottom: 18.5%;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .back {
   cursor: pointer;
   background: none;
   border: none;
+  padding: 0;
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
-  font-size: 14px;
-  color: var(--color-muted);
+  font-size: 3.88cqw;
+  color: oklch(0.68 0.02 75);
 }
 
 .back:focus-visible {
   outline: 2px solid var(--color-gold);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    transition: opacity 0.4s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  .panel.visible {
+    transform: translate(-50%, -50%);
+  }
 }
