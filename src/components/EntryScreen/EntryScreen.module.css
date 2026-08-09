@@ -117,6 +117,14 @@
   filter: brightness(0.95) contrast(1.1);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
   mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
+  /* До перехода границы скролла дерева нет вовсе — оно проявляется вместе с уходом
+     заливки, поэтому сквозь мягкий край заливки ничего не просвечивает. */
+  opacity: 0;
+  transition: opacity 1.3s ease;
+}
+
+.treeSegment[data-revealed] img {
+  opacity: 1;
 }
 
 .treeSegment::after {
@@ -125,6 +133,37 @@
   inset: 0;
   background: linear-gradient(to bottom, transparent 8%, oklch(0.08 0.01 270 / 0.3) 88%, var(--color-bg-card) 100%);
   pointer-events: none;
+}
+
+/* Занавес над деревом: до перехода границы скролла крона полностью закрыта тем же тоном,
+   в который гаснет низ башни, — читается как продолжение первого фона, а не как второй арт.
+   Верхняя кромка растворяется в зоне наложения с hero (--entry-fade), чтобы на стыке не
+   возникало горизонтальной ступеньки; низ уходит в фон страницы. */
+.treeVeil {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--entry-seam) var(--entry-fade),
+    var(--entry-seam) 92%,
+    var(--color-bg-card) 100%
+  );
+  opacity: 1;
+  transition: opacity 1.3s ease;
+}
+
+.treeVeil[data-lifted] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .treeVeil,
+  .treeSegment img {
+    transition: none;
+  }
 }
 
 .apple {
