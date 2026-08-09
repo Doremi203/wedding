@@ -63,7 +63,7 @@ async function main() {
 
   const output = `// СГЕНЕРИРОВАНО из ${srcPath} скриптом scripts/hash-answers.mjs — не редактировать руками.
 // Содержит только SHA-256 хэши ответов, не plaintext. Регенерировать: npm run hash-answers
-// TODO: placeholder guest list/answers — заменить реальными данными от заказчика (см. CLAUDE.md → Open Questions).
+// TODO: guest list реальный, но персональные вопросы/ответы для верификации ещё не заданы (см. CLAUDE.md → Open Questions).
 import type { Guest } from "@/types/guest";
 
 export const guests: Guest[] = [
