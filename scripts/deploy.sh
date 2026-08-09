@@ -15,13 +15,24 @@ if [ ! -d "$OUT_DIR" ]; then
   exit 1
 fi
 
+# If credentials aren't already in the environment, pull them from the
+# applied Terraform state so a single `make deploy` is enough end-to-end.
+if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
+  if command -v terraform >/dev/null 2>&1 && [ -d terraform ]; then
+    echo "AWS credentials not set, fetching from terraform output..." >&2
+    AWS_ACCESS_KEY_ID="$(cd terraform && terraform output -raw storage_access_key_id 2>/dev/null)" || true
+    AWS_SECRET_ACCESS_KEY="$(cd terraform && terraform output -raw storage_secret_access_key 2>/dev/null)" || true
+    export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
+  fi
+fi
+
 if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
   cat >&2 <<'EOF'
-Error: AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY are not set.
+Error: couldn't obtain AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY.
 
-Load them from Terraform outputs, e.g.:
-  export AWS_ACCESS_KEY_ID=$(cd terraform && terraform output -raw storage_access_key_id)
-  export AWS_SECRET_ACCESS_KEY=$(cd terraform && terraform output -raw storage_secret_access_key)
+Either export them yourself, or make sure `terraform` is installed and
+`terraform/` has an applied state exposing storage_access_key_id /
+storage_secret_access_key (run `terraform apply` in terraform/ first).
 EOF
   exit 1
 fi
