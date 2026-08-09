@@ -10,20 +10,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository State (важно прочитать перед началом работы)
 
-**Репозиторий — greenfield.** Нет `package.json`, lockfile, framework config, `src/`. Первая задача реализации должна будет заскаффолдить приложение — это ещё не сделано.
+**Скаффолд выполнен.** Next.js 16 App Router + TypeScript, `output: 'export'`, первый деплоящийся билд собирается (`npm run build` → `out/`). Дальнейшая работа — доработка контента/UI/анимаций внутри уже заданной архитектуры, а не повторное scaffolding.
 
 Что реально есть сейчас:
 
 | Файл/папка | Что это | Статус |
 |---|---|---|
-| `Wedding Invitation.dc.html` | **Прототип** UI/UX/анимаций/логики — единственный источник истины по поведению, композиции и переходам до появления production-кода | Reference only, не production code |
-| `support.js` | Сгенерированный runtime прототипирующего инструмента (`GENERATED from dc-runtime/src/*.ts — do not edit`). Реализует кастомный шаблонизатор (`<x-dc>`, `sc-if`, `sc-for`, `DCLogic`) поверх React UMD | **Не использовать в production.** Исходников `dc-runtime` в репо нет, движок специфичен для инструмента прототипирования |
-| `assets/tower-dragons.png` | Hero-иллюстрация: готическая башня + два дракона (белый/чёрный), 941×1672, 1.9MB PNG | Единственный реальный production-кандидат arts. Требует оптимизации перед использованием (см. Performance) |
-| `uploads/ChatGPT Image ....png` | Байт-в-байт идентичен `assets/tower-dragons.png` | Похоже на raw-экспорт того же файла (AI-generated). Считать `assets/` рабочей копией, `uploads/` — источником/архивом |
+| `Wedding Invitation.dc.html` | **Прототип** UI/UX/анимаций/логики — источник истины по поведению, композиции и переходам, использован при переносе в React/Next.js | Reference only, не production code |
+| `support.js` | Сгенерированный runtime прототипирующего инструмента (`GENERATED from dc-runtime/src/*.ts — do not edit`). Реализует кастомный шаблонизатор (`<x-dc>`, `sc-if`, `sc-for`, `DCLogic`) поверх React UMD | **Не используется в production**, оставлен только как reference рядом с прототипом. Исключён из ESLint (`eslint.config.mjs`) |
+| `src/` | Production-код Next.js-приложения (App Router, компоненты, hooks, data-слой, lib) | Актуальный источник истины по коду |
+| `public/images/tower-dragons.webp` | Оптимизированный hero-арт (сконвертирован из `assets/tower-dragons.png` через `sharp`, ~900px, WebP, ~76KB вместо 1.9MB) | Production asset, используется в `Hero.tsx` через `next/image` |
+| `assets/tower-dragons.png`, `uploads/ChatGPT Image ....png` | Исходный PNG hero-арта (байт-в-байт идентичны) | Архив/источник, production использует `public/images/tower-dragons.webp` |
+| `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
+| `data/guests.source.json` | Реальный plaintext-источник ответов гостей (сейчас — placeholder, все ответы `москва`/`moscow`, см. Open Questions) | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
 | `.thumbnail` | WebP-превью прототипа для инструмента прототипирования | Служебный файл, не продакшен-asset |
 | `github.md` | Заметка синка с `Doremi203/wedding` (репозиторий на момент записи был пуст) | Информационная, не является активной интеграцией. Не полагаться на неё как на источник кода |
 
-Все остальные иллюстрации (карта усадьбы, конверт среди ветвей, дерево с яблоками и змеем) в прототипе — текстовые заглушки ("Иллюстрация · ..."), **не существуют** как арт. Не считать их готовыми.
+Иллюстрации карты усадьбы, конверта среди ветвей и дерева с яблоками/змеем по-прежнему реализованы как текстовые placeholder'ы (`PlaceholderIllustration`), **арт не существует**. Не считать их готовыми — см. Open Questions.
 
 ## Product Goals
 
@@ -189,9 +192,18 @@ Framework для тестов ещё не выбран (нет package.json). К
 
 ## Development Commands
 
-**Пока не существуют** — в репозитории нет `package.json`/lockfile. Первая задача реализации должна заскаффолдить Next.js-приложение (App Router, TypeScript, `output: 'export'` в `next.config`); после этого — обновить этот раздел реальными командами (`npm run dev`/`build`/`lint`/`test`/`typecheck` и т.п.) из фактического `package.json`. Не выдумывать команды заранее.
+Скаффолд выполнен (Next.js 16, App Router, TypeScript, `output: 'export'`). Реальные команды из `package.json`:
 
-Ожидаемо после скаффолда: `next build` кладёт статику в `out/` — именно эту директорию заливать в S3 (руками или скриптом типа `aws s3 sync out/ s3://<bucket> --delete`, если/когда это понадобится автоматизировать). `next start`/`next dev` в продовом режиме сервера не задействуются — прод статичен.
+- `npm install` — установка зависимостей.
+- `npm run dev` — dev-сервер (`next dev`, Turbopack), http://localhost:3000.
+- `npm run build` — `next build`, статический экспорт в `out/`.
+- `npm run lint` — `eslint .` (flat config, `eslint-config-next`).
+- `npm run typecheck` — `tsc --noEmit`.
+- `npm run hash-answers` — генерирует `src/data/guests.ts` из plaintext-файла с ответами (по умолчанию `data/guests.source.json`, путь можно передать аргументом). См. Verification & Privacy.
+
+Тестовый фреймворк ещё не подключён (см. Testing).
+
+`next build` кладёт статику в `out/` — именно эту директорию заливать в S3 (руками или скриптом типа `aws s3 sync out/ s3://<bucket> --delete`, если/когда это понадобится автоматизировать). `next start` не задействуется — прод статичен.
 
 ## Coding Conventions
 
@@ -254,6 +266,16 @@ Framework для тестов ещё не выбран (нет package.json). К
 
 **После изменения:** см. Definition of Done выше.
 
-**Если репозиторий всё ещё в текущем (greenfield) состоянии** и задача — не явный запрос "реализуй сайт/заскаффолди проект", не создавай production-implementation по собственной инициативе: сначала уточни объём задачи у пользователя.
+**Реальные plaintext-ответы гостей и полный guest list — открытый вопрос.** `data/guests.source.json` сейчас содержит placeholder-данные (7 имён из прототипа, единый ответ `москва`/`moscow` на всех). Как только заказчик пришлёт реальный список гостей/вопросов/ответов — обновить `data/guests.source.json` и перегенерировать `src/data/guests.ts` через `npm run hash-answers`, не хардкодить новые данные вручную в TypeScript.
 
 **После завершения кодовой задачи всегда открывать PR** (`git push` + `gh pr create`) — не оставлять готовые изменения только закоммиченными локально/в ветке без PR. Не применяется к чисто исследовательским/консультационным задачам (ответ на вопрос, ревью, объяснение кода) без изменений в репозитории.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

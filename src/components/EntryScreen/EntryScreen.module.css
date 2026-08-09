@@ -1,0 +1,124 @@
+.screen {
+  min-height: 100vh;
+  position: relative;
+  padding: 56px 28px 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.titleBlock {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  text-align: center;
+  padding: 18px 0 26px;
+  border-top: 1px solid oklch(0.66 0.06 78 / 0.35);
+  border-bottom: 1px solid oklch(0.66 0.06 78 / 0.35);
+  margin-bottom: 8px;
+}
+
+.titleBlock .diamondTop {
+  margin-bottom: 18px;
+}
+
+.titleBlock .diamondBottom {
+  margin-top: 18px;
+}
+
+.title {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 40px;
+  margin: 0 0 10px;
+  color: var(--color-ivory);
+}
+
+.subtitle {
+  font-family: var(--font-eb-garamond), serif;
+  font-size: 16px;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+}
+
+.searchWrap {
+  position: relative;
+  z-index: 1;
+  margin: 24px 0 8px;
+}
+
+.searchInput {
+  width: 100%;
+  background: var(--color-input-bg);
+  border: 1px solid oklch(0.66 0.06 78 / 0.4);
+  color: var(--color-ivory-soft);
+  font-family: var(--font-eb-garamond), serif;
+  font-style: italic;
+  font-size: 16px;
+  padding: 14px 16px;
+  outline: none;
+  text-align: center;
+}
+
+.searchInput:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.list {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  overflow-y: auto;
+  margin-top: 12px;
+  padding-bottom: 16px;
+  list-style: none;
+  padding-left: 0;
+}
+
+.guestItem {
+  cursor: pointer;
+  text-align: center;
+  padding: 18px 8px;
+  color: var(--color-ivory-soft);
+  transition: color 0.3s ease;
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 24px;
+  letter-spacing: 0.01em;
+  width: 100%;
+  background: none;
+  border: none;
+  display: block;
+}
+
+.guestItem:hover,
+.guestItem:focus-visible {
+  color: var(--color-gold);
+}
+
+.guestItem:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+.divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, oklch(0.66 0.06 78 / 0.3), transparent);
+}
+
+.noResults {
+  text-align: center;
+  color: var(--color-muted);
+  font-style: italic;
+  padding: 24px 0;
+}

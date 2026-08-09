@@ -1,0 +1,77 @@
+.section {
+  position: relative;
+  padding: 100px 28px 90px;
+  text-align: center;
+}
+
+.diamond {
+  margin: 0 auto 32px;
+}
+
+.day {
+  font-family: var(--font-cormorant), serif;
+  font-weight: 600;
+  font-size: 72px;
+  line-height: 1;
+  color: var(--color-ivory);
+  margin-bottom: 6px;
+}
+
+.monthYear {
+  font-family: var(--font-cinzel), serif;
+  font-size: 16px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--color-gold-bright);
+  margin-bottom: 2px;
+}
+
+.monthYear:last-of-type {
+  margin-bottom: 36px;
+}
+
+.venueName {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-size: 26px;
+  color: var(--color-ivory-soft);
+  margin-bottom: 4px;
+}
+
+.venueCity {
+  font-family: var(--font-eb-garamond), serif;
+  font-size: 16px;
+  color: var(--color-text-tertiary);
+  margin-bottom: 18px;
+}
+
+.venueAddress {
+  font-family: var(--font-eb-garamond), serif;
+  font-size: 15px;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.gatheringTime {
+  font-family: var(--font-eb-garamond), serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--color-muted);
+  margin-bottom: 32px;
+}
+
+.mapCta {
+  display: inline-block;
+  border: 1px solid oklch(0.66 0.06 78 / 0.5);
+  padding: 14px 30px;
+  font-family: var(--font-cinzel), serif;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-ivory-soft);
+  margin-bottom: 40px;
+}
+
+.mapPlaceholder {
+  margin-top: 24px;
+}

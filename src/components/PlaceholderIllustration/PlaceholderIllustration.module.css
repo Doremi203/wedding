@@ -1,0 +1,25 @@
+.placeholder {
+  position: relative;
+  width: 100%;
+  background: repeating-linear-gradient(
+    var(--angle, 95deg),
+    oklch(0.19 0.012 265) 0px,
+    oklch(0.19 0.012 265) 9px,
+    oklch(0.16 0.011 265) 9px,
+    oklch(0.16 0.011 265) 18px
+  );
+  border: 1px solid oklch(0.66 0.06 78 / 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.label {
+  font-family: monospace;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: oklch(0.6 0.02 78 / 0.85);
+  text-align: center;
+  padding: 0 24px;
+  text-transform: uppercase;
+}

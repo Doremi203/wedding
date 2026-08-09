@@ -1,0 +1,52 @@
+.section {
+  position: relative;
+  padding: 90px 28px;
+  text-align: center;
+}
+
+.diamond {
+  margin: 0 auto 32px;
+}
+
+.title {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 34px;
+  margin: 0 0 16px;
+}
+
+.intro {
+  font-family: var(--font-eb-garamond), serif;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  max-width: 300px;
+  margin: 0 auto 40px;
+}
+
+.swatches {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.swatchItem {
+  text-align: center;
+}
+
+.swatch {
+  width: 56px;
+  height: 56px;
+  border: 1px solid oklch(0.66 0.06 78 / 0.4);
+  margin-bottom: 10px;
+}
+
+.swatchLabel {
+  font-family: var(--font-cinzel), serif;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--color-muted);
+  text-transform: uppercase;
+}

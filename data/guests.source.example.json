@@ -1,0 +1,16 @@
+[
+  {
+    "id": "irina",
+    "displayName": "Ирина",
+    "gender": "f",
+    "question": "Где мы впервые встретились?",
+    "answers": ["москва", "moscow"]
+  },
+  {
+    "id": "alexander",
+    "displayName": "Александр",
+    "gender": "m",
+    "question": "Где мы впервые встретились?",
+    "answers": ["москва", "moscow"]
+  }
+]
