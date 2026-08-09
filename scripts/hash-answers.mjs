@@ -24,28 +24,41 @@ async function main() {
   const guests = JSON.parse(raw);
 
   const entries = guests.map((g) => {
-    if (!g.id || !g.displayName || !g.gender || !g.question || !Array.isArray(g.answers) || g.answers.length === 0) {
+    if (!g.id || !g.displayName || !g.gender) {
       throw new Error(`Invalid guest entry: ${JSON.stringify(g)}`);
+    }
+    // question и answers опциональны, но только вместе: гость с вопросом — из whitelist
+    // (показывается верификация), гость без вопроса — приветственная модалка.
+    const hasQuestion = Boolean(g.question);
+    const hasAnswers = Array.isArray(g.answers) && g.answers.length > 0;
+    if (hasQuestion !== hasAnswers) {
+      throw new Error(
+        `Guest ${g.id}: question и answers задаются только вместе (сейчас question=${hasQuestion}, answers=${hasAnswers}).`,
+      );
     }
     return {
       id: g.id,
       displayName: g.displayName,
       gender: g.gender,
-      question: g.question,
-      acceptedAnswerHashes: g.answers.map(hashAnswer),
+      ...(hasQuestion
+        ? { question: g.question, acceptedAnswerHashes: g.answers.map(hashAnswer) }
+        : {}),
     };
   });
 
   const body = entries
-    .map(
-      (g) => `  {
-    id: ${JSON.stringify(g.id)},
-    displayName: ${JSON.stringify(g.displayName)},
-    gender: ${JSON.stringify(g.gender)},
-    question: ${JSON.stringify(g.question)},
-    acceptedAnswerHashes: ${JSON.stringify(g.acceptedAnswerHashes)},
-  },`,
-    )
+    .map((g) => {
+      const lines = [
+        `    id: ${JSON.stringify(g.id)},`,
+        `    displayName: ${JSON.stringify(g.displayName)},`,
+        `    gender: ${JSON.stringify(g.gender)},`,
+      ];
+      if (g.question) {
+        lines.push(`    question: ${JSON.stringify(g.question)},`);
+        lines.push(`    acceptedAnswerHashes: ${JSON.stringify(g.acceptedAnswerHashes)},`);
+      }
+      return `  {\n${lines.join("\n")}\n  },`;
+    })
     .join("\n");
 
   const output = `// СГЕНЕРИРОВАНО из ${srcPath} скриптом scripts/hash-answers.mjs — не редактировать руками.

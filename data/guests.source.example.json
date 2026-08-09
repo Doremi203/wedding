@@ -12,5 +12,10 @@
     "gender": "m",
     "question": "Где мы впервые встретились?",
     "answers": ["москва", "moscow"]
+  },
+  {
+    "id": "maria",
+    "displayName": "Мария",
+    "gender": "f"
   }
 ]

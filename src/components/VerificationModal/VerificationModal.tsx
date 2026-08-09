@@ -3,8 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
-import { verifyAnswer } from "@/lib/verification";
-import { VERIFICATION_ERROR_TEXT } from "@/data/event";
+import { requiresVerification, verifyAnswer } from "@/lib/verification";
+import { VERIFICATION_ERROR_TEXT, WELCOME_MODAL_EYEBROW, WELCOME_MODAL_TEXT } from "@/data/event";
 import styles from "./VerificationModal.module.css";
 
 interface VerificationModalProps {
@@ -19,12 +19,18 @@ export function VerificationModal({ guest, visible, onClose, onSuccess }: Verifi
   const [error, setError] = useState(false);
   const [checking, setChecking] = useState(false);
 
+  // Вопрос задан только для гостей из whitelist — остальные видят приветствие без проверки.
+  const guestWithQuestion = requiresVerification(guest) ? guest : null;
   const hasAnswer = value.trim().length > 0;
 
   async function handleSubmit() {
+    if (!guestWithQuestion) {
+      onSuccess();
+      return;
+    }
     if (checking || !hasAnswer) return;
     setChecking(true);
-    const ok = await verifyAnswer(guest, value);
+    const ok = await verifyAnswer(guestWithQuestion, value);
     setChecking(false);
     if (ok) {
       onSuccess();
@@ -58,45 +64,54 @@ export function VerificationModal({ guest, visible, onClose, onSuccess }: Verifi
         />
 
         <div className={styles.head}>
-          <div className={styles.eyebrow}>Личный вопрос</div>
+          <div className={styles.eyebrow}>
+            {guestWithQuestion ? "Личный вопрос" : WELCOME_MODAL_EYEBROW}
+          </div>
           <div className={styles.guestName} id="verify-guest-name">
             {guest.displayName}
           </div>
         </div>
 
-        <div className={styles.body}>
-          <div className={styles.question}>{guest.question}</div>
+        <div className={`${styles.body} ${guestWithQuestion ? "" : styles.welcome}`}>
+          <div className={styles.question}>
+            {guestWithQuestion ? guestWithQuestion.question : WELCOME_MODAL_TEXT}
+          </div>
 
-          <label htmlFor="verify-answer" className="sr-only">
-            Ваш ответ
-          </label>
-          <input
-            id="verify-answer"
-            value={value}
-            onChange={(e) => {
-              setValue(e.target.value);
-              setError(false);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") handleSubmit();
-            }}
-            placeholder="Ваш ответ"
-            className={styles.input}
-          />
+          {guestWithQuestion && (
+            <>
+              <label htmlFor="verify-answer" className="sr-only">
+                Ваш ответ
+              </label>
+              <input
+                id="verify-answer"
+                value={value}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setError(false);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSubmit();
+                }}
+                placeholder="Ваш ответ"
+                className={styles.input}
+              />
 
-          {error && (
-            <div className={styles.error} role="alert">
-              {VERIFICATION_ERROR_TEXT}
-            </div>
+              {error && (
+                <div className={styles.error} role="alert">
+                  {VERIFICATION_ERROR_TEXT}
+                </div>
+              )}
+            </>
           )}
 
           {/* CTA проявляется только когда есть ввод — так задано в дизайне.
-              disabled (вместо pointer-events) держит невидимую кнопку вне таб-порядка. */}
+              disabled (вместо pointer-events) держит невидимую кнопку вне таб-порядка.
+              Без вопроса вводить нечего — кнопка видна сразу. */}
           <button
             type="button"
             className={styles.submit}
             onClick={handleSubmit}
-            disabled={!hasAnswer || checking}
+            disabled={guestWithQuestion ? !hasAnswer || checking : false}
           >
             Открыть приглашение
           </button>
