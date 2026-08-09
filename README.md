@@ -43,15 +43,21 @@ npm run build        # next build — собирает статику в out/
 npm run build
 ```
 
-Результат — статическая директория `out/`. Она целиком заливается в бакет, созданный терраформом (`terraform/`), через S3-совместимый API Object Storage:
+Результат — статическая директория `out/`. Она целиком заливается в бакет, созданный терраформом (`terraform/`), через S3-совместимый API Object Storage.
+
+Загрузить креды из Terraform-output и задеплоить:
 
 ```bash
 export AWS_ACCESS_KEY_ID=$(cd terraform && terraform output -raw storage_access_key_id)
 export AWS_SECRET_ACCESS_KEY=$(cd terraform && terraform output -raw storage_secret_access_key)
-aws s3 sync out/ s3://sacred-castle-wedding.ru --delete --endpoint-url https://storage.yandexcloud.net
+
+make release   # npm run build + деплой
+# или по отдельности:
+make build
+make deploy    # эквивалент ./scripts/deploy.sh — используй, если out/ уже собран
 ```
 
-(или аналогичная команда через `yc storage s3` — тоже совместим с S3 API).
+`scripts/deploy.sh` заливает `_next/static/**` (хэшированные, immutable-ассеты) с длинным кэшем, а всё остальное (`index.html`, `robots.txt`, картинки из `public/`) — с `must-revalidate`, и синкает с `--delete`, чтобы удалённые файлы пропадали из бакета.
 
 Сервер (`next start`) не используется — прод полностью статичен (`output: 'export'` в `next.config.ts`), никакого server-side рантайма (Route Handlers, Server Actions, middleware) на проде нет.
 
