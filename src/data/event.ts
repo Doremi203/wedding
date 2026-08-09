@@ -11,7 +11,6 @@ export const CEREMONY_ADDRESS = "Волоколамское шоссе, 52, ко
 export const CEREMONY_TIME = "13:30";
 
 export const VENUE_NAME = "Усадьба Братцево";
-export const VENUE_CITY = "Москва";
 export const VENUE_ADDRESS = "Светлогорский проезд, 13";
 
 // Время/адреса венчания и банкета нарисованы прямо в иллюстрации place-final.webp,
@@ -20,10 +19,6 @@ export const VENUE_ADDRESS = "Светлогорский проезд, 13";
 export const PLACE_ILLUSTRATION_ALT =
   `Ждём вас в ${CEREMONY_VENUE} на венчание в ${CEREMONY_TIME} ` +
   `(${CEREMONY_ADDRESS}). А затем на банкет в усадьбе Братцево (${VENUE_ADDRESS})`;
-
-export const MAP_URL = `https://yandex.ru/maps/?text=${encodeURIComponent(
-  `${VENUE_NAME}, ${VENUE_ADDRESS}, ${VENUE_CITY}`,
-)}`;
 
 export const DRESS_CODE_SUBTITLE = "Палитра нашего вечера";
 

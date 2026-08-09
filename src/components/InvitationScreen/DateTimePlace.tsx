@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MAP_URL, PLACE_ILLUSTRATION_ALT } from "@/data/event";
+import { PLACE_ILLUSTRATION_ALT } from "@/data/event";
 import styles from "./DateTimePlace.module.css";
 
 export function DateTimePlace() {
@@ -20,10 +20,6 @@ export function DateTimePlace() {
           sizes="(max-width: 430px) 100vw, 374px"
           className={styles.scroll}
         />
-
-        <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className={styles.mapCta}>
-          Построить маршрут
-        </a>
       </div>
     </section>
   );

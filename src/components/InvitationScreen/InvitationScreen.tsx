@@ -22,17 +22,11 @@ export function InvitationScreen({ guest, onBack }: InvitationScreenProps) {
         <Hero guestName={guest.displayName} guestGender={guest.gender} />
       </RevealSection>
 
-      <RevealSection>
-        <DateTimePlace />
-      </RevealSection>
-
-      <RevealSection>
-        <DressCode />
-      </RevealSection>
-
-      <RevealSection>
-        <Gifts />
-      </RevealSection>
+      {/* Арт-секции намеренно без scroll-reveal: фоны-кадры должны быть видны
+          сразу и статично, появление здесь читалось как мерцание фона. */}
+      <DateTimePlace />
+      <DressCode />
+      <Gifts />
     </div>
   );
 }
