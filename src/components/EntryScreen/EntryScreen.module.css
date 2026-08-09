@@ -71,13 +71,6 @@
   margin-top: 18px;
 }
 
-.subtitle {
-  font-family: var(--font-eb-garamond), serif;
-  font-size: 16px;
-  color: var(--color-text-tertiary);
-  letter-spacing: 0.02em;
-}
-
 .scrollHint {
   position: relative;
   z-index: 1;
@@ -90,9 +83,11 @@
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
   font-size: 13px;
+  line-height: 1.5;
   color: var(--color-muted);
   letter-spacing: 0.05em;
-  margin-bottom: 6px;
+  margin: 0 auto 6px;
+  max-width: 220px;
 }
 
 .scrollHintArrow {

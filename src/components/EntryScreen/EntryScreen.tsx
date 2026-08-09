@@ -81,14 +81,13 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
             <Diamond />
           </div>
           <h1 className="sr-only">Добро пожаловать</h1>
-          <div className={styles.subtitle}>Найдите своё имя среди ветвей</div>
           <div className={styles.diamondBottom}>
             <Diamond />
           </div>
         </div>
 
         <div className={styles.scrollHint} aria-hidden="true">
-          <div className={styles.scrollHintLabel}>Листайте вниз</div>
+          <div className={styles.scrollHintLabel}>Листайте вниз, чтобы найти своё имя среди ветвей</div>
           <div className={styles.scrollHintArrow}>↓</div>
         </div>
       </div>
