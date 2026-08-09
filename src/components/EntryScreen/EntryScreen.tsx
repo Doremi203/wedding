@@ -3,7 +3,7 @@
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
 import { Diamond, Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useScrollGate } from "@/hooks/useScrollGate";
 import styles from "./EntryScreen.module.css";
 
 interface EntryScreenProps {
@@ -57,10 +57,10 @@ const APPLE_POSITIONS: { left: number; top: number }[] = [
 ];
 
 export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
-  // Дерево раскрывается не сразу, а когда его верх поднимается в верхнюю треть экрана
-  // (то есть hero уже пролистан): до этого момента вся иллюстрация закрыта сплошной
-  // заливкой seam-тона башни и читается как продолжение первого фона.
-  const [treeRef, treeRevealed] = useScrollReveal<HTMLDivElement>("0px 0px -70% 0px");
+  // Дерево раскрывается, когда его верх поднимается в верхнюю треть экрана (то есть hero
+  // уже пролистан), и снова закрывается сплошной заливкой seam-тона башни при обратном
+  // скролле наверх — порог работает в обе стороны.
+  const [treeRef, treeRevealed] = useScrollGate<HTMLDivElement>("0px 0px -70% 0px");
 
   return (
     <div className={styles.screen}>
@@ -114,8 +114,9 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
                 top: `${pos.top}%`,
                 opacity: treeRevealed ? 1 : 0,
                 transform: treeRevealed ? "translateX(-50%) scale(1)" : "translateX(-50%) scale(0.4)",
-                // Яблоки загораются уже после того, как заливка начала растворяться.
-                transitionDelay: `${0.45 + i * 0.06}s`,
+                // Яблоки загораются уже после того, как заливка начала растворяться;
+                // при обратном скролле гаснут разом, без каскада и задержки.
+                transitionDelay: treeRevealed ? `${0.45 + i * 0.06}s` : "0s",
               }}
               onClick={() => onSelectGuest(guest)}
             >
