@@ -9,24 +9,24 @@
   overflow: hidden;
 }
 
+/* Фон занимает всю высоту секции: при фиксированном aspect-ratio арт кончался
+   выше низа hero и между ним и стеной «Места» зияла полоса плоской заливки. */
 .artBackground {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  aspect-ratio: 900 / 1599;
+  inset: 0;
   z-index: 0;
 }
 
+/* Только тонировка кадра под текст. Растушёвки в фон карточки внизу нет:
+   ворота встречаются со стеной «Места» напрямую, без переходного градиента. */
 .artBackground::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    oklch(0.08 0.01 270 / 0.2) 0%,
-    oklch(0.08 0.01 270 / 0.35) 90%,
-    var(--color-bg-card) 100%
+    oklch(0.08 0.01 270 / 0.1) 0%,
+    oklch(0.08 0.01 270 / 0.25) 100%
   );
 }
 

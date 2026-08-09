@@ -10,13 +10,12 @@
   overflow: hidden;
 }
 
-/* Верх стены растворяется в фон карточки — иначе на стыке с hero виден резкий шов. */
+/* Стена начинается сразу, без растворения верха в фон карточки: переходный
+   градиент на стыке с воротами убран по решению заказчика. */
 .background {
   position: absolute;
   inset: 0;
   z-index: 0;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 7%);
 }
 
 .background::after {

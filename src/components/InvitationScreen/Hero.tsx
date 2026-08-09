@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Fog, Moon } from "@/components/Atmosphere/Atmosphere";
 import { COUPLE_NAMES, EVENT_DATE_LABEL, greetingForGender } from "@/data/event";
 import type { Gender } from "@/types/guest";
 import styles from "./Hero.module.css";
@@ -14,16 +13,13 @@ export function Hero({ guestName, guestGender }: HeroProps) {
     <div className={styles.hero}>
       <div className={styles.artBackground} aria-hidden="true">
         <Image
-          src="/images/tower-dragons.webp"
+          src="/images/entrance.webp"
           alt=""
           fill
           priority
           sizes="430px"
         />
       </div>
-
-      <Fog variant="hero" />
-      <Moon variant="hero" />
 
       <div className={styles.content}>
         <div className={styles.eyebrow}>{EVENT_DATE_LABEL}</div>
