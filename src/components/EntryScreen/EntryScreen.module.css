@@ -1,14 +1,22 @@
 .screen {
   position: relative;
+  /* Высота зоны, в которой башня и дерево растворяются друг в друга: дерево поднимается
+     на эту величину под низ hero, а hero получает такой же доп. padding снизу, чтобы
+     контент («Листайте вниз») остался на прежнем месте относительно композиции. */
+  --entry-fade: 150px;
+  /* Тон, общий для нижнего края башни и верхнего края дерева — в него гаснут обе
+     иллюстрации, поэтому между ними не возникает светлой полосы фона страницы. */
+  --entry-seam: oklch(0.1 0.01 270);
 }
 
 .hero {
   min-height: 100vh;
   position: relative;
-  padding: 56px 28px 40px;
+  padding: 56px 28px calc(40px + var(--entry-fade));
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background: linear-gradient(to bottom, transparent 55%, var(--entry-seam) 92%);
 }
 
 .artBackground {
@@ -18,18 +26,17 @@
   right: 0;
   aspect-ratio: 900 / 1599;
   z-index: 0;
+  /* Картинка не обрывается по нижней кромке, а плавно уходит в прозрачность —
+     под ней остаётся seam-тон фона hero. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 52%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 52%, transparent 100%);
 }
 
 .artBackground::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    oklch(0.08 0.01 270 / 0.2) 0%,
-    oklch(0.08 0.01 270 / 0.3) 97%,
-    var(--color-bg-card) 100%
-  );
+  background: linear-gradient(to bottom, oklch(0.08 0.01 270 / 0.2) 0%, oklch(0.08 0.01 270 / 0.3) 100%);
 }
 
 .artBackground img {
@@ -97,26 +104,26 @@
   position: relative;
   width: 100%;
   aspect-ratio: 793 / 1983;
+  /* Дерево заходит под гаснущий низ башни — в этой полосе оба фона видны одновременно. */
+  margin-top: calc(-1 * var(--entry-fade));
   overflow: hidden;
 }
 
+/* Маска только на картинке, не на контейнере: яблоки-кнопки должны оставаться
+   непрозрачными и кликабельными по всей высоте кроны. */
 .treeSegment img {
   object-fit: cover;
   object-position: center top;
   filter: brightness(0.95) contrast(1.1);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);
 }
 
 .treeSegment::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    oklch(0.08 0.01 270 / 0.45) 0%,
-    transparent 8%,
-    oklch(0.08 0.01 270 / 0.3) 88%,
-    var(--color-bg-card) 100%
-  );
+  background: linear-gradient(to bottom, transparent 8%, oklch(0.08 0.01 270 / 0.3) 88%, var(--color-bg-card) 100%);
   pointer-events: none;
 }
 
