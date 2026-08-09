@@ -32,6 +32,10 @@ export const GIFTS_TEXT = {
   envelope: "Если вы захотите сделать нам подарок, мы будем рады конверту.",
 };
 
+// Текст модалки для гостей без персонального вопроса (не входят в whitelist в data/guests.source.json).
+export const WELCOME_MODAL_EYEBROW = "Добро пожаловать";
+export const WELCOME_MODAL_TEXT = "Добро пожаловать в замок";
+
 export const VERIFICATION_ERROR_TEXT =
   "Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.";
 
