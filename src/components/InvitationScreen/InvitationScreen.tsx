@@ -4,16 +4,15 @@ import { Hero } from "./Hero";
 import { DateTimePlace } from "./DateTimePlace";
 import { DressCode } from "./DressCode";
 import { Gifts } from "./Gifts";
-import { GuestTree } from "./GuestTree";
+import { Finale } from "./Finale";
 import styles from "./InvitationScreen.module.css";
 
 interface InvitationScreenProps {
   guest: Guest;
-  allGuests: Guest[];
   onBack: () => void;
 }
 
-export function InvitationScreen({ guest, allGuests, onBack }: InvitationScreenProps) {
+export function InvitationScreen({ guest, onBack }: InvitationScreenProps) {
   return (
     <div className={styles.wrapper}>
       <button type="button" className={styles.backLink} onClick={onBack}>
@@ -36,7 +35,9 @@ export function InvitationScreen({ guest, allGuests, onBack }: InvitationScreenP
         <Gifts />
       </RevealSection>
 
-      <GuestTree guests={allGuests} />
+      <RevealSection>
+        <Finale />
+      </RevealSection>
     </div>
   );
 }
