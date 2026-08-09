@@ -131,7 +131,10 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 8%, oklch(0.08 0.01 270 / 0.3) 88%, var(--color-bg-card) 100%);
+  /* Только лёгкое затемнение верха для читаемости яблок — картинка сама уходит в
+     черноту у корней, досвечивать её до --color-bg-card не нужно: экран заканчивается
+     ровно на нижней кромке иллюстрации, а не переходит дальше в фон карточки. */
+  background: linear-gradient(to bottom, transparent 8%, oklch(0.08 0.01 270 / 0.3) 88%);
   pointer-events: none;
 }
 
@@ -232,13 +235,16 @@
 }
 
 .caption {
-  position: relative;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 3%;
   z-index: 1;
   text-align: center;
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
   font-size: 14px;
   color: var(--color-muted);
-  padding: 0 20px 64px;
-  margin: -24px 0 0;
+  padding: 0 20px;
+  margin: 0;
 }

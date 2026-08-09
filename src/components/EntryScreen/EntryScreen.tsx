@@ -135,9 +135,11 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
           data-lifted={treeRevealed ? "" : undefined}
           aria-hidden="true"
         />
-      </div>
 
-      <p className={styles.caption}>Прикоснитесь к яблоку, чтобы найти своё имя</p>
+        {/* Оверлей поверх картинки, а не отдельный блок под ней — экран заканчивается
+            ровно там же, где заканчивается сама иллюстрация дерева. */}
+        <p className={styles.caption}>Прикоснитесь к яблоку, чтобы найти своё имя</p>
+      </div>
     </div>
   );
 }
