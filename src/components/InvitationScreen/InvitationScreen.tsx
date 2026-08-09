@@ -4,7 +4,6 @@ import { Hero } from "./Hero";
 import { DateTimePlace } from "./DateTimePlace";
 import { DressCode } from "./DressCode";
 import { Gifts } from "./Gifts";
-import { Finale } from "./Finale";
 import styles from "./InvitationScreen.module.css";
 
 interface InvitationScreenProps {
@@ -33,10 +32,6 @@ export function InvitationScreen({ guest, onBack }: InvitationScreenProps) {
 
       <RevealSection>
         <Gifts />
-      </RevealSection>
-
-      <RevealSection>
-        <Finale />
       </RevealSection>
     </div>
   );

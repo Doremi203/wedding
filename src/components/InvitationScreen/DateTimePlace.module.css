@@ -1,77 +1,71 @@
+/* Секция «Место»: каменная стена замка фоном, поверх — пергамент с текстом.
+   aspect-ratio задаёт «портретную» высоту кадра, min-height: max-content не даёт
+   контенту вылезти за неё на узких экранах. */
 .section {
   position: relative;
-  padding: 100px 28px 90px;
+  aspect-ratio: 900 / 1599;
+  min-height: max-content;
+  padding: 44px 28px 60px;
   text-align: center;
+  overflow: hidden;
 }
 
-.diamond {
-  margin: 0 auto 32px;
+/* Верх стены растворяется в фон карточки — иначе на стыке с hero виден резкий шов. */
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 7%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 7%);
 }
 
-.day {
-  font-family: var(--font-cormorant), serif;
-  font-weight: 600;
-  font-size: 72px;
-  line-height: 1;
-  color: var(--color-ivory);
-  margin-bottom: 6px;
+.background::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: oklch(0.11 0.008 270 / 0.55);
 }
 
-.monthYear {
-  font-family: var(--font-cinzel), serif;
-  font-size: 16px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--color-gold-bright);
-  margin-bottom: 2px;
+.wall {
+  object-fit: cover;
+  object-position: center top;
 }
 
-.monthYear:last-of-type {
-  margin-bottom: 36px;
+.content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
 }
 
-.venueName {
-  font-family: var(--font-cormorant), serif;
-  font-style: italic;
-  font-size: 26px;
-  color: var(--color-ivory-soft);
-  margin-bottom: 4px;
-}
-
-.venueCity {
-  font-family: var(--font-eb-garamond), serif;
-  font-size: 16px;
-  color: var(--color-text-tertiary);
-  margin-bottom: 18px;
-}
-
-.venueAddress {
-  font-family: var(--font-eb-garamond), serif;
-  font-size: 15px;
-  color: var(--color-muted);
-  margin-bottom: 6px;
-}
-
-.gatheringTime {
-  font-family: var(--font-eb-garamond), serif;
-  font-style: italic;
-  font-size: 15px;
-  color: var(--color-muted);
-  margin-bottom: 32px;
+.scroll {
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.65);
 }
 
 .mapCta {
   display: inline-block;
   border: 1px solid oklch(0.66 0.06 78 / 0.5);
+  background: oklch(0.08 0.01 270 / 0.55);
   padding: 14px 30px;
   font-family: var(--font-cinzel), serif;
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-ivory-soft);
-  margin-bottom: 40px;
 }
 
-.mapPlaceholder {
-  margin-top: 24px;
+.mapCta:hover {
+  color: var(--color-gold);
+}
+
+.mapCta:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
 }

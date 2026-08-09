@@ -9,387 +9,361 @@
 <x-dc>
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&amp;family=EB+Garamond:ital,wght@0,400;0,500;1,400&amp;display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&display=swap&subset=cyrillic,latin" rel="stylesheet">
 <style>
-  body{margin:0;background:oklch(0.15 0.012 270);}
-  *{box-sizing:border-box;}
-  a{color:oklch(0.80 0.035 70);text-decoration:none;}
-  a:hover{color:oklch(0.68 0.06 78);}
-  input::placeholder{color:oklch(0.55 0.015 250);}
-  @keyframes fogDrift1{0%{transform:translate(-3%,0);}50%{transform:translate(3%,-2%);}100%{transform:translate(-3%,0);}}
-  @keyframes fogDrift2{0%{transform:translate(3%,0);}50%{transform:translate(-3%,2%);}100%{transform:translate(3%,0);}}
-  @keyframes moonGlow{0%,100%{opacity:0.5;}50%{opacity:0.85;}}
-  @media (prefers-reduced-motion: reduce){.om-fog,.om-moon{animation:none !important;}}
+  html, body { margin: 0; padding: 0; background: oklch(0.13 0.01 270); }
+  * { box-sizing: border-box; }
+  a { color: oklch(0.82 0.012 75); text-decoration: none; }
+  a:hover { color: oklch(0.66 0.06 78); }
+  input::placeholder { color: oklch(0.55 0.015 250); }
+  @keyframes fogDrift1 { 0% { transform: translate(-3%, 0); } 50% { transform: translate(3%, -2%); } 100% { transform: translate(-3%, 0); } }
+  @keyframes fogDrift2 { 0% { transform: translate(3%, 0); } 50% { transform: translate(-3%, 2%); } 100% { transform: translate(3%, 0); } }
+  @keyframes moonGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 0.85; } }
+  @media (prefers-reduced-motion: reduce) { .om-fog, .om-moon { animation: none !important; } }
 </style>
 </helmet>
+<div style="width: 100%; min-height: 100vh; background: oklch(0.13 0.01 270); display: flex; justify-content: center; font-family: 'EB Garamond', serif; color: oklch(0.93 0.012 75);">
+  <div style="width: 100%; max-width: 430px; min-height: 100vh; position: relative; background: oklch(0.15 0.012 270); box-shadow: 0 0 60px rgba(0,0,0,0.6); overflow-x: hidden;">
 
-<div style="width:100%;min-height:100vh;background:oklch(0.13 0.01 270);display:flex;justify-content:center;font-family:'EB Garamond',serif;">
-<div style="width:100%;max-width:430px;min-height:100vh;position:relative;background:oklch(0.15 0.012 270);box-shadow:0 0 60px rgba(0,0,0,0.6);overflow-x:hidden;">
+    <div style="{{ overlayStyle }}"></div>
 
-<div style="position:fixed;inset:0;max-width:430px;margin:0 auto;background:oklch(0.08 0.01 270);opacity:{{ overlayOpacity }};pointer-events:none;transition:opacity 0.6s ease;z-index:50;"></div>
+    <sc-if value="{{ isSelect }}" hint-placeholder-val="{{ true }}">
+      <div style="position: relative;">
 
-<sc-if value="{{ isSelect }}" hint-placeholder-val="{{ true }}">
-<div style="min-height:100vh;position:relative;padding:56px 28px 40px;display:flex;flex-direction:column;color:oklch(0.93 0.012 75);overflow:hidden;">
-  <div class="om-fog" style="position:absolute;inset:-10% -20%;background:radial-gradient(ellipse at 30% 20%,oklch(0.30 0.02 260 / 0.5),transparent 60%),radial-gradient(ellipse at 80% 70%,oklch(0.22 0.015 250 / 0.6),transparent 55%);animation:fogDrift1 22s ease-in-out infinite;z-index:0;"></div>
-  <div class="om-moon" style="position:absolute;top:70px;right:40px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 35% 35%,oklch(0.90 0.01 75),oklch(0.72 0.02 75) 70%);box-shadow:0 0 40px 10px oklch(0.75 0.03 75 / 0.35);animation:moonGlow 8s ease-in-out infinite;z-index:0;"></div>
-  <div style="position:relative;z-index:1;text-align:center;margin-bottom:28px;">
-    <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.28em;color:oklch(0.66 0.06 78);text-transform:uppercase;">Приглашение на свадьбу</div>
-  </div>
-  <div style="position:relative;z-index:1;flex:0 0 auto;text-align:center;padding:18px 0 26px;border-top:1px solid oklch(0.66 0.06 78 / 0.35);border-bottom:1px solid oklch(0.66 0.06 78 / 0.35);margin-bottom:8px;">
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 18px;"></div>
-    <h1 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:40px;margin:0 0 10px;color:oklch(0.93 0.012 75);">Добро пожаловать</h1>
-    <div style="font-family:'EB Garamond',serif;font-size:16px;color:oklch(0.62 0.02 70);letter-spacing:0.02em;">Найдите своё имя</div>
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:18px auto 0;"></div>
-  </div>
+        <div style="min-height: 100vh; position: relative; padding: 56px 28px 190px; display: flex; flex-direction: column; overflow: hidden; background: linear-gradient(to bottom, transparent 55%, oklch(0.1 0.01 270) 92%);">
+          <div aria-hidden="true" style="position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 900 / 1599; z-index: 0; -webkit-mask-image: linear-gradient(to bottom, #000 52%, transparent 100%); mask-image: linear-gradient(to bottom, #000 52%, transparent 100%);">
+            <img src="images/tower-dragons.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.9) contrast(1.2);">
+            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, oklch(0.08 0.01 270 / 0.2) 0%, oklch(0.08 0.01 270 / 0.3) 100%);"></div>
+          </div>
 
-  <div style="position:relative;z-index:1;margin:24px 0 8px;">
-    <input value="{{ searchQuery }}" onChange="{{ onSearchChange }}" placeholder="Введите имя…" style="width:100%;background:oklch(0.20 0.013 265 / 0.6);border:1px solid oklch(0.66 0.06 78 / 0.4);color:oklch(0.90 0.012 75);font-family:'EB Garamond',serif;font-style:italic;font-size:16px;padding:14px 16px;outline:none;text-align:center;"/>
-  </div>
+          <div class="om-fog" aria-hidden="true" style="position: absolute; inset: -10% -20%; z-index: 0; pointer-events: none; animation: fogDrift1 26s ease-in-out infinite; background: radial-gradient(ellipse at 30% 20%, oklch(0.30 0.02 260 / 0.5), transparent 60%), radial-gradient(ellipse at 80% 70%, oklch(0.22 0.015 250 / 0.6), transparent 55%);"></div>
+          <div class="om-moon" aria-hidden="true" style="position: absolute; top: 70px; right: 40px; width: 70px; height: 70px; border-radius: 50%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 35% 35%, oklch(0.9 0.01 75), oklch(0.72 0.02 75) 70%); box-shadow: 0 0 40px 10px oklch(0.75 0.03 75 / 0.35); animation: moonGlow 9s ease-in-out infinite;"></div>
 
-  <div style="position:relative;z-index:1;flex:1;overflow-y:auto;margin-top:12px;padding-bottom:16px;">
-    <sc-for list="{{ guests }}" as="g" hint-placeholder-count="7">
-      <div onClick="{{ g.onSelect }}" style="{{ g.buttonStyle }}">
-        <span style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:24px;letter-spacing:0.01em;">{{ g.name }}</span>
-      </div>
-      <div style="height:1px;background:linear-gradient(to right,transparent,oklch(0.66 0.06 78 / 0.3),transparent);"></div>
-    </sc-for>
-    <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
-      <div style="text-align:center;color:oklch(0.55 0.015 250);font-style:italic;padding:24px 0;">Имя не найдено среди приглашённых</div>
-    </sc-if>
-  </div>
-</div>
-</sc-if>
+          <div style="position: relative; z-index: 1; text-align: center; margin-bottom: 28px;">
+            <div style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.28em; color: oklch(0.66 0.06 78); text-transform: uppercase;">Приглашение на свадьбу</div>
+          </div>
 
-<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
-<div onClick="{{ onCloseModal }}" style="{{ modalBackdropStyle }}"></div>
-<div style="{{ modalPanelStyle }}">
-    <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.28em;color:oklch(0.66 0.06 78);text-transform:uppercase;margin-bottom:18px;">Личный вопрос</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:32px;color:oklch(0.93 0.012 75);margin-bottom:22px;">{{ selectedGuest }}</div>
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 22px;"></div>
-    <div style="font-family:'EB Garamond',serif;font-size:18px;line-height:1.5;color:oklch(0.85 0.012 75);margin-bottom:24px;">Где мы впервые встретились?</div>
-    <input value="{{ verifyValue }}" onChange="{{ onVerifyChange }}" onKeyDown="{{ onVerifyKeyDown }}" placeholder="Ваш ответ" style="width:100%;background:transparent;border:none;border-bottom:1px solid oklch(0.66 0.06 78 / 0.5);color:oklch(0.93 0.012 75);font-family:'EB Garamond',serif;font-style:italic;font-size:18px;padding:8px 4px 12px;outline:none;text-align:center;margin-bottom:18px;"/>
-    <sc-if value="{{ verifyError }}" hint-placeholder-val="{{ false }}">
-      <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:oklch(0.55 0.11 20);line-height:1.5;margin-bottom:18px;">Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.</div>
-    </sc-if>
-    <div onClick="{{ onSubmitVerify }}" style="cursor:pointer;background:oklch(0.33 0.09 18 / 0.5);border:1px solid oklch(0.66 0.06 78 / 0.5);color:oklch(0.93 0.012 75);font-family:'Cinzel',serif;font-size:12px;letter-spacing:0.2em;text-transform:uppercase;padding:15px 0;margin-bottom:16px;">Открыть приглашение</div>
-    <div onClick="{{ onCloseModal }}" style="cursor:pointer;font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:oklch(0.55 0.015 250);">Вернуться к именам</div>
-</div>
-</sc-if>
+          <div style="position: relative; z-index: 1; flex: 0 0 auto; text-align: center; padding: 18px 0 26px; border-top: 1px solid oklch(0.66 0.06 78 / 0.35); border-bottom: 1px solid oklch(0.66 0.06 78 / 0.35); margin-bottom: 8px;">
+            <div aria-hidden="true" style="width: 7px; height: 7px; background: oklch(0.66 0.06 78); transform: rotate(45deg); margin: 0 auto 18px;"></div>
+            <div style="font-size: 16px; color: oklch(0.62 0.02 70); letter-spacing: 0.02em;">Найдите своё имя среди ветвей</div>
+            <div aria-hidden="true" style="width: 7px; height: 7px; background: oklch(0.66 0.06 78); transform: rotate(45deg); margin: 18px auto 0;"></div>
+          </div>
 
-<sc-if value="{{ isInvite }}" hint-placeholder-val="{{ false }}">
-<div style="position:relative;color:oklch(0.93 0.012 75);">
-
-  <div onClick="{{ onBackToSelect }}" style="cursor:pointer;position:absolute;top:22px;left:24px;z-index:5;font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:oklch(0.55 0.015 250);">← Имена</div>
-
-  <div ref="{{ heroRef }}" style="min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:80px 28px 48px;overflow:hidden;opacity:{{ heroReveal.opacity }};transform:{{ heroReveal.transform }};transition:opacity 1.4s ease,transform 1.4s ease;">
-    <div class="om-fog" style="position:absolute;inset:-15% -25%;background:radial-gradient(ellipse at 50% 15%,oklch(0.30 0.02 260 / 0.5),transparent 55%),radial-gradient(ellipse at 20% 90%,oklch(0.18 0.015 250 / 0.7),transparent 55%);animation:fogDrift1 26s ease-in-out infinite;z-index:0;"></div>
-    <div class="om-moon" style="position:absolute;top:60px;left:50%;transform:translateX(-50%);width:90px;height:90px;border-radius:50%;background:radial-gradient(circle at 35% 35%,oklch(0.90 0.01 75),oklch(0.72 0.02 75) 70%);box-shadow:0 0 60px 16px oklch(0.75 0.03 75 / 0.3);animation:moonGlow 9s ease-in-out infinite;z-index:0;"></div>
-    <div style="position:relative;z-index:1;width:100%;aspect-ratio:3/4;border:1px solid oklch(0.66 0.06 78 / 0.4);box-shadow:inset 0 0 0 1px oklch(0.66 0.06 78 / 0.12);overflow:hidden;margin-bottom:32px;">
-      <img src="assets/tower-dragons.png" alt="Готическая башня и два дракона" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;filter:brightness(0.92) contrast(1.05);"/>
-    </div>
-    <div style="position:relative;z-index:1;text-align:center;">
-      <div style="font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.28em;color:oklch(0.66 0.06 78);text-transform:uppercase;margin-bottom:18px;">13 сентября 2026</div>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:38px;margin:0 0 16px;">{{ greeting }} {{ selectedGuest }}</h1>
-      <p style="font-family:'EB Garamond',serif;font-size:17px;line-height:1.6;color:oklch(0.82 0.012 75);margin:0 0 28px;">Мы будем счастливы разделить этот день с тобой</p>
-      <div style="font-family:'Cinzel',serif;font-size:20px;letter-spacing:0.15em;color:oklch(0.93 0.012 75);">ИРИНА &amp; МАКСИМ</div>
-    </div>
-    <div style="position:relative;z-index:1;margin-top:36px;text-align:center;">
-      <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:13px;color:oklch(0.55 0.015 250);letter-spacing:0.05em;margin-bottom:6px;">Листайте вниз</div>
-      <div style="font-size:16px;color:oklch(0.55 0.015 250);">↓</div>
-    </div>
-  </div>
-
-  <div ref="{{ dateRef }}" style="position:relative;padding:100px 28px 90px;text-align:center;opacity:{{ dateReveal.opacity }};transform:{{ dateReveal.transform }};transition:opacity 1.4s ease,transform 1.4s ease;">
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 32px;"></div>
-    <div style="font-family:'Cormorant Garamond',serif;font-weight:600;font-size:72px;line-height:1;color:oklch(0.93 0.012 75);margin-bottom:6px;">13</div>
-    <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.25em;text-transform:uppercase;color:oklch(0.68 0.06 78);margin-bottom:2px;">Сентября</div>
-    <div style="font-family:'Cinzel',serif;font-size:16px;letter-spacing:0.25em;text-transform:uppercase;color:oklch(0.68 0.06 78);margin-bottom:36px;">2026</div>
-
-    <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;color:oklch(0.90 0.012 75);margin-bottom:4px;">Усадьба Братцево</div>
-    <div style="font-family:'EB Garamond',serif;font-size:16px;color:oklch(0.62 0.02 70);margin-bottom:18px;">Москва</div>
-    <div style="font-family:'EB Garamond',serif;font-size:15px;color:oklch(0.55 0.015 250);margin-bottom:6px;">Светлогорский проезд, 13</div>
-    <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:oklch(0.55 0.015 250);margin-bottom:32px;">Сбор гостей — 11:00</div>
-
-    <a href="https://yandex.ru/maps/?text=Усадьба Братцево, Светлогорский проезд 13, Москва" target="_blank" style="display:inline-block;border:1px solid oklch(0.66 0.06 78 / 0.5);padding:14px 30px;font-family:'Cinzel',serif;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:oklch(0.90 0.012 75);margin-bottom:40px;">Построить маршрут</a>
-
-    <div style="width:100%;aspect-ratio:4/3;background:repeating-linear-gradient(70deg,oklch(0.19 0.012 265) 0px,oklch(0.19 0.012 265) 9px,oklch(0.16 0.011 265) 9px,oklch(0.16 0.011 265) 18px);border:1px solid oklch(0.66 0.06 78 / 0.35);display:flex;align-items:center;justify-content:center;">
-      <div style="font-family:monospace;font-size:11px;letter-spacing:0.05em;color:oklch(0.60 0.02 78 / 0.85);text-align:center;padding:0 24px;text-transform:uppercase;">Иллюстрация · гравированный фрагмент карты усадьбы</div>
-    </div>
-  </div>
-
-  <div ref="{{ dressRef }}" style="position:relative;padding:90px 28px;text-align:center;opacity:{{ dressReveal.opacity }};transform:{{ dressReveal.transform }};transition:opacity 1.4s ease,transform 1.4s ease;">
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 32px;"></div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:34px;margin:0 0 16px;">Дресс-код</h2>
-    <p style="font-family:'EB Garamond',serif;font-size:16px;line-height:1.7;color:oklch(0.80 0.012 75);max-width:300px;margin:0 auto 40px;">Будем благодарны, если в своих образах вы поддержите палитру нашего вечера.</p>
-    <div style="display:flex;justify-content:center;gap:20px;flex-wrap:wrap;">
-      <div style="text-align:center;"><div style="width:56px;height:56px;background:oklch(0.15 0.012 270);border:1px solid oklch(0.66 0.06 78 / 0.4);margin-bottom:10px;"></div><div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;color:oklch(0.55 0.015 250);text-transform:uppercase;">Чёрный</div></div>
-      <div style="text-align:center;"><div style="width:56px;height:56px;background:oklch(0.30 0.012 265);border:1px solid oklch(0.66 0.06 78 / 0.4);margin-bottom:10px;"></div><div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;color:oklch(0.55 0.015 250);text-transform:uppercase;">Графит</div></div>
-      <div style="text-align:center;"><div style="width:56px;height:56px;background:oklch(0.80 0.035 70);border:1px solid oklch(0.66 0.06 78 / 0.4);margin-bottom:10px;"></div><div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;color:oklch(0.55 0.015 250);text-transform:uppercase;">Бежевый</div></div>
-      <div style="text-align:center;"><div style="width:56px;height:56px;background:oklch(0.93 0.012 75);border:1px solid oklch(0.66 0.06 78 / 0.4);margin-bottom:10px;"></div><div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:0.1em;color:oklch(0.55 0.015 250);text-transform:uppercase;">Айвори</div></div>
-    </div>
-  </div>
-
-  <div ref="{{ giftsRef }}" style="position:relative;padding:90px 28px;text-align:center;opacity:{{ giftsReveal.opacity }};transform:{{ giftsReveal.transform }};transition:opacity 1.4s ease,transform 1.4s ease;">
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 32px;"></div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:34px;margin:0 0 16px;">Подарки</h2>
-    <p style="font-family:'EB Garamond',serif;font-size:16px;line-height:1.7;color:oklch(0.80 0.012 75);max-width:300px;margin:0 auto 8px;">Ваше присутствие — главный подарок для нас.</p>
-    <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;line-height:1.7;color:oklch(0.55 0.015 250);max-width:280px;margin:0 auto 4px;">Просим не дарить цветы.</p>
-    <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;line-height:1.7;color:oklch(0.55 0.015 250);max-width:280px;margin:0 auto 36px;">Если вы захотите сделать нам подарок, мы будем рады конверту.</p>
-    <div style="width:100%;aspect-ratio:16/9;background:repeating-linear-gradient(150deg,oklch(0.19 0.012 265) 0px,oklch(0.19 0.012 265) 9px,oklch(0.16 0.011 265) 9px,oklch(0.16 0.011 265) 18px);border:1px solid oklch(0.66 0.06 78 / 0.35);display:flex;align-items:center;justify-content:center;">
-      <div style="font-family:monospace;font-size:11px;letter-spacing:0.05em;color:oklch(0.60 0.02 78 / 0.85);text-align:center;padding:0 24px;text-transform:uppercase;">Иллюстрация · символическая гравюра, конверт среди ветвей</div>
-    </div>
-  </div>
-
-  <div ref="{{ treeRef }}" style="position:relative;padding:100px 20px 120px;text-align:center;opacity:{{ treeReveal.opacity }};transform:{{ treeReveal.transform }};transition:opacity 1.4s ease,transform 1.4s ease;">
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 32px;"></div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:34px;margin:0 0 40px;">Дерево имён</h2>
-
-    <div style="position:relative;width:100%;aspect-ratio:3/4;background:repeating-linear-gradient(95deg,oklch(0.18 0.012 265) 0px,oklch(0.18 0.012 265) 10px,oklch(0.15 0.011 265) 10px,oklch(0.15 0.011 265) 20px);border:1px solid oklch(0.66 0.06 78 / 0.35);margin-bottom:8px;">
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 20px;">
-        <div style="font-family:monospace;font-size:11px;letter-spacing:0.05em;color:oklch(0.60 0.02 78 / 0.85);text-align:center;text-transform:uppercase;">Иллюстрация · дерево с красными яблоками и змеем вокруг ствола</div>
-      </div>
-      <sc-for list="{{ treeGuests }}" as="ap" hint-placeholder-count="7">
-        <div style="{{ ap.wrapStyle }}">
-          <div style="{{ ap.dotStyle }}"></div>
-          <div style="{{ ap.labelStyle }}">{{ ap.name }}</div>
+          <div aria-hidden="true" style="position: relative; z-index: 1; margin-top: auto; padding-top: 36px; text-align: center;">
+            <div style="font-style: italic; font-size: 13px; color: oklch(0.55 0.015 250); letter-spacing: 0.05em; margin-bottom: 6px;">Листайте вниз</div>
+            <div style="font-size: 16px; color: oklch(0.55 0.015 250);">↓</div>
+          </div>
         </div>
-      </sc-for>
-    </div>
 
-    <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:oklch(0.55 0.015 250);margin:24px 0 56px;">Каждое яблоко хранит имя того, кто рядом с нами в этот день</p>
+        <div style="position: relative; width: 100%; aspect-ratio: 793 / 1983; margin-top: -150px; overflow: hidden;">
+          <img src="images/entry-tree.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.95) contrast(1.1); -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 8%); mask-image: linear-gradient(to bottom, transparent 0%, #000 8%);">
+          <div style="position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 8%, oklch(0.08 0.01 270 / 0.3) 88%, oklch(0.15 0.012 270) 100%);"></div>
 
-    <div style="width:7px;height:7px;background:oklch(0.66 0.06 78);transform:rotate(45deg);margin:0 auto 28px;"></div>
-    <div style="font-family:'Cinzel',serif;font-size:22px;letter-spacing:0.2em;color:oklch(0.93 0.012 75);margin-bottom:10px;">И · М</div>
-    <div style="font-family:'EB Garamond',serif;font-size:14px;color:oklch(0.55 0.015 250);letter-spacing:0.05em;">13.09.2026</div>
+          <sc-for list="{{ apples }}" as="apple" hint-placeholder-count="8">
+            <button type="button" onClick="{{ apple.onClick }}" style="{{ apple.style }}">
+              <span aria-hidden="true" style="display: block; width: 30px; height: 30px; margin: 0 auto 4px; filter: drop-shadow(0 2px 8px oklch(0.08 0.01 270 / 0.8));">
+                <img src="images/apple.webp" alt="" width="30" height="30" style="width: 100%; height: 100%; object-fit: contain;">
+              </span>
+              <span style="font-style: italic; font-size: 11px; line-height: 1.2; color: oklch(0.82 0.012 75); text-shadow: 0 1px 4px oklch(0.08 0.01 270 / 0.9); white-space: nowrap;">{{ apple.name }}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <p style="position: relative; z-index: 1; text-align: center; font-style: italic; font-size: 14px; color: oklch(0.55 0.015 250); padding: 0 20px 64px; margin: -24px 0 0;">Прикоснитесь к яблоку, чтобы найти своё имя</p>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+      <div>
+        <div aria-hidden="true" onClick="{{ closeModal }}" style="{{ backdropStyle }}"></div>
+        <div role="dialog" aria-modal="true" style="{{ panelStyle }}">
+          <img src="images/modal-frame.png" alt="" aria-hidden="true" style="width: 100%; height: auto; display: block;">
+
+          <div style="position: absolute; left: 20%; right: 20%; top: 20.5%; text-align: center;">
+            <div style="font-family: 'Cinzel', serif; font-size: 9.5px; letter-spacing: 0.22em; text-indent: 0.22em; color: oklch(0.66 0.06 78); text-transform: uppercase; margin-bottom: 10px;">Личный вопрос</div>
+            <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 28px; line-height: 1.1; color: oklch(0.93 0.012 75);">{{ guestName }}</div>
+          </div>
+
+          <div style="position: absolute; left: 17%; right: 17%; top: 39.5%; bottom: 34.5%; display: flex; flex-direction: column; justify-content: center; gap: 22px; text-align: center;">
+            <div style="font-size: 17px; line-height: 1.5; color: oklch(0.82 0.012 75);">{{ guestQuestion }}</div>
+            <input value="{{ answer }}" onChange="{{ onAnswerChange }}" onKeyDown="{{ onAnswerKeyDown }}" placeholder="Ваш ответ" style="width: 100%; background: transparent; border: none; border-bottom: 1px solid oklch(0.66 0.06 78 / 0.5); color: oklch(0.93 0.012 75); font-family: 'EB Garamond', serif; font-style: italic; font-size: 17px; padding: 6px 4px 10px; outline: none; text-align: center;">
+            <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="font-style: italic; font-size: 13px; color: oklch(0.55 0.11 20); line-height: 1.45;">Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.</div>
+            </sc-if>
+            <button type="button" onClick="{{ submit }}" style="{{ ctaStyle }}">Открыть приглашение</button>
+          </div>
+
+          <div style="position: absolute; left: 18%; right: 18%; top: 65.5%; bottom: 18.5%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+            <button type="button" onClick="{{ closeModal }}" style="cursor: pointer; background: none; border: none; padding: 0; font-family: 'EB Garamond', serif; font-style: italic; font-size: 13.5px; color: oklch(0.68 0.02 75);">Вернуться к именам</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isInvite }}" hint-placeholder-val="{{ false }}">
+      <div style="position: relative;">
+        <button type="button" onClick="{{ goToSelect }}" style="cursor: pointer; position: absolute; top: 22px; left: 24px; z-index: 5; background: none; border: none; font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: oklch(0.55 0.015 250);">← Имена</button>
+
+        <div style="min-height: 100vh; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 80px 28px 48px; overflow: hidden;">
+          <div aria-hidden="true" style="position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 900 / 1599; z-index: 0;">
+            <img src="images/tower-dragons.webp" alt="" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; filter: brightness(0.9) contrast(1.15);">
+            <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, oklch(0.08 0.01 270 / 0.2) 0%, oklch(0.08 0.01 270 / 0.35) 90%, oklch(0.15 0.012 270) 100%);"></div>
+          </div>
+
+          <div class="om-fog" aria-hidden="true" style="position: absolute; inset: -15% -25%; z-index: 0; pointer-events: none; animation: fogDrift1 26s ease-in-out infinite; background: radial-gradient(ellipse at 50% 15%, oklch(0.30 0.02 260 / 0.5), transparent 55%), radial-gradient(ellipse at 20% 90%, oklch(0.18 0.015 250 / 0.7), transparent 55%);"></div>
+          <div class="om-moon" aria-hidden="true" style="position: absolute; top: 70px; right: 40px; width: 70px; height: 70px; border-radius: 50%; z-index: 0; pointer-events: none; background: radial-gradient(circle at 35% 35%, oklch(0.9 0.01 75), oklch(0.72 0.02 75) 70%); box-shadow: 0 0 40px 10px oklch(0.75 0.03 75 / 0.35); animation: moonGlow 9s ease-in-out infinite;"></div>
+
+          <div style="position: relative; z-index: 1; text-align: center;">
+            <div style="font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 0.28em; color: oklch(0.66 0.06 78); text-transform: uppercase; margin-bottom: 18px;">13 сентября 2026</div>
+            <h1 style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 38px; margin: 0 0 16px;">{{ greeting }}</h1>
+            <p style="font-size: 17px; line-height: 1.6; color: oklch(0.82 0.012 75); margin: 0 0 28px;">Мы будем счастливы разделить этот день с тобой</p>
+            <div style="font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 0.15em; color: oklch(0.93 0.012 75);">ИРИНА &amp; МАКСИМ</div>
+          </div>
+
+          <div aria-hidden="true" style="position: relative; z-index: 1; margin-top: 36px; text-align: center;">
+            <div style="font-style: italic; font-size: 13px; color: oklch(0.55 0.015 250); letter-spacing: 0.05em; margin-bottom: 6px;">Листайте вниз</div>
+            <div style="font-size: 16px; color: oklch(0.55 0.015 250);">↓</div>
+          </div>
+
+        </div>
+
+        <div style="position: relative; aspect-ratio: 1024 / 1536; background-image: linear-gradient(oklch(0.11 0.008 270 / 0.55), oklch(0.11 0.008 270 / 0.55)), url(images/castle-wall.png); background-size: 100% 100%; background-repeat: no-repeat; background-position: center top; padding: 44px 28px 60px; text-align: center;">
+          <div style="height: 100%; display: flex; align-items: center; justify-content: center;">
+            <img src="images/place-final.png" alt="Ждём вас в Церковь Покрова Пресвятой Богородицы на венчание в 13:30 (Волоколамское шоссе, 52, корпус 1). А затем на банкет в усадьбе Братцево (Светлогорский проезд, 13)" style="width: 100%; max-height: 100%; object-fit: contain; display: block; box-shadow: 0 18px 50px rgba(0,0,0,0.65);">
+          </div>
+        </div>
+
+        <div style="position: relative; aspect-ratio: 1024 / 1390; background-image: url(images/dresscode-banners.png); background-size: 100% 100%; background-repeat: no-repeat; background-position: center top; padding: 78px 28px 60px; text-align: center;">
+          <div aria-hidden="true" style="position: absolute; left: -4%; width: 108%; top: -1%; aspect-ratio: 1536 / 270; overflow: hidden; z-index: 2; pointer-events: none;">
+            <img src="images/floor.png" alt="" style="width: 100%; height: auto; display: block; margin-top: -22%; filter: brightness(0.45) contrast(1.05);">
+          </div>
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 34px; margin: 0 0 10px;">Дресс-код</h2>
+          <p style="font-size: 16px; font-style: italic; line-height: 1.6; color: oklch(0.52 0.004 270); margin: 0;">Палитра нашего вечера</p>
+        </div>
+
+        <div style="position: relative; aspect-ratio: 943 / 1573; background-image: linear-gradient(oklch(0.11 0.008 270 / 0.55), oklch(0.11 0.008 270 / 0.55)), url(images/library.png); background-size: 100% 100%; background-repeat: no-repeat; background-position: center top; padding: 104px 28px 60px; text-align: center;">
+          <div aria-hidden="true" style="position: absolute; left: -4%; width: 108%; top: -1%; aspect-ratio: 1536 / 270; overflow: hidden; z-index: 2; pointer-events: none;">
+            <img src="images/floor.png" alt="" style="width: 100%; height: auto; display: block; margin-top: -22%; filter: brightness(0.45) contrast(1.05);">
+          </div>
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 600; font-size: 34px; margin: 0 0 16px;">Подарки</h2>
+          <p style="font-size: 16px; line-height: 1.7; color: oklch(0.82 0.012 75); max-width: 300px; margin: 0 auto 8px;">Ваше присутствие — главный подарок для нас.</p>
+          <p style="font-style: italic; font-size: 15px; line-height: 1.7; color: oklch(0.55 0.015 250); max-width: 280px; margin: 0 auto 4px;">Просим не дарить цветы.</p>
+          <p style="font-style: italic; font-size: 15px; line-height: 1.7; color: oklch(0.55 0.015 250); max-width: 280px; margin: 0 auto 36px;">Если вы захотите сделать нам подарок, мы будем рады конверту.</p>
+          <div style="position: relative; width: 100%;">
+            <img src="images/envelope.png" alt="Конверт с сургучной печатью" style="width: 100%; height: auto; display: block; filter: brightness(0.82) contrast(1.02); -webkit-mask-image: radial-gradient(ellipse 78% 74% at 50% 50%, #000 55%, rgba(0,0,0,0.35) 85%, transparent 100%); mask-image: radial-gradient(ellipse 78% 74% at 50% 50%, #000 55%, rgba(0,0,0,0.35) 85%, transparent 100%);">
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
   </div>
-
-</div>
-</sc-if>
-
-</div>
 </div>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script>
+<script type="text/x-dc" data-dc-script data-props="{&quot;screen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;entry&quot;,&quot;invitation&quot;],&quot;default&quot;:&quot;entry&quot;,&quot;tsType&quot;:&quot;'entry' | 'invitation'&quot;},&quot;staggerApples&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;}}">
 const GUESTS = [
-  {name:'Ирина', gender:'f'},
-  {name:'Александр', gender:'m'},
-  {name:'Мария', gender:'f'},
-  {name:'Дмитрий', gender:'m'},
-  {name:'Анна', gender:'f'},
-  {name:'Пётр', gender:'m'},
-  {name:'Ольга', gender:'f'}
+  ["irina","Ирина","f"],["alexander","Александр","m"],["maria","Мария","f"],["dmitry","Дмитрий","m"],
+  ["anna","Анна","f"],["petr","Пётр","m"],["olga","Ольга","f"],["ekaterina","Екатерина","f"],
+  ["sergey","Сергей","m"],["natalya","Наталья","f"],["andrey","Андрей","m"],["elena","Елена","f"],
+  ["mikhail","Михаил","m"],["tatyana","Татьяна","f"],["alexey","Алексей","m"],["svetlana","Светлана","f"],
+  ["ivan","Иван","m"],["yulia","Юлия","f"],["nikolay","Николай","m"],["viktoria","Виктория","f"],
+  ["vladimir","Владимир","m"],["darya","Дарья","f"],["artem","Артём","m"],["ksenia","Ксения","f"],
+  ["roman","Роман","m"],["polina","Полина","f"],["egor","Егор","m"],["anastasia","Анастасия","f"],
+  ["pavel","Павел","m"],["vera","Вера","f"],["viktor","Виктор","m"],["marina","Марина","f"],
+  ["kirill","Кирилл","m"],["alina","Алина","f"],["denis","Денис","m"],["sofia","Софья","f"],
+  ["igor","Игорь","m"],["evgenia","Евгения","f"],["stanislav","Станислав","m"]
+].map(([id, displayName, gender]) => ({ id, displayName, gender, question: "Где мы впервые встретились?" }));
+
+const APPLE_POSITIONS = [
+  [40,5],[60,5],[25,12],[50,12],[75,12],[15,19],[38,19],[62,19],[85,19],[10,26],[37,26],[63,26],[90,26],
+  [9,33],[28,33],[48,33],[68,33],[89,33],[8,40],[27,40],[47,40],[67,40],[90,40],[11,47],[30,47],[50,47],
+  [70,47],[88,47],[15,54],[38,54],[61,54],[84,54],[18,61],[39,61],[60,61],[81,61],[25,68],[49,68],[73,68]
 ];
 
-const APPLE_POS = [
-  {left:20, top:16}, {left:64, top:10}, {left:40, top:26},
-  {left:76, top:36}, {left:14, top:44}, {left:56, top:50}, {left:33, top:60}
-];
-
-const CORRECT_ANSWER = 'москва';
+const ACCEPTED = ["москва", "moscow"];
 
 class Component extends DCLogic {
-  constructor(props) {
-    super(props);
-    this.state = {
-      screen: 'select',
-      overlayOpacity: 0,
-      searchQuery: '',
-      selectedGuest: null,
-      selectedGender: 'f',
-      verifyValue: '',
-      verifyError: false,
-      revealed: {},
-      treeVisible: false,
-      modalOpen: false,
-      modalVisible: false
-    };
-    this.sectionEls = {};
-    this.observer = null;
-    this.reducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
-
-  setRef(key) {
-    if (!this._refCbs) this._refCbs = {};
-    if (!this._refCbs[key]) {
-      this._refCbs[key] = (el) => { this.sectionEls[key] = el; };
-    }
-    return this._refCbs[key];
-  }
+  state = {
+    screen: "select",
+    treeRevealed: false,
+    overlayVisible: false,
+    guest: null,
+    modalOpen: false,
+    modalVisible: false,
+    answer: "",
+    error: false,
+    wallTileCount: 4,
+  };
 
   componentDidMount() {
-    if (this.state.screen === 'invite') this.setupObserver();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.screen !== 'invite' && this.state.screen === 'invite') {
-      setTimeout(() => this.setupObserver(), 50);
+    if (this.props.screen === "invitation") {
+      this.setState({ screen: "invite", guest: GUESTS[0] });
     }
+    this._t = setTimeout(() => this.setState({ treeRevealed: true }), 400);
+    this._measure = () => {
+      const el = this._wall;
+      if (!el) return;
+      const w = el.clientWidth || 430;
+      const tileH = w * (1673 / 941);
+      const count = Math.max(1, Math.ceil(el.clientHeight / tileH) + 1);
+      if (count !== this.state.wallTileCount) this.setState({ wallTileCount: count });
+    };
+    this._ri = setInterval(this._measure, 700);
+    window.addEventListener("resize", this._measure);
   }
 
-  forceObserverCheck() {
-    Object.keys(this.sectionEls).forEach(k => {
-      const el = this.sectionEls[k];
-      if (el && !this.state.revealed[k]) {
-        const r = el.getBoundingClientRect();
-        if (r.top < window.innerHeight * 0.85 && r.bottom > 0) {
-          this.setState(s => ({ revealed: { ...s.revealed, [k]: true } }));
-          if (k === 'tree') this.setState({ treeVisible: true });
-        }
-      }
-    });
+  componentWillUnmount() {
+    clearTimeout(this._t);
+    clearInterval(this._ri);
+    window.removeEventListener("resize", this._measure);
   }
 
-  setupObserver() {
-    if (this.reducedMotion) {
-      const all = {};
-      ['hero','date','dress','gifts','tree'].forEach(k => all[k] = true);
-      this.setState({ revealed: all, treeVisible: true });
-      return;
-    }
-    this.forceObserverCheck();
-    if (!this._scrollBound) {
-      this._scrollBound = true;
-      this._onScroll = () => this.forceObserverCheck();
-      window.addEventListener('scroll', this._onScroll, { passive: true });
-    }
-  }
-
-  goTo(screen, extra) {
-    this.setState({ overlayOpacity: 1 });
-    setTimeout(() => {
-      this.setState(Object.assign({ screen, overlayOpacity: 1 }, extra || {}));
-      setTimeout(() => this.setState({ overlayOpacity: 0 }), 30);
-      if (screen === 'invite') setTimeout(() => this.setupObserver(), 100);
-    }, 550);
-  }
-
-  selectGuest(g) {
-    this.setState({ selectedGuest: g.name, selectedGender: g.gender, verifyValue: '', verifyError: false, modalOpen: true });
+  selectGuest = (guest) => {
+    this.setState({ guest, answer: "", error: false, modalOpen: true });
     setTimeout(() => this.setState({ modalVisible: true }), 20);
-  }
+  };
 
-  closeModal() {
+  closeModal = () => {
     this.setState({ modalVisible: false });
     setTimeout(() => this.setState({ modalOpen: false }), 400);
-  }
+  };
 
-  submitVerify() {
-    const val = (this.state.verifyValue || '').trim().toLowerCase();
-    if (val === CORRECT_ANSWER || val === 'moscow') {
+  goToInvite = () => {
+    this.setState({ overlayVisible: true });
+    setTimeout(() => {
+      this.setState({ screen: "invite" });
+      window.scrollTo(0, 0);
+      setTimeout(() => this.setState({ overlayVisible: false }), 30);
+    }, 550);
+  };
+
+  goToSelect = () => {
+    this.setState({ overlayVisible: true });
+    setTimeout(() => {
+      this.setState({ screen: "select" });
+      window.scrollTo(0, 0);
+      setTimeout(() => this.setState({ overlayVisible: false }), 30);
+    }, 550);
+  };
+
+  submit = () => {
+    const normalized = this.state.answer.trim().toLowerCase().replace(/\s+/g, " ");
+    if (!normalized) return;
+    if (ACCEPTED.includes(normalized)) {
       this.setState({ modalVisible: false });
       setTimeout(() => {
         this.setState({ modalOpen: false });
-        this.goTo('invite');
+        this.goToInvite();
       }, 400);
     } else {
-      this.setState({ verifyError: true });
+      this.setState({ error: true });
     }
-  }
-
-  revealStyle(key) {
-    const on = !!this.state.revealed[key];
-    return {
-      opacity: on ? 1 : 0,
-      transform: on ? 'translateY(0)' : 'translateY(28px)'
-    };
-  }
+  };
 
   renderVals() {
-    const q = (this.state.searchQuery || '').trim().toLowerCase();
-    const filtered = GUESTS.filter(g => g.name.toLowerCase().includes(q));
-    const guests = filtered.map(g => ({
-      name: g.name,
-      onSelect: () => this.selectGuest(g),
-      buttonStyle: {
-        cursor: 'pointer',
-        textAlign: 'center',
-        padding: '18px 8px',
-        color: 'oklch(0.90 0.012 75)',
-        transition: 'color 0.3s ease'
-      }
-    }));
+    const { screen, treeRevealed, overlayVisible, guest, modalOpen, modalVisible, answer, error } = this.state;
+    const revealed = treeRevealed || this.props.staggerApples === false;
 
-    const treeGuests = GUESTS.map((g, i) => {
-      const pos = APPLE_POS[i % APPLE_POS.length];
-      const visible = this.state.treeVisible;
+    const apples = GUESTS.map((g, i) => {
+      const [left, top] = APPLE_POSITIONS[i % APPLE_POSITIONS.length];
       return {
-        name: g.name,
-        wrapStyle: {
-          position: 'absolute',
-          left: pos.left + '%',
-          top: pos.top + '%',
-          textAlign: 'center',
-          opacity: visible ? 1 : 0,
-          transform: visible ? 'scale(1)' : 'scale(0.4)',
-          transition: 'opacity 0.8s ease, transform 0.8s ease',
-          transitionDelay: (i * 0.22) + 's'
+        name: g.displayName,
+        onClick: () => this.selectGuest(g),
+        style: {
+          position: "absolute",
+          zIndex: 1,
+          left: left + "%",
+          top: top + "%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          background: "none",
+          border: "none",
+          padding: "4px",
+          margin: 0,
+          minWidth: "44px",
+          minHeight: "44px",
+          cursor: "pointer",
+          textAlign: "center",
+          opacity: revealed ? 1 : 0,
+          transform: revealed ? "translateX(-50%) scale(1)" : "translateX(-50%) scale(0.4)",
+          transition: "opacity 0.8s ease, transform 0.8s ease",
+          transitionDelay: (i * 0.06) + "s",
         },
-        dotStyle: {
-          width: '14px',
-          height: '14px',
-          borderRadius: '50%',
-          background: 'oklch(0.33 0.09 18)',
-          boxShadow: '0 0 10px 2px oklch(0.33 0.09 18 / 0.6)',
-          margin: '0 auto 6px'
-        },
-        labelStyle: {
-          fontFamily: "'EB Garamond',serif",
-          fontStyle: 'italic',
-          fontSize: '12px',
-          color: 'oklch(0.85 0.012 75)',
-          whiteSpace: 'nowrap'
-        }
       };
     });
 
     return {
-      isSelect: this.state.screen === 'select',
-      isVerify: this.state.screen === 'verify',
-      isInvite: this.state.screen === 'invite',
-      overlayOpacity: this.state.overlayOpacity,
-      searchQuery: this.state.searchQuery,
-      onSearchChange: (e) => this.setState({ searchQuery: e.target.value }),
-      guests,
-      noResults: filtered.length === 0,
-      selectedGuest: this.state.selectedGuest,
-      greeting: this.state.selectedGender === 'm' ? 'Дорогой' : 'Дорогая',
-      verifyValue: this.state.verifyValue,
-      onVerifyChange: (e) => this.setState({ verifyValue: e.target.value, verifyError: false }),
-      onVerifyKeyDown: (e) => { if (e.key === 'Enter') this.submitVerify(); },
-      verifyError: this.state.verifyError,
-      onSubmitVerify: () => this.submitVerify(),
-      onBackToSelect: () => this.goTo('select', { verifyValue: '', verifyError: false }),
-      modalOpen: this.state.modalOpen,
-      onCloseModal: () => this.closeModal(),
-      modalBackdropStyle: {
-        position: 'fixed', inset: 0, maxWidth: '430px', margin: '0 auto',
-        background: 'oklch(0.08 0.01 270 / 0.75)', backdropFilter: 'blur(2px)',
-        opacity: this.state.modalVisible ? 1 : 0, transition: 'opacity 0.4s ease', zIndex: 60
+      apples,
+      isSelect: screen === "select",
+      isInvite: screen === "invite",
+      modalOpen,
+      guestName: guest ? guest.displayName : "",
+      guestQuestion: guest ? guest.question : "",
+      greeting: guest ? (guest.gender === "m" ? "Дорогой " : "Дорогая ") + guest.displayName : "",
+      answer,
+      hasAnswer: answer.trim().length > 0,
+      ctaStyle: {
+        cursor: "pointer",
+        background: "none",
+        border: "none",
+        padding: 0,
+        fontFamily: "'Cinzel', serif",
+        fontSize: "10.5px",
+        letterSpacing: "0.18em",
+        textIndent: "0.18em",
+        textTransform: "uppercase",
+        color: "oklch(0.93 0.012 75)",
+        opacity: answer.trim().length > 0 ? 1 : 0,
+        pointerEvents: answer.trim().length > 0 ? "auto" : "none",
+        transition: "opacity 0.35s ease",
       },
-      modalPanelStyle: {
-        position: 'fixed', left: '50%', top: '50%', maxWidth: '340px', width: 'calc(100% - 56px)',
-        transform: this.state.modalVisible ? 'translate(-50%,-50%) scale(1)' : 'translate(-50%,-50%) scale(0.94)',
-        opacity: this.state.modalVisible ? 1 : 0,
-        transition: 'opacity 0.4s ease, transform 0.4s ease',
-        background: 'oklch(0.20 0.013 265 / 0.92)', border: '1px solid oklch(0.66 0.06 78 / 0.4)',
-        boxShadow: 'inset 0 0 0 1px oklch(0.66 0.06 78 / 0.15), 0 20px 60px rgba(0,0,0,0.6)',
-        padding: '36px 26px', textAlign: 'center', zIndex: 61
+      error,
+      submit: this.submit,
+      closeModal: this.closeModal,
+      goToSelect: this.goToSelect,
+      onAnswerChange: (e) => this.setState({ answer: e.target.value, error: false }),
+      onAnswerKeyDown: (e) => { if (e.key === "Enter") this.submit(); },
+      overlayStyle: {
+        position: "fixed",
+        inset: 0,
+        maxWidth: "430px",
+        margin: "0 auto",
+        background: "oklch(0.08 0.01 270)",
+        opacity: overlayVisible ? 1 : 0,
+        pointerEvents: "none",
+        transition: "opacity 0.6s ease",
+        zIndex: 50,
       },
-      heroRef: this.setRef('hero'),
-      dateRef: this.setRef('date'),
-      dressRef: this.setRef('dress'),
-      giftsRef: this.setRef('gifts'),
-      treeRef: this.setRef('tree'),
-      heroReveal: this.revealStyle('hero'),
-      dateReveal: this.revealStyle('date'),
-      dressReveal: this.revealStyle('dress'),
-      giftsReveal: this.revealStyle('gifts'),
-      treeReveal: this.revealStyle('tree'),
-      treeGuests
+      backdropStyle: {
+        position: "fixed",
+        inset: 0,
+        maxWidth: "430px",
+        margin: "0 auto",
+        background: "oklch(0.08 0.01 270 / 0.75)",
+        backdropFilter: "blur(2px)",
+        opacity: modalVisible ? 1 : 0,
+        transition: "opacity 0.4s ease",
+        zIndex: 60,
+      },
+      panelStyle: {
+        position: "fixed",
+        left: "50%",
+        top: "50%",
+        maxWidth: "348px",
+        width: "calc(100% - 36px)",
+
+        transform: modalVisible ? "translate(-50%, -50%) scale(1)" : "translate(-50%, -50%) scale(0.94)",
+        opacity: modalVisible ? 1 : 0,
+        transition: "opacity 0.4s ease, transform 0.4s ease",
+        filter: "drop-shadow(0 20px 60px rgba(0,0,0,0.7))",
+        zIndex: 61,
+      },
     };
   }
 }
+
 </script>
 </body>
 </html>

@@ -1,11 +1,28 @@
+/* Секция «Дресс-код»: палитра вечера показана баннерами прямо на иллюстрации,
+   поэтому кадр держим целиком (aspect-ratio совпадает с артом), без затемнения. */
 .section {
   position: relative;
-  padding: 90px 28px;
+  aspect-ratio: 900 / 1222;
+  min-height: max-content;
+  padding: 78px 28px 60px;
   text-align: center;
+  overflow: hidden;
 }
 
-.diamond {
-  margin: 0 auto 32px;
+.background {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.banners {
+  object-fit: cover;
+  object-position: center top;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
 }
 
 .title {
@@ -13,40 +30,14 @@
   font-style: italic;
   font-weight: 600;
   font-size: 34px;
-  margin: 0 0 16px;
+  margin: 0 0 10px;
 }
 
-.intro {
+.subtitle {
   font-family: var(--font-eb-garamond), serif;
+  font-style: italic;
   font-size: 16px;
-  line-height: 1.7;
-  color: var(--color-text-secondary);
-  max-width: 300px;
-  margin: 0 auto 40px;
-}
-
-.swatches {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.swatchItem {
-  text-align: center;
-}
-
-.swatch {
-  width: 56px;
-  height: 56px;
-  border: 1px solid oklch(0.66 0.06 78 / 0.4);
-  margin-bottom: 10px;
-}
-
-.swatchLabel {
-  font-family: var(--font-cinzel), serif;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--color-muted);
-  text-transform: uppercase;
+  line-height: 1.6;
+  color: oklch(0.62 0.004 270);
+  margin: 0;
 }

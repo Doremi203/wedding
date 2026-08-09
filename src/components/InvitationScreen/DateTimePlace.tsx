@@ -1,44 +1,30 @@
-import { Diamond } from "@/components/Atmosphere/Atmosphere";
-import { PlaceholderIllustration } from "@/components/PlaceholderIllustration/PlaceholderIllustration";
-import {
-  EVENT_DATE_DAY,
-  EVENT_DATE_MONTH,
-  EVENT_DATE_YEAR,
-  GATHERING_TIME_TODO,
-  MAP_URL,
-  VENUE_ADDRESS,
-  VENUE_CITY,
-  VENUE_NAME,
-} from "@/data/event";
+import Image from "next/image";
+import { MAP_URL, PLACE_ILLUSTRATION_ALT } from "@/data/event";
 import styles from "./DateTimePlace.module.css";
 
 export function DateTimePlace() {
   return (
-    <div className={styles.section}>
-      <div className={styles.diamond}>
-        <Diamond />
+    <section className={styles.section}>
+      <div className={styles.background} aria-hidden="true">
+        <Image src="/images/castle-wall.webp" alt="" fill sizes="430px" className={styles.wall} />
       </div>
 
-      <div className={styles.day}>{EVENT_DATE_DAY}</div>
-      <div className={styles.monthYear}>{EVENT_DATE_MONTH}</div>
-      <div className={styles.monthYear}>{EVENT_DATE_YEAR}</div>
-
-      <div className={styles.venueName}>{VENUE_NAME}</div>
-      <div className={styles.venueCity}>{VENUE_CITY}</div>
-      <div className={styles.venueAddress}>{VENUE_ADDRESS}</div>
-      <div className={styles.gatheringTime}>{GATHERING_TIME_TODO}</div>
-
-      <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className={styles.mapCta}>
-        Построить маршрут
-      </a>
-
-      <div className={styles.mapPlaceholder}>
-        <PlaceholderIllustration
-          aspectRatio="4 / 3"
-          angle={70}
-          label="Иллюстрация · гравированный фрагмент карты усадьбы"
+      <div className={styles.content}>
+        {/* Дата, время венчания и оба адреса нарисованы внутри иллюстрации —
+            этот текст живёт в alt (PLACE_ILLUSTRATION_ALT). */}
+        <Image
+          src="/images/place-final.webp"
+          alt={PLACE_ILLUSTRATION_ALT}
+          width={900}
+          height={1350}
+          sizes="(max-width: 430px) 100vw, 374px"
+          className={styles.scroll}
         />
+
+        <a href={MAP_URL} target="_blank" rel="noopener noreferrer" className={styles.mapCta}>
+          Построить маршрут
+        </a>
       </div>
-    </div>
+    </section>
   );
 }

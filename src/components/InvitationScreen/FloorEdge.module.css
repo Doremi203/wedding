@@ -1,0 +1,20 @@
+.edge {
+  position: absolute;
+  left: -4%;
+  width: 108%;
+  top: -1%;
+  aspect-ratio: 1536 / 270;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Отрицательный margin-top в % (считается от ширины контейнера) вырезает из кадра
+   именно полосу пола — так задано в дизайне. */
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: -22%;
+  filter: brightness(0.45) contrast(1.05);
+}
