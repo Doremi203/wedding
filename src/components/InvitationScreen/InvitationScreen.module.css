@@ -1,5 +1,17 @@
 .wrapper {
+  /* Средний тон низа tower-dragons.webp и верха guest-tree.webp (сэмплировано из самих
+     ассетов) — фон между иллюстрациями перетекает от одного к другому, а не через
+     нейтральный --color-bg-card, из-за которого края картинок читались как разделитель. */
+  --color-tower-edge: rgb(36, 34, 33);
+  --color-tree-edge: rgb(16, 16, 16);
   position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--color-tower-edge) 0%,
+    var(--color-tower-edge) 20%,
+    var(--color-tree-edge) 80%,
+    var(--color-tree-edge) 100%
+  );
 }
 
 .backLink {

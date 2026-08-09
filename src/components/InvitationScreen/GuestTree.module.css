@@ -26,7 +26,7 @@
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    transparent 30%,
+    transparent 42%,
     oklch(0.08 0.01 270 / 0.08) 55%,
     oklch(0.08 0.01 270 / 0.25) 82%,
     var(--color-bg-card) 100%
