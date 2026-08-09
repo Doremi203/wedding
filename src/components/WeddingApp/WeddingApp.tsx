@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Guest } from "@/types/guest";
+import { CardShell } from "@/components/CardShell/CardShell";
 import { EntryScreen } from "@/components/EntryScreen/EntryScreen";
 import { VerificationModal } from "@/components/VerificationModal/VerificationModal";
 import { InvitationScreen } from "@/components/InvitationScreen/InvitationScreen";
@@ -75,26 +76,28 @@ export function WeddingApp({ guests }: WeddingAppProps) {
   }
 
   return (
-    <div className={styles.pageBg}>
-      <div className={styles.card}>
-        <div className={`${styles.overlay} ${overlayVisible ? styles.visible : ""}`} />
+    <CardShell>
+      <div className={`${styles.overlay} ${overlayVisible ? styles.visible : ""}`} />
 
-        {screen === "select" && <EntryScreen guests={guests} onSelectGuest={handleSelectGuest} />}
+      {screen === "select" && <EntryScreen guests={guests} onSelectGuest={handleSelectGuest} />}
 
-        {modalOpen && selectedGuest && (
-          <VerificationModal
-            key={selectedGuest.id}
-            guest={selectedGuest}
-            visible={modalVisible}
-            onClose={closeModal}
-            onSuccess={handleVerifySuccess}
-          />
-        )}
+      {modalOpen && selectedGuest && (
+        <VerificationModal
+          key={selectedGuest.id}
+          guest={selectedGuest}
+          visible={modalVisible}
+          onClose={closeModal}
+          onSuccess={handleVerifySuccess}
+        />
+      )}
 
-        {screen === "invite" && selectedGuest && (
-          <InvitationScreen guest={selectedGuest} onBack={goToSelect} />
-        )}
-      </div>
-    </div>
+      {screen === "invite" && selectedGuest && (
+        <InvitationScreen
+          guestName={selectedGuest.displayName}
+          guestGender={selectedGuest.gender}
+          onBack={goToSelect}
+        />
+      )}
+    </CardShell>
   );
 }

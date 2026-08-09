@@ -56,4 +56,14 @@ aws s3 sync "$OUT_DIR/" "s3://$BUCKET" \
   --exclude "_next/static/*" \
   --cache-control "public, max-age=0, must-revalidate"
 
+# 3) Static export emits the simplified-mode page as "invitation.html", but the
+#    links handed out to guests are "/invitation?n=Имя". Object Storage serves
+#    keys literally (no extension fallback), so publish the same document under
+#    the extensionless key too. Must run after the --delete sync above, which
+#    would otherwise remove it.
+aws s3 cp "$OUT_DIR/invitation.html" "s3://$BUCKET/invitation" \
+  "${AWS_ARGS[@]}" \
+  --content-type "text/html; charset=utf-8" \
+  --cache-control "public, max-age=0, must-revalidate"
+
 echo "Done. Site: https://$BUCKET/"

@@ -34,7 +34,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
 | `data/guests.source.json` | Реальный plaintext-источник ответов гостей (сейчас — placeholder: 39 имён, вопрос задан только у 3 — `irina`/`alexander`/`maria`, ответы `москва`/`moscow`; у остальных вопроса нет, см. Open Questions) | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
 | `terraform/` | Инфраструктура деплоя в Yandex Cloud: Object Storage bucket со static website hosting (`frontend.tf`), сервисный аккаунт со статическим ключом для S3 API (`storage_sa.tf`), собственная DNS-зона и apex-запись на домен (`dns.tf`), управляемый TLS-сертификат с DNS-валидацией (`certs.tf`), remote state в отдельном S3-совместимом бакете (`state_backend.tf`) | Применено (см. Deployment ниже), не открытый вопрос |
-| `scripts/deploy.sh`, `Makefile` | Скрипт синхронизации `out/` в S3-бакет (раздельный кэш для `_next/static/**` и остального) + цели `make build`/`make deploy`/`make release` | Production tooling, реально используется для деплоя |
+| `scripts/deploy.sh`, `Makefile` | Скрипт синхронизации `out/` в S3-бакет (раздельный кэш для `_next/static/**` и остального; отдельная публикация `invitation.html` под extensionless-ключом `invitation`) + цели `make build`/`make deploy`/`make release` | Production tooling, реально используется для деплоя |
 | `README.md` | Инструкции по установке, dev-серверу, проверкам перед PR, сборке и деплою, обновлению данных гостей | Актуален, дублирует часть Development Commands ниже человекочитаемо |
 | `.thumbnail` | WebP-превью прототипа для инструмента прототипирования | Служебный файл, не продакшен-asset |
 
@@ -60,6 +60,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - «Место»: фон `castle-wall.webp` + пергамент `place-final.webp`, на котором нарисован весь текст (венчание, банкет, оба адреса) — поэтому он продублирован в `alt`. Никакого CTA/ссылок в секции нет, см. Directions / Map.
   - «Дресс-код»: фон `dresscode-banners.webp` — палитра показана самими баннерами, поэтому swatch-плашек больше нет; цвета продублированы `sr-only`-текстом (`DRESS_CODE_COLORS_TEXT`).
   - «Подарки»: фон `library.webp`, текст, конверт `envelope.webp` с радиальной маской по краям.
+
+### Упрощённый режим: `/invitation?n=Имя`
+
+Второй, намеренно более короткий вход для гостей, которым проще открыть готовую персональную ссылку (в первую очередь — старшее поколение): `https://sacred-castle-wedding.ru/invitation?n=Ирина` сразу показывает INVITATION, без ENTRY-дерева и без VERIFICATION.
+
+- Роут — отдельная статическая страница `src/app/invitation/page.tsx` → клиентский `DirectInvitation`. Query-параметры при `output: 'export'` недоступны на этапе пререндера, поэтому читаются из `window.location.search` после монтирования; до этого рендерится пустая карточка, затем контент проявляется (`DirectInvitation.module.css`, отключено при `prefers-reduced-motion`).
+- Разбор параметров — `src/lib/directGuest.ts`: `n` — имя (чистится от всего, кроме букв/дефиса/апострофа, обрезается до 40 символов), `g` — необязательный род (`m`/`f`). Без `g` род берётся у совпавшего гостя из `src/data/guests.ts`, иначе определяется по окончанию имени со списком мужских исключений на -а/-я («Никита», «Саша», «Дима», …). Имя не обязано присутствовать в `guests` — список гостей ещё не финальный.
+- `/invitation` без `n` — `location.replace('/')`, то есть обычный ENTRY.
+- Верификации в этом режиме нет by design: она и в основном флоу не является security-границей (см. Verification & Privacy), а здесь заказчик сознательно меняет её на «знание ссылки».
+- Общая обёртка страницы (`pageBg`/`card`) вынесена в `CardShell`, `InvitationScreen` принимает `guestName`/`guestGender` и необязательный `onBack` (в упрощённом режиме кнопки «← Имена» нет — возвращаться некуда).
+- Деплой: static export кладёт страницу в `out/invitation.html`, а Object Storage отдаёт ключи буквально, без fallback на расширение. Поэтому `scripts/deploy.sh` дополнительно копирует тот же документ под extensionless-ключом `invitation` — **после** `sync --delete`, который иначе его снесёт.
 
 ## Confirmed Content
 
@@ -119,7 +130,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Verification:** **клиентская** (см. подробный trade-off в разделе Verification & Privacy) — сервера для проверки ответа нет и не будет.
 - **Animations:** CSS keyframes/transitions + `IntersectionObserver` для scroll-reveal в первую очередь. GSAP/Framer Motion подключать только если CSS реально не хватает для нужного качества — не устанавливать заранее.
 - **Images:** `next/image` с `images.unoptimized: true` (обязательно для static export — на S3 нет сервера оптимизации изображений). Ассеты предварительно оптимизировать (resize/WebP/AVIF) до попадания в `public/`; `next/image` всё равно даёт lazy-loading, explicit dimensions (без layout shift) и `sizes`, даже без runtime-ресайза.
-- **Deployment:** инфраструктура развёрнута через Terraform (`terraform/`, Yandex Cloud) и **применена** — не гипотетическая. Object Storage bucket на домене `sacred-castle-wedding.ru` со static website hosting (index/error document — `index.html`, т.к. приложение однострочное); собственная DNS-зона с apex ANAME на bucket-эндпоинт (домен делегирован на её NS-записи у регистратора); управляемый TLS-сертификат (Yandex Certificate Manager, DNS_CNAME challenge) подключён напрямую к bucket — **без CDN/CloudFront-аналога**, это осознанное решение, а не временное упрощение. Terraform state — в отдельном S3-совместимом бакете (`state_backend.tf`), без нативного locking (избегать параллельных `apply`). Доступ к bucket — через сервисный аккаунт со статическим ключом (`storage_sa.tf`, S3 API не принимает IAM-токены). Деплой самого контента — `next build` → `scripts/deploy.sh` (или `make deploy`/`make release`): раздельная синхронизация `_next/static/**` (immutable, долгий кэш) и всего остального (`must-revalidate`), с `--delete`. Подробности разовой настройки кредов — в `README.md`.
+- **Deployment:** инфраструктура развёрнута через Terraform (`terraform/`, Yandex Cloud) и **применена** — не гипотетическая. Object Storage bucket на домене `sacred-castle-wedding.ru` со static website hosting (index/error document — `index.html`, т.к. приложение однострочное); собственная DNS-зона с apex ANAME на bucket-эндпоинт (домен делегирован на её NS-записи у регистратора); управляемый TLS-сертификат (Yandex Certificate Manager, DNS_CNAME challenge) подключён напрямую к bucket — **без CDN/CloudFront-аналога**, это осознанное решение, а не временное упрощение. Terraform state — в отдельном S3-совместимом бакете (`state_backend.tf`), без нативного locking (избегать параллельных `apply`). Доступ к bucket — через сервисный аккаунт со статическим ключом (`storage_sa.tf`, S3 API не принимает IAM-токены). Деплой самого контента — `next build` → `scripts/deploy.sh` (или `make deploy`/`make release`): раздельная синхронизация `_next/static/**` (immutable, долгий кэш) и всего остального (`must-revalidate`), с `--delete`, плюс копия `invitation.html` под ключом `invitation` (иначе `/invitation?n=…` не резолвится — Object Storage не подставляет расширение). Подробности разовой настройки кредов — в `README.md`.
 
 ENTRY в прототипе намеренно проще, чем в проде: прод-версия ушла вперёд (скролл-порог `useScrollGate`, плавное раскрытие дерева, `inert` до раскрытия) и остаётся актуальной — при следующей синхронизации с дизайном ENTRY по прототипу не переписывать.
 
@@ -160,7 +171,7 @@ Guest data и event content (дата, площадка, dress code, gifts copy)
 
 ## Verification & Privacy
 
-Это **не** реальная security-граница — персональный вопрос это атмосферный элемент и лёгкая проверка "свой/чужой", а не аутентификация. Это принципиально не меняется решением ниже.
+Это **не** реальная security-граница — персональный вопрос это атмосферный элемент и лёгкая проверка "свой/чужой", а не аутентификация. Это принципиально не меняется решением ниже. Упрощённый режим `/invitation?n=Имя` (см. User Flow) обходит вопрос целиком и это допустимо ровно по той же причине.
 
 ### Trade-off: static export на S3 → верификация на клиенте
 
