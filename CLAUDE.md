@@ -22,14 +22,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `public/images/tower-dragons.webp` | Оптимизированный hero-арт (сконвертирован из `assets/tower-dragons.png` через `sharp`, ~900px, WebP, ~76KB вместо 1.9MB) | Production asset, используется в `EntryScreen.tsx` (фон) и `Hero.tsx` через `next/image` |
 | `public/images/entry-tree.webp` | Единая иллюстрация дерева (исходник 793×1983) для ENTRY — крона одним полотном, 39 %-координат под яблоки заданы вручную в `EntryScreen.tsx` | Production asset, готовый арт (не placeholder) |
 | `public/images/guest-tree.webp`, `public/images/apple.webp` | Иллюстрация дерева для финальной секции INVITATION («Дерево имён», `GuestTree.tsx`) и иконка яблока, используемая на ENTRY-дереве | Production asset, готовый арт (не placeholder) |
-| `assets/tower-dragons.png`, `uploads/ChatGPT Image ....png` | Исходный PNG hero-арта (байт-в-байт идентичны) | Архив/источник, production использует `public/images/tower-dragons.webp` |
+| `assets/tower-dragons.png` | Исходный PNG hero-арта | Архив/источник, production использует `public/images/tower-dragons.webp` |
 | `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
 | `data/guests.source.json` | Реальный plaintext-источник ответов гостей (сейчас — placeholder, все ответы `москва`/`moscow`, см. Open Questions) | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
 | `terraform/` | Инфраструктура деплоя в Yandex Cloud: Object Storage bucket со static website hosting (`frontend.tf`), сервисный аккаунт со статическим ключом для S3 API (`storage_sa.tf`), собственная DNS-зона и apex-запись на домен (`dns.tf`), управляемый TLS-сертификат с DNS-валидацией (`certs.tf`), remote state в отдельном S3-совместимом бакете (`state_backend.tf`) | Применено (см. Deployment ниже), не открытый вопрос |
 | `scripts/deploy.sh`, `Makefile` | Скрипт синхронизации `out/` в S3-бакет (раздельный кэш для `_next/static/**` и остального) + цели `make build`/`make deploy`/`make release` | Production tooling, реально используется для деплоя |
 | `README.md` | Инструкции по установке, dev-серверу, проверкам перед PR, сборке и деплою, обновлению данных гостей | Актуален, дублирует часть Development Commands ниже человекочитаемо |
 | `.thumbnail` | WebP-превью прототипа для инструмента прототипирования | Служебный файл, не продакшен-asset |
-| `github.md` | Заметка синка с `Doremi203/wedding` на момент старта проекта (репозиторий тогда был пуст) | **Устарела фактически**: `Doremi203/wedding` — это и есть origin данного репозитория (`git remote -v`), не внешний источник для синка. Не полагаться на неё, не обновлять — исторический артефакт |
 
 Иллюстрации дерева (ENTRY-дерево с 39 яблоками и финальное «Дерево имён» в INVITATION) — готовый арт, не placeholder. Карта усадьбы (`DateTimePlace.tsx`) и конверт среди ветвей (`Gifts.tsx`) по-прежнему реализованы как текстовые заглушки (`PlaceholderIllustration`) — этот арт ещё не создан, см. Open Questions.
 
@@ -260,7 +259,7 @@ Framework для тестов ещё не выбран (нет package.json). К
 - Нужен ли расширенный блок про маршрут / информация о парковке.
 - Полный текст дресс-кода (сейчас есть только цвета: чёрный/бежевый).
 - Полный guest list, персональные вопросы и accepted answers для каждого гостя.
-- Общий или персональный greeting-текст для каждого гостя.
+- Общий или персональный greeting-текст для каждого гостя (сейчас реализован только общий вариант по полу — см. Data Model).
 - Только русский язык или RU+EN.
 - Происхождение финальных иллюстраций карты усадьбы и конверта (арт заказчика, иллюстратор, доработанный AI-арт) — они всё ещё текстовые заглушки (`PlaceholderIllustration`). Hero (башня+драконы) и обе иллюстрации дерева (ENTRY и финальная секция) уже готовый production-арт, не открытый вопрос.
 - Visual references сверх уже описанной эстетики.
