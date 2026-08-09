@@ -91,6 +91,12 @@
   gap: 3.6cqw;
 }
 
+/* Приветствие без вопроса: всего две строки — разносим их, иначе текст и CTA
+   слипаются в один блок посреди рамки. */
+.body.welcome {
+  gap: 9cqw;
+}
+
 .question {
   font-family: var(--font-eb-garamond), serif;
   font-size: 4.89cqw;
