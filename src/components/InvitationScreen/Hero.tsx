@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { Fog } from "@/components/Atmosphere/Atmosphere";
 import { COUPLE_NAMES, EVENT_DATE_LABEL, greetingForGender } from "@/data/event";
 import type { Gender } from "@/types/guest";
 import styles from "./Hero.module.css";
@@ -21,8 +20,6 @@ export function Hero({ guestName, guestGender }: HeroProps) {
           sizes="430px"
         />
       </div>
-
-      <Fog variant="hero" />
 
       <div className={styles.content}>
         <div className={styles.eyebrow}>{EVENT_DATE_LABEL}</div>
