@@ -12,18 +12,18 @@ interface HeroProps {
 export function Hero({ guestName, guestGender }: HeroProps) {
   return (
     <div className={styles.hero}>
-      <Fog variant="hero" />
-      <Moon variant="hero" />
-
-      <div className={styles.artFrame}>
+      <div className={styles.artBackground} aria-hidden="true">
         <Image
           src="/images/tower-dragons.webp"
-          alt="Готическая башня и два дракона, белый и чёрный, поднимаются по бокам и сходятся наверху"
+          alt=""
           fill
           priority
           sizes="430px"
         />
       </div>
+
+      <Fog variant="hero" />
+      <Moon variant="hero" />
 
       <div className={styles.content}>
         <div className={styles.eyebrow}>{EVENT_DATE_LABEL}</div>

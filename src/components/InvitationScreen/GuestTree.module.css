@@ -1,11 +1,45 @@
 .section {
   position: relative;
-  padding: 100px 20px 120px;
+  padding: 0 0 120px;
   text-align: center;
 }
 
+.artStage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 820 / 1457;
+  overflow: hidden;
+}
+
+.artStage img {
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(0.95) contrast(1.1);
+}
+
+.artStage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(0.08 0.01 270 / 0.05) 0%,
+    oklch(0.08 0.01 270 / 0.25) 82%,
+    var(--color-bg-card) 100%
+  );
+  pointer-events: none;
+}
+
+.stageHeader {
+  position: absolute;
+  z-index: 1;
+  top: 56px;
+  left: 20px;
+  right: 20px;
+}
+
 .diamond {
-  margin: 0 auto 32px;
+  margin: 0 auto 20px;
 }
 
 .title {
@@ -13,27 +47,14 @@
   font-style: italic;
   font-weight: 600;
   font-size: 34px;
-  margin: 0 0 40px;
-}
-
-.treeFrame {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  border: 1px solid oklch(0.66 0.06 78 / 0.4);
-  box-shadow: inset 0 0 0 1px oklch(0.66 0.06 78 / 0.12);
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.treeFrame img {
-  object-fit: cover;
-  object-position: center top;
-  filter: brightness(0.92) contrast(1.05);
+  margin: 0;
+  color: var(--color-ivory);
+  text-shadow: 0 2px 14px oklch(0.08 0.01 270 / 0.9);
 }
 
 .apple {
   position: absolute;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -76,7 +97,8 @@
   font-style: italic;
   font-size: 14px;
   color: var(--color-muted);
-  margin: 24px 0 56px;
+  padding: 32px 20px 0;
+  margin: 0 0 56px;
 }
 
 .footerDiamond {

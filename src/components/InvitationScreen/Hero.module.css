@@ -9,21 +9,31 @@
   overflow: hidden;
 }
 
-.artFrame {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  border: 1px solid oklch(0.66 0.06 78 / 0.4);
-  box-shadow: inset 0 0 0 1px oklch(0.66 0.06 78 / 0.12);
-  overflow: hidden;
-  margin-bottom: 32px;
+.artBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  aspect-ratio: 900 / 1599;
+  z-index: 0;
 }
 
-.artFrame img {
+.artBackground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(0.08 0.01 270 / 0.2) 0%,
+    oklch(0.08 0.01 270 / 0.35) 90%,
+    var(--color-bg-card) 100%
+  );
+}
+
+.artBackground img {
   object-fit: cover;
   object-position: center top;
-  filter: brightness(0.92) contrast(1.05);
+  filter: brightness(0.9) contrast(1.15);
 }
 
 .content {
