@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
-import { Diamond, Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
+import { Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
 import { useScrollGate } from "@/hooks/useScrollGate";
 import styles from "./EntryScreen.module.css";
 
@@ -77,13 +77,7 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
         </div>
 
         <div className={styles.titleBlock}>
-          <div className={styles.diamondTop}>
-            <Diamond />
-          </div>
           <h1 className="sr-only">Добро пожаловать</h1>
-          <div className={styles.diamondBottom}>
-            <Diamond />
-          </div>
         </div>
 
         <div className={styles.scrollHint} aria-hidden="true">

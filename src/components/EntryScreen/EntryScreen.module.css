@@ -61,14 +61,6 @@
   margin-bottom: 8px;
 }
 
-.titleBlock .diamondTop {
-  margin-bottom: 18px;
-}
-
-.titleBlock .diamondBottom {
-  margin-top: 18px;
-}
-
 .scrollHint {
   position: relative;
   z-index: 1;
