@@ -7,6 +7,33 @@
   overflow: hidden;
 }
 
+.artBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  aspect-ratio: 900 / 1599;
+  z-index: 0;
+}
+
+.artBackground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    oklch(0.08 0.01 270 / 0.2) 0%,
+    oklch(0.08 0.01 270 / 0.3) 97%,
+    var(--color-bg-card) 100%
+  );
+}
+
+.artBackground img {
+  object-fit: cover;
+  object-position: center top;
+  filter: brightness(0.9) contrast(1.2);
+}
+
 .header {
   position: relative;
   z-index: 1;
@@ -31,15 +58,6 @@
 
 .titleBlock .diamondBottom {
   margin-top: 18px;
-}
-
-.title {
-  font-family: var(--font-cormorant), serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 40px;
-  margin: 0 0 10px;
-  color: var(--color-ivory);
 }
 
 .subtitle {

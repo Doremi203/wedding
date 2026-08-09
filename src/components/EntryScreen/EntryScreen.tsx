@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import type { Guest } from "@/types/guest";
 import { Diamond, Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
 import styles from "./EntryScreen.module.css";
@@ -21,6 +22,16 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
 
   return (
     <div className={styles.screen}>
+      <div className={styles.artBackground} aria-hidden="true">
+        <Image
+          src="/images/tower-dragons.webp"
+          alt=""
+          fill
+          priority
+          sizes="430px"
+        />
+      </div>
+
       <Fog variant="select" />
       <Moon variant="select" />
 
@@ -32,7 +43,7 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
         <div className={styles.diamondTop}>
           <Diamond />
         </div>
-        <h1 className={styles.title}>Добро пожаловать</h1>
+        <h1 className="sr-only">Добро пожаловать</h1>
         <div className={styles.subtitle}>Найдите своё имя</div>
         <div className={styles.diamondBottom}>
           <Diamond />
