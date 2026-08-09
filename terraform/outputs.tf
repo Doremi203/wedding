@@ -11,7 +11,3 @@ output "bucket_website_endpoint" {
 output "bucket_name" {
   value = yandex_storage_bucket.frontend_s3.bucket
 }
-
-output "cdn_resource_id" {
-  value = yandex_cdn_resource.frontend_cdn.id
-}

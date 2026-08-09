@@ -4,8 +4,8 @@ resource "yandex_dns_zone" "main_domain_public_zone" {
   public = true
 }
 
-# Registrar must delegate the domain to these name servers — see the
-# `dns_zone_name_servers` output after the first apply.
+# Registrar must delegate the domain to this zone's name servers — see
+# the `dns_zone_id` output after the first apply.
 resource "yandex_dns_recordset" "frontend_apex_record" {
   zone_id = yandex_dns_zone.main_domain_public_zone.id
   name    = "${var.domain}."
