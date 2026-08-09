@@ -96,27 +96,45 @@
 .treeStage {
   position: relative;
   width: 100%;
+}
+
+.treeSegment {
+  position: relative;
+  width: 100%;
   aspect-ratio: 820 / 1457;
   overflow: hidden;
 }
 
-.treeStage img {
+.treeSegment img {
   object-fit: cover;
   object-position: center top;
   filter: brightness(0.95) contrast(1.1);
 }
 
-.treeStage::after {
+/* Соседние сегменты — отдельные иллюстрации, а не бесшовный кроп одной картинки.
+   Тёмный fade по верхнему/нижнему краю каждого сегмента маскирует стык под общий туман. */
+.treeSegment::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
     to bottom,
-    oklch(0.08 0.01 270 / 0.05) 0%,
-    oklch(0.08 0.01 270 / 0.25) 88%,
-    var(--color-bg-card) 100%
+    oklch(0.08 0.01 270 / 0.45) 0%,
+    transparent 8%,
+    transparent 92%,
+    oklch(0.08 0.01 270 / 0.45) 100%
   );
   pointer-events: none;
+}
+
+.treeSegmentLast::after {
+  background: linear-gradient(
+    to bottom,
+    oklch(0.08 0.01 270 / 0.45) 0%,
+    transparent 8%,
+    oklch(0.08 0.01 270 / 0.3) 88%,
+    var(--color-bg-card) 100%
+  );
 }
 
 .apple {
