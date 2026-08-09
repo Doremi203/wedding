@@ -30,6 +30,9 @@ next-env.d.ts
 # claude worktrees
 .claude/worktrees
 
+# playwright mcp artifacts (визуальная приёмка: скриншоты, снапшоты, логи консоли)
+.playwright-mcp/
+
 # terraform state/vars — contains secrets (storage_secret_access_key)
 terraform/.terraform/
 terraform/terraform.tfstate
