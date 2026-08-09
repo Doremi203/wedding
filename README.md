@@ -43,15 +43,39 @@ npm run build        # next build — собирает статику в out/
 npm run build
 ```
 
-Результат — статическая директория `out/`. Она целиком заливается в бакет, созданный терраформом (`terraform/`), через S3-совместимый API Object Storage:
+Результат — статическая директория `out/`. Она целиком заливается в бакет, созданный терраформом (`terraform/`), через S3-совместимый API Object Storage.
 
 ```bash
-export AWS_ACCESS_KEY_ID=$(cd terraform && terraform output -raw storage_access_key_id)
-export AWS_SECRET_ACCESS_KEY=$(cd terraform && terraform output -raw storage_secret_access_key)
-aws s3 sync out/ s3://sacred-castle-wedding.ru --delete --endpoint-url https://storage.yandexcloud.net
+make release   # npm run build + деплой
+# или по отдельности:
+make build
+make deploy    # эквивалент ./scripts/deploy.sh — используй, если out/ уже собран
 ```
 
-(или аналогичная команда через `yc storage s3` — тоже совместим с S3 API).
+### Разовая настройка кредов (`wedding-s3` профиль)
+
+`scripts/deploy.sh` не тянет креды из `terraform output` — стейт лежит в S3-бэкенде, и чтобы его прочитать, terraform сам уже должен быть авторизован теми же кредами (циклическая зависимость). Вместо этого креды один раз кладутся в AWS CLI профиль `wedding-s3` (`~/.aws/credentials`), а `deploy.sh` берёт их оттуда автоматически (либо использует уже экспортированные `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`, если они заданы).
+
+Выполнить один раз, у кого есть доступ `yc` (авторизован `yc init`) к каталогу с сервисным аккаунтом `wedding-storage-admin`:
+
+```bash
+KEY_JSON=$(yc iam access-key create \
+  --service-account-name wedding-storage-admin \
+  --description "Local deploy key ($(whoami)@$(hostname -s))" \
+  --format json)
+
+aws configure set aws_access_key_id     "$(echo "$KEY_JSON" | jq -r '.access_key.key_id')" --profile wedding-s3
+aws configure set aws_secret_access_key "$(echo "$KEY_JSON" | jq -r '.secret')"              --profile wedding-s3
+aws configure set region ru-central1 --profile wedding-s3
+
+unset KEY_JSON
+```
+
+Ключ выпускается отдельно от терраформ-стейта (не через `terraform output`) — можно смело выпускать по одному на человека/машину и отзывать через `yc iam access-key delete <id>`, не трогая ресурс `yandex_iam_service_account_static_access_key.storage_admin_key` в terraform.
+
+Креды (`AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY`) не нужно экспортировать вручную — `scripts/deploy.sh` сам подтягивает их через `terraform output -raw` из применённого стейта в `terraform/`. Если стейта нет локально или `terraform` не установлен, скрипт падает с понятной ошибкой; в этом случае креды можно передать через переменные окружения самостоятельно (тогда автоматический lookup пропускается).
+
+`scripts/deploy.sh` заливает `_next/static/**` (хэшированные, immutable-ассеты) с длинным кэшем, а всё остальное (`index.html`, `robots.txt`, картинки из `public/`) — с `must-revalidate`, и синкает с `--delete`, чтобы удалённые файлы пропадали из бакета.
 
 Сервер (`next start`) не используется — прод полностью статичен (`output: 'export'` в `next.config.ts`), никакого server-side рантайма (Route Handlers, Server Actions, middleware) на проде нет.
 
