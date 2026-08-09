@@ -3,7 +3,7 @@
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
 import { Diamond, Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
-import { TreeSegment } from "./TreeSegment";
+import { useScrollReveal } from "@/hooks/useScrollReveal";
 import styles from "./EntryScreen.module.css";
 
 interface EntryScreenProps {
@@ -11,68 +11,53 @@ interface EntryScreenProps {
   onSelectGuest: (guest: Guest) => void;
 }
 
-// Дерево собрано из 6 отдельных иллюстраций-сегментов (top → ... → end), уложенных друг под
-// другом сверху вниз — так и сгенерирован арт. Файлы: /images/entry-tree-<segment>.webp.
-const TREE_SEGMENT_FILES = ["top", "upper_middle", "middle", "lower_middle", "pre_end", "end"] as const;
-
-// 39 слотов под яблоки (layout-деталь): %-координаты внутри своего сегмента — контейнер сегмента
-// точно повторяет пропорции его иллюстрации, без кропа, поэтому координаты соответствуют арту.
-// Порядок слотов совпадает с порядком сегментов сверху вниз, т.е. с порядком гостей на дереве.
-const APPLE_SLOTS: { segment: number; left: number; top: number }[] = [
-  // top
-  { segment: 0, left: 68, top: 10 },
-  { segment: 0, left: 22, top: 15 },
-  { segment: 0, left: 80, top: 26 },
-  { segment: 0, left: 12, top: 33 },
-  { segment: 0, left: 50, top: 40 },
-  { segment: 0, left: 85, top: 50 },
-  { segment: 0, left: 15, top: 55 },
-  // upper_middle
-  { segment: 1, left: 18, top: 10 },
-  { segment: 1, left: 78, top: 14 },
-  { segment: 1, left: 10, top: 32 },
-  { segment: 1, left: 85, top: 38 },
-  { segment: 1, left: 28, top: 55 },
-  { segment: 1, left: 68, top: 62 },
-  // middle
-  { segment: 2, left: 12, top: 8 },
-  { segment: 2, left: 82, top: 10 },
-  { segment: 2, left: 25, top: 24 },
-  { segment: 2, left: 75, top: 28 },
-  { segment: 2, left: 10, top: 42 },
-  { segment: 2, left: 85, top: 48 },
-  { segment: 2, left: 45, top: 58 },
-  // lower_middle
-  { segment: 3, left: 15, top: 9 },
-  { segment: 3, left: 80, top: 14 },
-  { segment: 3, left: 10, top: 30 },
-  { segment: 3, left: 82, top: 36 },
-  { segment: 3, left: 32, top: 52 },
-  { segment: 3, left: 62, top: 65 },
-  // pre_end
-  { segment: 4, left: 10, top: 14 },
-  { segment: 4, left: 85, top: 17 },
-  { segment: 4, left: 20, top: 28 },
-  { segment: 4, left: 78, top: 33 },
-  { segment: 4, left: 12, top: 48 },
-  { segment: 4, left: 83, top: 53 },
-  { segment: 4, left: 45, top: 65 },
-  // end
-  { segment: 5, left: 10, top: 8 },
-  { segment: 5, left: 85, top: 10 },
-  { segment: 5, left: 10, top: 32 },
-  { segment: 5, left: 85, top: 35 },
-  { segment: 5, left: 14, top: 58 },
-  { segment: 5, left: 84, top: 62 },
+// Дерево — единая иллюстрация (/images/entry-tree.webp, исходник 793×1983), крона идёт сверху
+// вниз одним полотном. 39 слотов под яблоки размещены вручную внутри кроны — %-координаты
+// внутри artStage, контейнер точно повторяет пропорции картинки, без кропа.
+const APPLE_POSITIONS: { left: number; top: number }[] = [
+  { left: 40, top: 5 },
+  { left: 60, top: 5 },
+  { left: 25, top: 12 },
+  { left: 50, top: 12 },
+  { left: 75, top: 12 },
+  { left: 15, top: 19 },
+  { left: 38, top: 19 },
+  { left: 62, top: 19 },
+  { left: 85, top: 19 },
+  { left: 10, top: 26 },
+  { left: 37, top: 26 },
+  { left: 63, top: 26 },
+  { left: 90, top: 26 },
+  { left: 9, top: 33 },
+  { left: 28, top: 33 },
+  { left: 48, top: 33 },
+  { left: 68, top: 33 },
+  { left: 89, top: 33 },
+  { left: 8, top: 40 },
+  { left: 27, top: 40 },
+  { left: 47, top: 40 },
+  { left: 67, top: 40 },
+  { left: 90, top: 40 },
+  { left: 11, top: 47 },
+  { left: 30, top: 47 },
+  { left: 50, top: 47 },
+  { left: 70, top: 47 },
+  { left: 88, top: 47 },
+  { left: 15, top: 54 },
+  { left: 38, top: 54 },
+  { left: 61, top: 54 },
+  { left: 84, top: 54 },
+  { left: 18, top: 61 },
+  { left: 39, top: 61 },
+  { left: 60, top: 61 },
+  { left: 81, top: 61 },
+  { left: 25, top: 68 },
+  { left: 49, top: 68 },
+  { left: 73, top: 68 },
 ];
 
 export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
-  const guestsBySegment = TREE_SEGMENT_FILES.map((_, segIdx) =>
-    guests
-      .map((guest, i) => ({ guest, slot: APPLE_SLOTS[i % APPLE_SLOTS.length] ?? { segment: 0, left: 50, top: 50 } }))
-      .filter(({ slot }) => slot.segment === segIdx)
-      .map(({ guest, slot }) => ({ guest, left: slot.left, top: slot.top })),
-  );
+  const [treeRef, treeRevealed] = useScrollReveal<HTMLDivElement>();
 
   return (
     <div className={styles.screen}>
@@ -106,16 +91,32 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
       </div>
 
       <h2 className="sr-only">Список гостей</h2>
-      <div className={styles.treeStage}>
-        {TREE_SEGMENT_FILES.map((segment, segIdx) => (
-          <TreeSegment
-            key={segment}
-            src={`/images/entry-tree-${segment}.webp`}
-            apples={guestsBySegment[segIdx] ?? []}
-            onSelectGuest={onSelectGuest}
-            isLast={segIdx === TREE_SEGMENT_FILES.length - 1}
-          />
-        ))}
+      <div ref={treeRef} className={styles.treeSegment}>
+        <Image src="/images/entry-tree.webp" alt="" fill sizes="430px" />
+
+        {guests.map((guest, i) => {
+          const pos = APPLE_POSITIONS[i % APPLE_POSITIONS.length] ?? { left: 50, top: 50 };
+          return (
+            <button
+              key={guest.id}
+              type="button"
+              className={styles.apple}
+              style={{
+                left: `${pos.left}%`,
+                top: `${pos.top}%`,
+                opacity: treeRevealed ? 1 : 0,
+                transform: treeRevealed ? "translateX(-50%) scale(1)" : "translateX(-50%) scale(0.4)",
+                transitionDelay: `${i * 0.06}s`,
+              }}
+              onClick={() => onSelectGuest(guest)}
+            >
+              <span className={styles.appleImage} aria-hidden="true">
+                <Image src="/images/apple.webp" alt="" width={30} height={30} />
+              </span>
+              <span className={styles.appleLabel}>{guest.displayName}</span>
+            </button>
+          );
+        })}
       </div>
 
       <p className={styles.caption}>Прикоснитесь к яблоку, чтобы найти своё имя</p>
