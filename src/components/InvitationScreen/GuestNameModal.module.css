@@ -1,0 +1,90 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  max-width: var(--card-max-width);
+  margin: 0 auto;
+  background: oklch(0.08 0.01 270 / 0.75);
+  backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 60;
+}
+
+.backdrop.visible {
+  opacity: 1;
+}
+
+.panel {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  max-width: 340px;
+  width: calc(100% - 56px);
+  transform: translate(-50%, -50%) scale(0.94);
+  opacity: 0;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+  background: var(--color-panel-bg);
+  border: 1px solid oklch(0.66 0.06 78 / 0.4);
+  box-shadow:
+    inset 0 0 0 1px oklch(0.66 0.06 78 / 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+  padding: 36px 26px;
+  text-align: center;
+  z-index: 61;
+}
+
+.panel.visible {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+.eyebrow {
+  font-family: var(--font-cinzel), serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.guestName {
+  font-family: var(--font-cormorant), serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 30px;
+  color: var(--color-ivory);
+  margin-bottom: 22px;
+}
+
+.diamond {
+  margin: 0 auto 22px;
+}
+
+.text {
+  font-family: var(--font-eb-garamond), serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0 0 26px;
+}
+
+.close {
+  cursor: pointer;
+  background: none;
+  border: 1px solid oklch(0.66 0.06 78 / 0.5);
+  color: var(--color-ivory);
+  font-family: var(--font-cinzel), serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 15px 0;
+  width: 100%;
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}

@@ -41,6 +41,9 @@ export const GIFTS_TEXT = {
 export const VERIFICATION_ERROR_TEXT =
   "Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.";
 
+export const GUEST_TREE_MODAL_TEXT =
+  "Спасибо, что в этот день вы будете рядом с нами.";
+
 export function greetingForGender(gender: "m" | "f"): string {
   return gender === "m" ? "Дорогой" : "Дорогая";
 }
