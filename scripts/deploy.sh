@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Deploy the static export (out/) to the Yandex Object Storage bucket
-# provisioned in terraform/. Requires: npm run build already run, aws CLI,
-# and storage credentials in the environment (see usage below).
+# provisioned in terraform/. Requires: npm run build already run, aws CLI.
 set -euo pipefail
 
 BUCKET="sacred-castle-wedding.ru"
 ENDPOINT_URL="https://storage.yandexcloud.net"
 OUT_DIR="out"
+PROFILE="${AWS_PROFILE:-wedding-s3}"
 
 cd "$(dirname "$0")/.."
 
@@ -15,30 +15,27 @@ if [ ! -d "$OUT_DIR" ]; then
   exit 1
 fi
 
-# If credentials aren't already in the environment, pull them from the
-# applied Terraform state so a single `make deploy` is enough end-to-end.
-if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
-  if command -v terraform >/dev/null 2>&1 && [ -d terraform ]; then
-    echo "AWS credentials not set, fetching from terraform output..." >&2
-    AWS_ACCESS_KEY_ID="$(cd terraform && terraform output -raw storage_access_key_id 2>/dev/null)" || true
-    AWS_SECRET_ACCESS_KEY="$(cd terraform && terraform output -raw storage_secret_access_key 2>/dev/null)" || true
-    export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY
-  fi
-fi
+# Prefer credentials already exported in the environment. Otherwise fall
+# back to the "wedding-s3" AWS CLI profile (a static key for the
+# wedding-storage-admin service account, set up once — see README.md).
+# Not sourced from `terraform output`: the state backend itself needs S3
+# credentials to read, which would make that a circular bootstrap.
+AWS_ARGS=(--endpoint-url "$ENDPOINT_URL")
+if [ -n "${AWS_ACCESS_KEY_ID:-}" ] && [ -n "${AWS_SECRET_ACCESS_KEY:-}" ]; then
+  : # use env credentials as-is
+elif aws configure get aws_access_key_id --profile "$PROFILE" >/dev/null 2>&1; then
+  AWS_ARGS+=(--profile "$PROFILE")
+else
+  cat >&2 <<EOF
+Error: no AWS credentials available (checked AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY
+env vars and the "$PROFILE" AWS CLI profile).
 
-if [ -z "${AWS_ACCESS_KEY_ID:-}" ] || [ -z "${AWS_SECRET_ACCESS_KEY:-}" ]; then
-  cat >&2 <<'EOF'
-Error: couldn't obtain AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY.
-
-Either export them yourself, or make sure `terraform` is installed and
-`terraform/` has an applied state exposing storage_access_key_id /
-storage_secret_access_key (run `terraform apply` in terraform/ first).
+One-time setup — see README.md "Деплой" for the full command to create a
+static key for wedding-storage-admin and store it in this profile.
 EOF
   exit 1
 fi
 
-# Yandex Object Storage's S3 API doesn't care about region, but aws CLI
-# refuses to run without one configured.
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-ru-central1}"
 
 echo "Deploying $OUT_DIR/ to s3://$BUCKET ..."
@@ -48,13 +45,13 @@ echo "Deploying $OUT_DIR/ to s3://$BUCKET ..."
 #    long time. Not deleted here: old chunks are harmless to leave behind
 #    and removing them could break pages still cached from a previous deploy.
 aws s3 sync "$OUT_DIR/_next/static/" "s3://$BUCKET/_next/static/" \
-  --endpoint-url "$ENDPOINT_URL" \
+  "${AWS_ARGS[@]}" \
   --cache-control "public, max-age=31536000, immutable"
 
 # 2) Everything else (index.html, robots.txt, public/ images) keeps its
 #    filename across deploys, so it must always revalidate.
 aws s3 sync "$OUT_DIR/" "s3://$BUCKET" \
-  --endpoint-url "$ENDPOINT_URL" \
+  "${AWS_ARGS[@]}" \
   --delete \
   --exclude "_next/static/*" \
   --cache-control "public, max-age=0, must-revalidate"
