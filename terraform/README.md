@@ -49,9 +49,26 @@ cp terraform.tfvars.example terraform.tfvars
 # folder_id — взять из `yc config get folder-id`
 ```
 
+## Remote state (S3 backend)
+
+Стейт хранится в приватном бакете Object Storage (`sacred-castle-wedding-terraform-state`, ресурс `yandex_storage_bucket.terraform_state` в `state_backend.tf`), не локально и не в git. У этого backend'а нет native locking (у Yandex Object Storage нет DynamoDB-style lock-таблицы) — не запускать `apply` параллельно из двух мест.
+
+Backend-блок в `main.tf` не хранит креды — они передаются через переменные окружения:
+
+```bash
+export AWS_ACCESS_KEY_ID=$(terraform output -raw storage_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(terraform output -raw storage_secret_access_key)
+```
+
+(тот же статический ключ service account'а `storage_admin`, что используется для бакета фронтенда — см. `storage_sa.tf`).
+
 ## Обычный цикл
 
 ```bash
+export YC_TOKEN=$(yc iam create-token)
+export AWS_ACCESS_KEY_ID=$(terraform output -raw storage_access_key_id)
+export AWS_SECRET_ACCESS_KEY=$(terraform output -raw storage_secret_access_key)
+
 terraform init
 terraform plan -out=tfplan.out
 # показать план человеку, дождаться подтверждения — см. CLAUDE.md → Git Workflow
