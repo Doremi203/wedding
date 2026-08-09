@@ -26,3 +26,6 @@ next-env.d.ts
 
 # guest answers plaintext source — never commit real answers
 /data/guests.source.json
+
+# claude worktrees
+.claude/worktrees
