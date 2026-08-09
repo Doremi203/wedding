@@ -92,7 +92,7 @@ export function WeddingApp({ guests }: WeddingAppProps) {
         )}
 
         {screen === "invite" && selectedGuest && (
-          <InvitationScreen guest={selectedGuest} allGuests={guests} onBack={goToSelect} />
+          <InvitationScreen guest={selectedGuest} onBack={goToSelect} />
         )}
       </div>
     </div>

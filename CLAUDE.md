@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Приватный одностраничный сайт-приглашение на свадьбу Ирины и Максима (13 сентября 2026, Усадьба Братцево, Москва). Аудитория — ограниченный список гостей, ссылка не публикуется в поиске. Сценарий: ENTRY (список гостей) → VERIFICATION (персональный вопрос) → INVITATION (вертикальный scroll-experience с hero/датой/маршрутом/дресс-кодом/подарками/деревом имён). RSVP и сбор данных гостей не нужны.
+Приватный одностраничный сайт-приглашение на свадьбу Ирины и Максима (13 сентября 2026, Усадьба Братцево, Москва). Аудитория — ограниченный список гостей, ссылка не публикуется в поиске. Сценарий: ENTRY (список гостей) → VERIFICATION (персональный вопрос) → INVITATION (вертикальный scroll-experience с hero/датой/маршрутом/дресс-кодом/подарками). RSVP и сбор данных гостей не нужны.
 
 Приоритеты в порядке убывания: художественное качество → атмосфера → мобильные устройства → плавность интерфейса → производительность. Это small-scope имиджевый проект, не SaaS — избегай избыточной инженерии.
 
@@ -21,7 +21,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `src/` | Production-код Next.js-приложения (App Router, компоненты, hooks, data-слой, lib) | Актуальный источник истины по коду |
 | `public/images/tower-dragons.webp` | Оптимизированный hero-арт (сконвертирован из `assets/tower-dragons.png` через `sharp`, ~900px, WebP, ~76KB вместо 1.9MB) | Production asset, используется в `EntryScreen.tsx` (фон) и `Hero.tsx` через `next/image` |
 | `public/images/entry-tree.webp` | Единая иллюстрация дерева (исходник 793×1983) для ENTRY — крона одним полотном, 39 %-координат под яблоки заданы вручную в `EntryScreen.tsx` | Production asset, готовый арт (не placeholder) |
-| `public/images/guest-tree.webp`, `public/images/apple.webp` | Иллюстрация дерева для финальной секции INVITATION («Дерево имён», `GuestTree.tsx`) и иконка яблока, используемая на ENTRY-дереве | Production asset, готовый арт (не placeholder) |
+| `public/images/apple.webp` | Иконка яблока, используемая на ENTRY-дереве | Production asset, готовый арт (не placeholder) |
 | `assets/tower-dragons.png` | Исходный PNG hero-арта | Архив/источник, production использует `public/images/tower-dragons.webp` |
 | `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
 | `data/guests.source.json` | Реальный plaintext-источник ответов гостей (сейчас — placeholder, все ответы `москва`/`moscow`, см. Open Questions) | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
@@ -30,7 +30,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `README.md` | Инструкции по установке, dev-серверу, проверкам перед PR, сборке и деплою, обновлению данных гостей | Актуален, дублирует часть Development Commands ниже человекочитаемо |
 | `.thumbnail` | WebP-превью прототипа для инструмента прототипирования | Служебный файл, не продакшен-asset |
 
-Иллюстрации дерева (ENTRY-дерево с 39 яблоками и финальное «Дерево имён» в INVITATION) — готовый арт, не placeholder. Карта усадьбы (`DateTimePlace.tsx`) и конверт среди ветвей (`Gifts.tsx`) по-прежнему реализованы как текстовые заглушки (`PlaceholderIllustration`) — этот арт ещё не создан, см. Open Questions.
+Иллюстрация ENTRY-дерева с 39 яблоками — готовый арт, не placeholder. Секции «Дерево имён» в INVITATION больше нет (убрана как избыточная, дерево остаётся только на ENTRY); INVITATION завершается подписью `Finale.tsx` (ромб + инициалы пары + дата). Карта усадьбы (`DateTimePlace.tsx`) и конверт среди ветвей (`Gifts.tsx`) по-прежнему реализованы как текстовые заглушки (`PlaceholderIllustration`) — этот арт ещё не создан, см. Open Questions.
 
 ## Product Goals
 
@@ -45,7 +45,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - **ENTRY**: атмосферный фон (`tower-dragons.webp`) + единая иллюстрация дерева (`entry-tree.webp`) с 39 кликабельными яблоками — имя гостя под каждым яблоком, тап открывает VERIFICATION для этого гостя. Не список/grid и не поиск — реализовано как дерево (см. `EntryScreen.tsx`, коммиты #10/#11).
 - **VERIFICATION**: модальное окно поверх ENTRY (не отдельный экран) — вопрос гостя, input, submit, кнопка возврата. Неограниченное число попыток, мягкая ошибка без формулировок "заблокировано".
-- **INVITATION**: единый vertical scroll — Hero → Date/Time/Place (включает CTA «Построить маршрут» и иллюстрацию карты) → Dress code → Gifts → Guest Tree (отдельная финальная иллюстрация дерева `guest-tree.webp`, тоже кликабельные яблоки — модалка с текстом пожелания вместо перехода к verification). Доступ сохраняется минимум в рамках browser session (`sessionStorage`/in-memory).
+- **INVITATION**: единый vertical scroll — Hero → Date/Time/Place (включает CTA «Построить маршрут» и иллюстрацию карты) → Dress code → Gifts → Finale (ромб, инициалы пары, дата). Дерева имён в INVITATION нет — дерево используется только на ENTRY. Доступ сохраняется минимум в рамках browser session (`sessionStorage`/in-memory).
 
 ## Confirmed Content
 
@@ -61,7 +61,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - Главный образ: готическая башня по центру, два дракона (белый и чёрный) поднимаются по бокам и сходятся наверху — уже есть как `assets/tower-dragons.png`.
 - Атмосферный фон: готический лес, замок, многослойный туман, приглушённый холодный свет.
-- Финальный блок: дерево, красные яблоки, змей вокруг ствола (райский сад). На яблоках/рядом — только имена (без фамилий и "+1").
+- Дерево (ENTRY): красные яблоки, змей вокруг ствола (райский сад). На яблоках/рядом — только имена (без фамилий и "+1").
 - Цвета: глубокий чёрный, графит, тёплый бежевый, айвори; акценты — винно-красный, туманно-серый, приглушённое золото. Белый/чёрный драконы — смысловой контраст.
 - Избегать: дешёвые градиенты, generic SaaS-вид, неон, horror-эстетику, визуальный шум.
 
@@ -109,7 +109,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - State machine `select → verify(modal) → invite`, fade/overlay-переход между состояниями (~550ms setState-последовательность с overlay opacity 0→1→0).
 - Scroll-reveal: секции появляются (`opacity 0→1`, `translateY(28px→0)`) при пересечении viewport; при `prefers-reduced-motion` — сразу все видимы, без слушателя скролла.
-- Дерево имён: яблоки появляются с последовательной задержкой (`transitionDelay = index * 0.22s`), небольшой scale-in.
+- Дерево (ENTRY): яблоки появляются с последовательной задержкой (`transitionDelay = index * 0.22s`), небольшой scale-in.
 - Туман/луна: медленный `translate`-дрейф на `radial-gradient`, `moonGlow` пульсация — оба отключаются через `@media (prefers-reduced-motion: reduce)`.
 - Приветствие зависит от пола гостя (`Дорогой`/`Дорогая`) — модель гостя должна нести это поле (или прямой текст приветствия).
 
@@ -181,7 +181,7 @@ Guest data и event content (дата, площадка, dress code, gifts copy)
 ## Performance
 
 - `assets/tower-dragons.png` (1.9MB PNG) нужно оптимизировать/конвертировать (WebP/AVIF, responsive sizes) перед продакшен-использованием — не грузить как есть.
-- Lazy-load below-the-fold иллюстрации (маршрут, подарки, дерево); hero не lazy-load.
+- Lazy-load below-the-fold иллюстрации (маршрут, подарки); hero не lazy-load.
 - Минимизировать JS, не тянуть тяжёлые анимационные библиотеки без необходимости.
 - Избегать layout shift (заданные aspect-ratio для арт-блоков — паттерн уже есть в прототипе через `aspect-ratio` на placeholder-блоках).
 - Учитывать медленный мобильный интернет — первый экран не должен требовать десятков мегабайт.
@@ -261,7 +261,7 @@ Framework для тестов ещё не выбран (нет package.json). К
 - Полный guest list, персональные вопросы и accepted answers для каждого гостя.
 - Общий или персональный greeting-текст для каждого гостя (сейчас реализован только общий вариант по полу — см. Data Model).
 - Только русский язык или RU+EN.
-- Происхождение финальных иллюстраций карты усадьбы и конверта (арт заказчика, иллюстратор, доработанный AI-арт) — они всё ещё текстовые заглушки (`PlaceholderIllustration`). Hero (башня+драконы) и обе иллюстрации дерева (ENTRY и финальная секция) уже готовый production-арт, не открытый вопрос.
+- Происхождение финальных иллюстраций карты усадьбы и конверта (арт заказчика, иллюстратор, доработанный AI-арт) — они всё ещё текстовые заглушки (`PlaceholderIllustration`). Hero (башня+драконы) и иллюстрация ENTRY-дерева — уже готовый production-арт, не открытый вопрос.
 - Visual references сверх уже описанной эстетики.
 - Допустимо ли показывать список всех имён до verification (текущий прототип — да, ENTRY показывает весь список сразу).
 - Сохранять ли unlock между визитами (сейчас — только в рамках session, per ТЗ).
