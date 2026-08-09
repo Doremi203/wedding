@@ -23,7 +23,7 @@
   background: linear-gradient(
     to bottom,
     oklch(0.08 0.01 270 / 0.2) 0%,
-    oklch(0.08 0.01 270 / 0.45) 55%,
+    oklch(0.08 0.01 270 / 0.3) 97%,
     var(--color-bg-card) 100%
   );
 }
