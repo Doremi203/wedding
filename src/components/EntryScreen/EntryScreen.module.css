@@ -31,7 +31,7 @@
 .artBackground img {
   object-fit: cover;
   object-position: center top;
-  filter: brightness(0.55) contrast(1.05);
+  filter: brightness(0.65) contrast(1.05);
 }
 
 .header {
