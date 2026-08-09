@@ -60,15 +60,6 @@
   margin-top: 18px;
 }
 
-.title {
-  font-family: var(--font-cormorant), serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 40px;
-  margin: 0 0 10px;
-  color: var(--color-ivory);
-}
-
 .subtitle {
   font-family: var(--font-eb-garamond), serif;
   font-size: 16px;

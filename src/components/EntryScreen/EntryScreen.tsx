@@ -43,7 +43,7 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
         <div className={styles.diamondTop}>
           <Diamond />
         </div>
-        <h1 className={styles.title}>Добро пожаловать</h1>
+        <h1 className="sr-only">Добро пожаловать</h1>
         <div className={styles.subtitle}>Найдите своё имя</div>
         <div className={styles.diamondBottom}>
           <Diamond />
