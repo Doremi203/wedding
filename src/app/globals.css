@@ -1,0 +1,111 @@
+:root {
+  /* Design tokens — извлечены из прототипа (Wedding Invitation.dc.html), baseline не финал.
+     См. CLAUDE.md → "Design tokens, извлечённые из прототипа". */
+  --color-bg-page: oklch(0.13 0.01 270);
+  --color-bg-card: oklch(0.15 0.012 270);
+  --color-overlay: oklch(0.08 0.01 270);
+
+  --color-ivory: oklch(0.93 0.012 75);
+  --color-ivory-soft: oklch(0.90 0.012 75);
+  --color-text-secondary: oklch(0.82 0.012 75);
+  --color-text-tertiary: oklch(0.62 0.02 70);
+
+  --color-muted: oklch(0.55 0.015 250);
+  --color-muted-warm: oklch(0.6 0.02 78);
+
+  --color-gold: oklch(0.66 0.06 78);
+  --color-gold-bright: oklch(0.68 0.06 78);
+
+  --color-wine: oklch(0.33 0.09 18);
+  --color-wine-text: oklch(0.55 0.11 20);
+
+  --color-graphite: oklch(0.3 0.012 265);
+  --color-input-bg: oklch(0.2 0.013 265 / 0.6);
+  --color-panel-bg: oklch(0.2 0.013 265 / 0.92);
+
+  --card-max-width: 430px;
+
+  --ease-reveal: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: var(--color-bg-page);
+  color: var(--color-ivory);
+  font-family: var(--font-eb-garamond), serif;
+}
+
+a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-gold);
+}
+
+input::placeholder {
+  color: var(--color-muted);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@keyframes fogDrift1 {
+  0% {
+    transform: translate(-3%, 0);
+  }
+  50% {
+    transform: translate(3%, -2%);
+  }
+  100% {
+    transform: translate(-3%, 0);
+  }
+}
+
+@keyframes fogDrift2 {
+  0% {
+    transform: translate(3%, 0);
+  }
+  50% {
+    transform: translate(-3%, 2%);
+  }
+  100% {
+    transform: translate(3%, 0);
+  }
+}
+
+@keyframes moonGlow {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .om-fog,
+  .om-moon {
+    animation: none !important;
+  }
+}
