@@ -14,6 +14,15 @@ const MODAL_TRANSITION_MS = 400;
 
 type Screen = "select" | "invite";
 
+/**
+ * Экраны сменяются внутри одной страницы, поэтому позиция скролла окна переживает
+ * переход: гость долистал ENTRY до дерева — и попадал бы в середину INVITATION.
+ * Сброс делается под уже непрозрачным overlay, без анимации — скачок не виден.
+ */
+function scrollToTop() {
+  window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+}
+
 interface WeddingAppProps {
   guests: Guest[];
 }
@@ -43,6 +52,7 @@ export function WeddingApp({ guests }: WeddingAppProps) {
     setOverlayVisible(true);
     setTimeout(() => {
       setScreen("invite");
+      scrollToTop();
       setTimeout(() => setOverlayVisible(false), 30);
     }, TRANSITION_MS);
     sessionStorage.setItem(SESSION_STORAGE_KEY, guest.id);
@@ -52,6 +62,7 @@ export function WeddingApp({ guests }: WeddingAppProps) {
     setOverlayVisible(true);
     setTimeout(() => {
       setScreen("select");
+      scrollToTop();
       setTimeout(() => setOverlayVisible(false), 30);
     }, TRANSITION_MS);
   }
