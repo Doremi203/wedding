@@ -63,13 +63,15 @@
 
 /* Подсказка прижата к нижней кромке экрана, а не к низу padding-box: нижний padding hero
    включает зону наложения с деревом (--entry-fade), из-за которой подпись в потоке висела
-   почти на 200px выше края viewport. */
+   почти на 200px выше края viewport.
+   z-index выше .treeVeil: занавес дерева заходит на --entry-fade под низ hero и иначе
+   приглушал бы подпись своей заливкой. */
 .scrollHint {
   position: absolute;
   left: 28px;
   right: 28px;
-  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  z-index: 1;
+  bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
   text-align: center;
 }
 
