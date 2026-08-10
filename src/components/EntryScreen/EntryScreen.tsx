@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
-import { Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
+import { Diamond, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
 import { useScrollGate } from "@/hooks/useScrollGate";
 import styles from "./EntryScreen.module.css";
 
@@ -85,12 +85,17 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
         <Fog variant="select" />
         <Moon variant="select" />
 
-        <div className={styles.header}>
-          <Eyebrow>Приглашение на свадьбу</Eyebrow>
-        </div>
-
+        {/* Титул — не мелкий eyebrow под шапкой, а центральный блок кадра: две строки
+            в обрамлении линий и ромбов, ровно по центру между драконами. */}
         <div className={styles.titleBlock}>
-          <h1 className="sr-only">Добро пожаловать</h1>
+          <div className={styles.rule} aria-hidden="true" />
+          <Diamond />
+          <h1 className={styles.title}>
+            <span className={styles.titleLine}>Приглашение</span>
+            <span className={styles.titleLine}>на свадьбу</span>
+          </h1>
+          <Diamond />
+          <div className={styles.rule} aria-hidden="true" />
         </div>
 
         <div className={styles.scrollHint} data-hidden={scrolled ? "" : undefined} aria-hidden="true">
