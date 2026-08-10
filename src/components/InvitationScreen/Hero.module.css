@@ -25,15 +25,15 @@
   inset: 0;
   background: linear-gradient(
     to bottom,
-    oklch(0.08 0.01 270 / 0.1) 0%,
-    oklch(0.08 0.01 270 / 0.25) 100%
+    oklch(0.08 0.01 270 / 0) 0%,
+    oklch(0.08 0.01 270 / 0.15) 100%
   );
 }
 
 .artBackground img {
   object-fit: cover;
   object-position: center top;
-  filter: brightness(0.9) contrast(1.15);
+  filter: brightness(1) contrast(1.15);
 }
 
 .content {

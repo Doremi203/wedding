@@ -18,7 +18,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: oklch(0.11 0.008 270 / 0.55);
+  background: oklch(0.11 0.008 270 / 0.45);
 }
 
 .library {
@@ -67,7 +67,7 @@
   width: 100%;
   height: auto;
   display: block;
-  filter: brightness(0.82) contrast(1.02);
+  filter: brightness(0.92) contrast(1.02);
   -webkit-mask-image: radial-gradient(
     ellipse 78% 74% at 50% 50%,
     #000 55%,
