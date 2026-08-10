@@ -33,8 +33,8 @@ export const GIFTS_TEXT = {
 };
 
 // Текст модалки для гостей без персонального вопроса (не входят в whitelist в data/guests.source.json).
-export const WELCOME_MODAL_EYEBROW = "Добро пожаловать";
-export const WELCOME_MODAL_TEXT = "Вы приглашены в замок";
+export const WELCOME_MODAL_EYEBROW = "Приглашение";
+export const WELCOME_MODAL_TEXT = "Добро пожаловать в наш замок любви";
 
 export const VERIFICATION_ERROR_TEXT =
   "Кажется, воспоминание немного затуманилось. Попробуйте ещё раз.";
