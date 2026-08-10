@@ -2,7 +2,7 @@
   position: relative;
   /* Высота зоны, в которой башня и дерево растворяются друг в друга: дерево поднимается
      на эту величину под низ hero, а hero получает такой же доп. padding снизу, чтобы
-     контент («Листайте вниз») остался на прежнем месте относительно композиции. */
+     полоса наложения не съедала кадр башни. */
   --entry-fade: 150px;
   /* Тон, общий для нижнего края башни и верхнего края дерева — в него гаснут обе
      иллюстрации, поэтому между ними не возникает светлой полосы фона страницы. */
@@ -61,12 +61,29 @@
   margin-bottom: 8px;
 }
 
+/* Подсказка прижата к нижней кромке экрана, а не к низу padding-box: нижний padding hero
+   включает зону наложения с деревом (--entry-fade), из-за которой подпись в потоке висела
+   почти на 200px выше края viewport.
+   z-index выше .treeVeil: занавес дерева заходит на --entry-fade под низ hero и иначе
+   приглушал бы подпись своей заливкой. */
 .scrollHint {
-  position: relative;
-  z-index: 1;
-  margin-top: auto;
-  padding-top: 36px;
+  position: absolute;
+  left: 28px;
+  right: 28px;
+  bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+  z-index: 3;
   text-align: center;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+/* С началом скролла подпись уходит вверх и гаснет — своё дело она уже сделала, а на её месте
+   вот-вот проступит крона. */
+.scrollHint[data-hidden] {
+  opacity: 0;
+  transform: translateY(-16px);
+  pointer-events: none;
 }
 
 .scrollHintLabel {
@@ -151,6 +168,15 @@
   .treeVeil,
   .treeSegment img {
     transition: none;
+  }
+
+  /* Подсказка всё равно должна уходить с началом скролла — но без сдвига и плавности. */
+  .scrollHint {
+    transition: none;
+  }
+
+  .scrollHint[data-hidden] {
+    transform: none;
   }
 }
 

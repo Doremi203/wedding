@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import type { Guest } from "@/types/guest";
 import { Eyebrow, Fog, Moon } from "@/components/Atmosphere/Atmosphere";
@@ -61,6 +62,18 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
   // уже пролистан), и снова закрывается сплошной заливкой seam-тона башни при обратном
   // скролле наверх — порог работает в обе стороны.
   const [treeRef, treeRevealed] = useScrollGate<HTMLDivElement>("0px 0px -70% 0px");
+  // Подсказка «Листайте вниз» живёт только в нетронутом первом экране: дерево заходит под низ
+  // hero, и, останься она на месте, крона проявлялась бы прямо за ней. Порог намеренно ранний —
+  // подпись успевает уйти задолго до того, как сработает гейт дерева. Не через useScrollGate:
+  // тот при reduced motion открыт всегда, то есть подсказка исчезла бы, не показавшись.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.2);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div className={styles.screen}>
@@ -80,7 +93,7 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
           <h1 className="sr-only">Добро пожаловать</h1>
         </div>
 
-        <div className={styles.scrollHint} aria-hidden="true">
+        <div className={styles.scrollHint} data-hidden={scrolled ? "" : undefined} aria-hidden="true">
           <div className={styles.scrollHintLabel}>Листайте вниз, чтобы найти своё имя среди ветвей</div>
           <div className={styles.scrollHintArrow}>↓</div>
         </div>
