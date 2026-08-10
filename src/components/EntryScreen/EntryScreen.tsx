@@ -33,7 +33,7 @@ const APPLE_POSITIONS: { left: number; top: number }[] = [
   { left: 36, top: 16 },
   { left: 12, top: 22 }, // бабушка и дедушка по папиной линии
   { left: 33, top: 22 },
-  { left: 10, top: 28 }, // дядя и тётя
+  { left: 12, top: 28 }, // дядя и тётя
   { left: 31, top: 28 },
   { left: 9, top: 34 }, // двоюродный брат с женой
   { left: 30, top: 34 },
@@ -41,10 +41,10 @@ const APPLE_POSITIONS: { left: number; top: number }[] = [
   { left: 30, top: 40 },
   { left: 10, top: 46 }, // друзья
   { left: 31, top: 46 },
-  { left: 11, top: 52 },
-  { left: 34, top: 52 },
+  { left: 13, top: 52 },
+  { left: 36, top: 52 },
   { left: 14, top: 58 },
-  { left: 34, top: 58 },
+  { left: 36, top: 58 },
   { left: 17, top: 64 },
   { left: 36, top: 64 },
   { left: 30, top: 70 },
