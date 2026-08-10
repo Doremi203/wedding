@@ -1,2 +1,39 @@
+# Сайт не индексируется поисковиками — ссылка раздаётся только гостям.
 User-agent: *
 Disallow: /
+
+# Краулеры мессенджеров и соцсетей тоже уважают robots.txt, поэтому при одном
+# общем Disallow превью ссылки (Open Graph) не отрисовывалось бы вовсе.
+# Индексации это не даёт: они только читают <head> ради карточки.
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: TelegramBot
+Allow: /
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: vkShare
+Allow: /
+
+User-agent: SkypeUriPreview
+Allow: /
+
+User-agent: Viber
+Allow: /

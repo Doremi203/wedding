@@ -25,12 +25,34 @@ const ebGaramond = EB_Garamond({
   display: "swap",
 });
 
+const SITE_TITLE = "Ирина и Максим — 13 сентября 2026";
+const SITE_DESCRIPTION = "Приглашение на свадьбу";
+
 export const metadata: Metadata = {
-  title: "Ирина и Максим — 13 сентября 2026",
-  description: "Приглашение на свадьбу",
+  // Абсолютный базовый URL нужен для og:image: при static export сервера нет,
+  // и без metadataBase Next подставил бы localhost.
+  metadataBase: new URL("https://sacred-castle-wedding.ru"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
   robots: {
     index: false,
     follow: false,
+  },
+  openGraph: {
+    type: "website",
+    locale: "ru_RU",
+    // og:url намеренно не задаём: страниц две (/ и /invitation?n=Имя), и
+    // общий canonical увёл бы карточку упрощённой ссылки на ENTRY.
+    siteName: SITE_TITLE,
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    // Картинка подхватывается из src/app/opengraph-image.jpg по конвенции
+    // App Router — сюда её дублировать не нужно.
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
 };
 

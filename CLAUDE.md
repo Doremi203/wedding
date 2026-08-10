@@ -31,6 +31,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `public/images/envelope.webp` | Конверт с сургучной печатью в секции «Подарки» | Production asset, готовый арт |
 | `public/images/floor.webp` | Кромка каменного пола на стыках секций (`FloorEdge.tsx`), декоративный слой | Production asset, готовый арт |
 | `src/app/icon.png`, `src/app/apple-icon.png` | Favicon (256×256) и apple-touch-icon (180×180) — медальон с конвертом, сургучной печатью и пером из дизайн-проекта. Сгенерированы через `sharp` из вертикального исходника 1024×1536 квадратным кропом 900×900 по центру круга медальона (`extract { left: 58, top: 295 }`): шпили сверху/снизу отсечены целиком, внешнее кольцо слегка подрезано по краям — иначе на 16–32px медальон превращался бы в мелкое пятно с полями. Плотнее (780px и уже) кропать нельзя: круглый силуэт теряется и кадр читается как случайный обрезок арта. Подхватываются конвенцией App Router, ручных `<link>` в `layout.tsx` нет. Прежняя заглушка `icon.svg` (ромб на графитовом квадрате) удалена — два `icon.*` в одном сегменте дали бы два `rel="icon"` | Production asset, готовый арт |
+| `src/app/opengraph-image.jpg`, `src/app/opengraph-image.alt.txt` | Превью ссылки для мессенджеров и соцсетей (1200×675, JPEG q86 mozjpeg, ~124KB) — конверт с сургучной печатью на фоне готического замка в лунном свете. Сконвертирован через `sharp` из исходника `open_graph.png` (1672×941) из дизайн-проекта: пропорции почти совпадают (1.777 против 1.778), так что `fit: 'cover'` кадр не режет. Подхватывается конвенцией App Router и действует на обе страницы (`/` и `/invitation`); `.alt.txt` даёт `og:image:alt` | Production asset, готовый арт |
 | `assets/tower-dragons.png` | Исходный PNG hero-арта | Архив/источник, production использует `public/images/tower-dragons.webp` |
 | `data/guests.source.example.json` | Пример формата plaintext-источника для `scripts/hash-answers.mjs` | Коммитится, содержит только пример данных |
 | `data/guests.source.json` | Реальный plaintext-источник ответов гостей: **реальный guest list от заказчика, 38 имён** — 21 со стороны жениха, 17 со стороны невесты. У каждого гостя к имени добавлен инициал фамилии («Наталья И.» / «Наталья Л.») — заказчик проставил их всем ради консистентности, а заодно чтобы тёзки различались на дереве; `id` собран по тому же принципу (`natalya-i`, `natalya-l`), без порядковых суффиксов. **Порядок записей в файле — это раскладка яблок на дереве** (i-й гость садится на i-й слот `APPLE_POSITIONS`), поэтому список отсортирован не по алфавиту, а по сторонам и близости родства. Персональные вопросы/ответы верификации пока не заданы ни для кого (whitelist пуст) — все 38 гостей видят приветственную модалку без input, см. Open Questions | **В `.gitignore`, не коммитится.** Регенерирует `src/data/guests.ts` через `npm run hash-answers` |
@@ -195,7 +196,14 @@ Guest data и event content (дата, площадка, dress code, gifts copy)
 
 ## SEO / Privacy directives
 
-Сайт не должен индексироваться. Добавить `robots: { index: false, follow: false }` в metadata (Next.js `generateMetadata`/root layout) и/или `robots.txt` с `Disallow: /`. Social sharing preview (OG-теги) можно оставить, если будет реализовано отдельно — не обязательное требование.
+Сайт не индексируется: в root layout задан `robots: { index: false, follow: false }`, в `public/robots.txt` — `Disallow: /` для `User-agent: *`.
+
+Social sharing preview реализован: Open Graph + Twitter Card заданы в `metadata` root layout, картинка подхватывается конвенцией App Router из `src/app/opengraph-image.jpg` (+ `opengraph-image.alt.txt` → `og:image:alt`). Из этого следуют два неочевидных момента:
+
+- **`metadataBase` обязателен.** При `output: 'export'` сервера нет, и без него Next подставил бы в `og:image` абсолютный `localhost:3000`. Задан как `https://sacred-castle-wedding.ru`.
+- **В `robots.txt` для краулеров соцсетей и мессенджеров стоят отдельные `Allow: /`-группы** (`facebookexternalhit`, `TelegramBot`, `WhatsApp`, `Twitterbot`, `Slackbot`, `Discordbot`, `vkShare`, `LinkedInBot`, `SkypeUriPreview`, `Viber`). Они уважают `robots.txt`, и при одном общем `Disallow: /` карточка ссылки не отрисовывалась бы вовсе. Индексации это не даёт — они лишь читают `<head>`. `<meta name="robots" content="noindex">` при этом остаётся: Telegram/WhatsApp/Facebook его для превью игнорируют (X/Twitter может не показать карточку — приватность важнее).
+
+`og:url` намеренно **не** задан: страниц две (`/` и `/invitation?n=Имя`), общий canonical увёл бы карточку персональной ссылки на ENTRY. Клиенты в этом случае используют фактический URL. `twitter:image` Next генерирует сам из того же файла — отдельный `twitter-image.jpg` не нужен.
 
 ## Directions / Map
 
@@ -304,7 +312,7 @@ Framework для тестов ещё не выбран (нет package.json). К
 - Допустимо ли показывать список всех имён до verification (текущий прототип — да, ENTRY показывает весь список сразу).
 - Сохранять ли unlock между визитами (сейчас — только в рамках session, per ТЗ).
 - Финальные шрифты — подтвердить Cinzel/Cormorant Garamond/EB Garamond или заменить.
-- Нужны ли social sharing preview (OG-картинка) и web app manifest. Favicon и apple-touch-icon уже есть (`src/app/icon.png`, `src/app/apple-icon.png`); `manifest.webmanifest` и OG-теги — нет.
+- ~~Нужны ли social sharing preview (OG-картинка)~~ — закрыт: OG/Twitter-теги и картинка `src/app/opengraph-image.jpg` добавлены, см. SEO / Privacy directives. Открыто: нужен ли web app manifest (`manifest.webmanifest` нет; favicon и apple-touch-icon есть — `src/app/icon.png`, `src/app/apple-icon.png`).
 
 ## Agent Instructions
 
