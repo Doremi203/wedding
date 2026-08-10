@@ -127,7 +127,7 @@ export function EntryScreen({ guests, onSelectGuest }: EntryScreenProps) {
               onClick={() => onSelectGuest(guest)}
             >
               <span className={styles.appleImage} aria-hidden="true">
-                <Image src="/images/apple.webp" alt="" width={30} height={30} />
+                <Image src="/images/apple.webp" alt="" width={33} height={33} />
               </span>
               <span className={styles.appleLabel}>{guest.displayName}</span>
             </button>

@@ -217,8 +217,8 @@
 
 .appleImage {
   display: block;
-  width: 30px;
-  height: 30px;
+  width: 33px;
+  height: 33px;
   margin: 0 auto 4px;
   filter: drop-shadow(0 2px 8px oklch(0.08 0.01 270 / 0.8));
   transition: filter 0.3s ease;
@@ -238,7 +238,7 @@
 .appleLabel {
   font-family: var(--font-eb-garamond), serif;
   font-style: italic;
-  font-size: 12.1px;
+  font-size: 13.3px;
   line-height: 1.2;
   color: var(--color-text-secondary);
   text-shadow: 0 1px 4px oklch(0.08 0.01 270 / 0.9);
