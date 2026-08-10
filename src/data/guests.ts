@@ -6,7 +6,7 @@ import type { Guest } from "@/types/guest";
 export const guests: Guest[] = [
   {
     id: "natalya-i",
-    displayName: "Наталья И",
+    displayName: "Наталья И.",
     gender: "f",
   },
   {
@@ -21,7 +21,7 @@ export const guests: Guest[] = [
   },
   {
     id: "alexander-t",
-    displayName: "Александр Т",
+    displayName: "Александр Т.",
     gender: "m",
   },
   {
@@ -61,7 +61,7 @@ export const guests: Guest[] = [
   },
   {
     id: "mikhail-s",
-    displayName: "Михаил С",
+    displayName: "Михаил С.",
     gender: "m",
   },
   {
@@ -96,7 +96,7 @@ export const guests: Guest[] = [
   },
   {
     id: "darya-s",
-    displayName: "Дарья С",
+    displayName: "Дарья С.",
     gender: "f",
   },
   {
@@ -106,7 +106,7 @@ export const guests: Guest[] = [
   },
   {
     id: "natalya-l",
-    displayName: "Наталья Л",
+    displayName: "Наталья Л.",
     gender: "f",
   },
   {
@@ -115,8 +115,8 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "alexander-1",
-    displayName: "Александр",
+    id: "alexander-s",
+    displayName: "Александр С.",
     gender: "m",
   },
   {
@@ -125,8 +125,8 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "alexander-2",
-    displayName: "Александр",
+    id: "alexander-l",
+    displayName: "Александр Л.",
     gender: "m",
   },
   {
@@ -155,13 +155,13 @@ export const guests: Guest[] = [
     gender: "m",
   },
   {
-    id: "alexandra",
-    displayName: "Александра",
+    id: "alexandra-l",
+    displayName: "Александра Л.",
     gender: "f",
   },
   {
-    id: "anna-1",
-    displayName: "Анна",
+    id: "anna-l",
+    displayName: "Анна Л.",
     gender: "f",
   },
   {
@@ -175,18 +175,18 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "anna-2",
-    displayName: "Анна",
+    id: "anna-i",
+    displayName: "Анна И.",
     gender: "f",
   },
   {
-    id: "alexander-3",
-    displayName: "Александр",
-    gender: "m",
+    id: "alexandra-f",
+    displayName: "Александра Ф.",
+    gender: "f",
   },
   {
-    id: "darya",
-    displayName: "Дарья",
+    id: "darya-zh",
+    displayName: "Дарья Ж.",
     gender: "f",
   },
   {

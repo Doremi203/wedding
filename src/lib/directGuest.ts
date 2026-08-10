@@ -107,10 +107,22 @@ export function directGuestFromParams(
   if (!cleaned) return null;
 
   const explicitGender = parseGenderParam(genderParam);
-  const known = guests.find((guest) => normalizeName(guest.displayName) === normalizeName(cleaned));
+  const normalized = normalizeName(cleaned);
+  const known = guests.find((guest) => normalizeName(guest.displayName) === normalized);
 
   if (known) {
     return { displayName: known.displayName, gender: explicitGender ?? known.gender };
+  }
+
+  // Тёзки в списке различаются инициалом фамилии («Анна И.», «Анна Л.»), а в персональной
+  // ссылке разумно писать просто имя — точку из него всё равно вырезает очистка выше. Тогда
+  // род берём у первого гостя с таким именем (у всех тёзок он совпадает), а показываем имя
+  // из ссылки: подставлять чужой инициал нельзя. Без этого «Анна И» опознавалось бы по
+  // окончанию как мужское имя.
+  const namesake = guests.find((guest) => normalizeName(guest.displayName).split(" ")[0] === normalized);
+
+  if (namesake) {
+    return { displayName: capitalizeFirst(cleaned), gender: explicitGender ?? namesake.gender };
   }
 
   return {
