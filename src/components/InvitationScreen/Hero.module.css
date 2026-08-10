@@ -42,13 +42,31 @@
   text-align: center;
 }
 
-.eyebrow {
-  font-family: var(--font-cinzel), serif;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  color: var(--color-gold);
+/* Cormorant, а не Cinzel: у Cinzel нет кириллицы (подключён latin-subset), и
+   «13 СЕНТЯБРЯ 2026» уезжало в системный serif — отсюда и нечитаемость. */
+.eventDate {
+  font-family: var(--font-cormorant), serif;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  /* по умолчанию Cormorant даёт минускульные цифры — «13»/«2026» скакали
+     по высоте рядом с прописной кириллицей */
+  font-variant-numeric: lining-nums;
+  /* uppercase + трекинг режет последний пробел справа — компенсируем сдвигом */
+  text-indent: 0.18em;
+  color: var(--color-gold-bright);
   text-transform: uppercase;
-  margin-bottom: 18px;
+  text-shadow: 0 1px 6px oklch(0.08 0.01 270 / 0.75);
+  margin-bottom: 20px;
+}
+
+@media (max-width: 360px) {
+  .eventDate {
+    font-size: 17px;
+    letter-spacing: 0.14em;
+    text-indent: 0.14em;
+  }
 }
 
 .title {

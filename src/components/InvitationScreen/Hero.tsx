@@ -22,7 +22,7 @@ export function Hero({ guestName, guestGender }: HeroProps) {
       </div>
 
       <div className={styles.content}>
-        <div className={styles.eyebrow}>{EVENT_DATE_LABEL}</div>
+        <div className={styles.eventDate}>{EVENT_DATE_LABEL}</div>
         <h1 className={styles.title}>
           {greetingForGender(guestGender)} {guestName}
         </h1>
