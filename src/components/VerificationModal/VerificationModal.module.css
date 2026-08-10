@@ -112,6 +112,12 @@
   transform: translateY(-6cqw);
 }
 
+/* Двухстрочное приветствие растит центрируемый блок, и CTA сползает на листья
+   нижней части рамки — возвращаем её вверх на половину лишней строки. */
+.body.welcome .submit {
+  transform: translateY(-4cqw);
+}
+
 .input {
   width: 100%;
   background: transparent;
