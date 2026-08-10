@@ -73,6 +73,17 @@
   bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   z-index: 3;
   text-align: center;
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+/* С началом скролла подпись уходит вверх и гаснет — своё дело она уже сделала, а на её месте
+   вот-вот проступит крона. */
+.scrollHint[data-hidden] {
+  opacity: 0;
+  transform: translateY(-16px);
+  pointer-events: none;
 }
 
 .scrollHintLabel {
@@ -157,6 +168,15 @@
   .treeVeil,
   .treeSegment img {
     transition: none;
+  }
+
+  /* Подсказка всё равно должна уходить с началом скролла — но без сдвига и плавности. */
+  .scrollHint {
+    transition: none;
+  }
+
+  .scrollHint[data-hidden] {
+    transform: none;
   }
 }
 
