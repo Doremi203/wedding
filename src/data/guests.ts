@@ -10,13 +10,13 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "roman",
-    displayName: "Роман",
+    id: "roman-i",
+    displayName: "Роман И.",
     gender: "m",
   },
   {
-    id: "nelli",
-    displayName: "Нелли",
+    id: "nelli-t",
+    displayName: "Нелли Т.",
     gender: "f",
   },
   {
@@ -25,38 +25,38 @@ export const guests: Guest[] = [
     gender: "m",
   },
   {
-    id: "galina",
-    displayName: "Галина",
+    id: "galina-i",
+    displayName: "Галина И.",
     gender: "f",
   },
   {
-    id: "sergey",
-    displayName: "Сергей",
+    id: "sergey-i",
+    displayName: "Сергей И.",
     gender: "m",
   },
   {
-    id: "valentin",
-    displayName: "Валентин",
+    id: "valentin-t",
+    displayName: "Валентин Т.",
     gender: "m",
   },
   {
-    id: "yulia",
-    displayName: "Юлия",
+    id: "yulia-t",
+    displayName: "Юлия Т.",
     gender: "f",
   },
   {
-    id: "alexey",
-    displayName: "Алексей",
+    id: "alexey-t",
+    displayName: "Алексей Т.",
     gender: "m",
   },
   {
-    id: "nadezhda",
-    displayName: "Надежда",
+    id: "nadezhda-t",
+    displayName: "Надежда Т.",
     gender: "f",
   },
   {
-    id: "evgenia",
-    displayName: "Евгения",
+    id: "evgenia-s",
+    displayName: "Евгения С.",
     gender: "f",
   },
   {
@@ -65,33 +65,33 @@ export const guests: Guest[] = [
     gender: "m",
   },
   {
-    id: "danil",
-    displayName: "Данил",
+    id: "danil-k",
+    displayName: "Данил К.",
     gender: "m",
   },
   {
-    id: "kirill",
-    displayName: "Кирилл",
+    id: "kirill-l",
+    displayName: "Кирилл Л.",
     gender: "m",
   },
   {
-    id: "ekaterina-1",
-    displayName: "Екатерина",
+    id: "ekaterina-p",
+    displayName: "Екатерина П.",
     gender: "f",
   },
   {
-    id: "anzhelika",
-    displayName: "Анжелика",
+    id: "anzhelika-g",
+    displayName: "Анжелика Г.",
     gender: "f",
   },
   {
-    id: "maya",
-    displayName: "Майя",
+    id: "maya-i",
+    displayName: "Майя И.",
     gender: "f",
   },
   {
-    id: "vladimir",
-    displayName: "Владимир",
+    id: "vladimir-f",
+    displayName: "Владимир Ф.",
     gender: "m",
   },
   {
@@ -100,8 +100,8 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "artem",
-    displayName: "Артем",
+    id: "artem-h",
+    displayName: "Артем Х.",
     gender: "m",
   },
   {
@@ -110,8 +110,8 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "tatyana",
-    displayName: "Татьяна",
+    id: "tatyana-h",
+    displayName: "Татьяна Х.",
     gender: "f",
   },
   {
@@ -120,8 +120,8 @@ export const guests: Guest[] = [
     gender: "m",
   },
   {
-    id: "irina",
-    displayName: "Ирина",
+    id: "irina-l",
+    displayName: "Ирина Л.",
     gender: "f",
   },
   {
@@ -130,28 +130,28 @@ export const guests: Guest[] = [
     gender: "m",
   },
   {
-    id: "nikolay",
-    displayName: "Николай",
+    id: "nikolay-h",
+    displayName: "Николай Х.",
     gender: "m",
   },
   {
-    id: "ksenia",
-    displayName: "Ксения",
+    id: "ksenia-k",
+    displayName: "Ксения К.",
     gender: "f",
   },
   {
-    id: "dmitry",
-    displayName: "Дмитрий",
+    id: "dmitry-l",
+    displayName: "Дмитрий Л.",
     gender: "m",
   },
   {
-    id: "elena",
-    displayName: "Елена",
+    id: "elena-l",
+    displayName: "Елена Л.",
     gender: "f",
   },
   {
-    id: "mikhail",
-    displayName: "Михаил",
+    id: "mikhail-l",
+    displayName: "Михаил Л.",
     gender: "m",
   },
   {
@@ -165,13 +165,13 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "egor",
-    displayName: "Егор",
+    id: "egor-k",
+    displayName: "Егор К.",
     gender: "m",
   },
   {
-    id: "ekaterina-2",
-    displayName: "Екатерина",
+    id: "ekaterina-k",
+    displayName: "Екатерина К.",
     gender: "f",
   },
   {
@@ -190,8 +190,8 @@ export const guests: Guest[] = [
     gender: "f",
   },
   {
-    id: "maria",
-    displayName: "Мария",
+    id: "maria-e",
+    displayName: "Мария Е.",
     gender: "f",
   },
 ];

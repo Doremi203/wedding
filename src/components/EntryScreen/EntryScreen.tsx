@@ -27,7 +27,7 @@ interface EntryScreenProps {
 // соседями в ряду — не меньше 20 %, чтобы не сталкивались самые длинные подписи.
 const APPLE_POSITIONS: { left: number; top: number }[] = [
   // Сторона жениха — левая половина кроны.
-  { left: 40, top: 4 }, // мама
+  { left: 38, top: 4 }, // мама
   { left: 26, top: 10 }, // папа
   { left: 16, top: 16 }, // бабушка и дедушка по маминой линии
   { left: 36, top: 16 },
@@ -41,15 +41,15 @@ const APPLE_POSITIONS: { left: number; top: number }[] = [
   { left: 30, top: 40 },
   { left: 10, top: 46 }, // друзья
   { left: 31, top: 46 },
-  { left: 12, top: 52 },
-  { left: 32, top: 52 },
+  { left: 11, top: 52 },
+  { left: 34, top: 52 },
   { left: 14, top: 58 },
   { left: 34, top: 58 },
   { left: 17, top: 64 },
   { left: 36, top: 64 },
   { left: 30, top: 70 },
   // Сторона невесты — правая половина кроны.
-  { left: 60, top: 4 }, // мама
+  { left: 62, top: 4 }, // мама
   { left: 74, top: 10 }, // папа
   { left: 64, top: 16 }, // бабушка и дедушка
   { left: 84, top: 16 },
@@ -58,7 +58,7 @@ const APPLE_POSITIONS: { left: number; top: number }[] = [
   { left: 69, top: 28 }, // дядя и тётя
   { left: 90, top: 28 },
   { left: 91, top: 34 }, // двоюродный брат с женой
-  { left: 70, top: 34 },
+  { left: 67, top: 34 },
   { left: 70, top: 40 }, // двоюродная сестра с парнем
   { left: 91, top: 40 },
   // Друзей у невесты вдвое меньше, чем у жениха, поэтому они идут не двумя колонками, как
