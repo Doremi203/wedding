@@ -16,13 +16,25 @@
 }
 
 .moonSelect {
-  /* Ниже строки «Приглашение на свадьбу»: при top: 70px свечение луны наползало на конец
-     надписи. Добавка в vh держит зазор пропорциональным высоте экрана. */
+  /* Верхний правый угол кадра: титул уехал в центр экрана, но запас в vh оставлен —
+     на низких экранах луна не должна подходить вплотную к верхней линии рамки титула. */
   top: calc(70px + 3vh);
   right: 40px;
   width: 70px;
   height: 70px;
   box-shadow: 0 0 40px 10px oklch(0.75 0.03 75 / 0.35);
+}
+
+/* Landscape и прочие низкие экраны: титул поднимается почти под верхнюю кромку, и луна
+   прежнего размера ложилась прямо на строку. Уводим её меньшим диском в самый угол. */
+@media (max-height: 560px) {
+  .moonSelect {
+    top: 14px;
+    right: 24px;
+    width: 46px;
+    height: 46px;
+    box-shadow: 0 0 28px 8px oklch(0.75 0.03 75 / 0.3);
+  }
 }
 
 .moonHero {
@@ -40,12 +52,5 @@
   background: var(--color-gold);
   transform: rotate(45deg);
   margin: 0 auto;
-}
-
-.eyebrow {
-  font-family: var(--font-cinzel), serif;
-  font-size: 11px;
-  letter-spacing: 0.28em;
-  color: var(--color-gold);
-  text-transform: uppercase;
+  flex: none;
 }

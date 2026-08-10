@@ -23,7 +23,3 @@ export function Moon({ variant }: { variant: "select" | "hero" }) {
 export function Diamond() {
   return <div className={styles.diamond} aria-hidden="true" />;
 }
-
-export function Eyebrow({ children }: { children: React.ReactNode }) {
-  return <div className={styles.eyebrow}>{children}</div>;
-}

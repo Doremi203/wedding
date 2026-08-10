@@ -9,6 +9,15 @@
   --entry-seam: oklch(0.1 0.01 270);
 }
 
+/* На низких экранах (landscape) зона наложения съедает почти всю высоту hero, и титул
+   упирается в верхний padding. Полосу перехода укорачиваем — она нужна лишь настолько,
+   чтобы стык башни и дерева оставался мягким. */
+@media (max-height: 560px) {
+  .screen {
+    --entry-fade: 100px;
+  }
+}
+
 .hero {
   min-height: 100vh;
   /* svh, а не vh: в мобильном Safari 100vh — высота экрана БЕЗ нижней панели браузера,
@@ -51,20 +60,51 @@
   filter: brightness(0.9) contrast(1.2);
 }
 
-.header {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  margin-bottom: 28px;
-}
-
+/* margin: auto — блок стоит по центру свободной высоты hero, а не под шапкой:
+   линии проходят над крыльями драконов, титул попадает между их головами и хвостом. */
 .titleBlock {
   position: relative;
   z-index: 1;
-  flex: 0 0 auto;
+  margin: auto 0;
   text-align: center;
-  padding: 18px 0 26px;
-  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Линия во всю ширину кадра, гаснущая к краям, — рамка титула, а не разделитель секции. */
+.rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    oklch(0.66 0.06 78 / 0.5) 18%,
+    oklch(0.66 0.06 78 / 0.5) 82%,
+    transparent 100%
+  );
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-cinzel), serif;
+  font-weight: 500;
+  /* Кегль и межстрочный интервал сняты с макета: строка занимает примерно половину
+     ширины кадра, между строками — воздух, иначе титул спорит с башней, а не венчает её. */
+  font-size: clamp(14px, 3.8vw, 17px);
+  line-height: 1.85;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  /* Разрядка вешает пустой шаг справа от последней буквы — компенсируем, иначе строки
+     кажутся сдвинутыми влево относительно линий и ромбов. */
+  text-indent: 0.3em;
+  text-shadow: 0 2px 12px oklch(0.08 0.01 270 / 0.85);
+}
+
+.titleLine {
+  display: block;
 }
 
 /* Подсказка прижата к нижней кромке экрана, а не к низу padding-box: нижний padding hero
