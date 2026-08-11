@@ -34,10 +34,11 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://sacred-castle-wedding.ru"),
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
-  robots: {
-    index: false,
-    follow: false,
-  },
+  // <meta name="robots" content="noindex"> здесь намеренно НЕ задаём: парсер
+  // превью Telegram его уважает и из-за него вообще не рисует карточку ссылки.
+  // От индексации защищает robots.txt (Disallow: / для всех, кроме краулеров
+  // мессенджеров) — и он строже: послушный поисковик страницу даже не скачает,
+  // то есть noindex в <head> всё равно никогда бы не прочитал.
   openGraph: {
     type: "website",
     locale: "ru_RU",

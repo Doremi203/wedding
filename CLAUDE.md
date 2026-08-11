@@ -196,12 +196,14 @@ Guest data и event content (дата, площадка, dress code, gifts copy)
 
 ## SEO / Privacy directives
 
-Сайт не индексируется: в root layout задан `robots: { index: false, follow: false }`, в `public/robots.txt` — `Disallow: /` для `User-agent: *`.
+Сайт не индексируется: в `public/robots.txt` задан `Disallow: /` для `User-agent: *`. Мета-тега `<meta name="robots" content="noindex">` в root layout **больше нет** — см. ниже, он ломал превью в Telegram.
 
 Social sharing preview реализован: Open Graph + Twitter Card заданы в `metadata` root layout, картинка подхватывается конвенцией App Router из `src/app/opengraph-image.jpg` (+ `opengraph-image.alt.txt` → `og:image:alt`). Из этого следуют два неочевидных момента:
 
 - **`metadataBase` обязателен.** При `output: 'export'` сервера нет, и без него Next подставил бы в `og:image` абсолютный `localhost:3000`. Задан как `https://sacred-castle-wedding.ru`.
-- **В `robots.txt` для краулеров соцсетей и мессенджеров стоят отдельные `Allow: /`-группы** (`facebookexternalhit`, `TelegramBot`, `WhatsApp`, `Twitterbot`, `Slackbot`, `Discordbot`, `vkShare`, `LinkedInBot`, `SkypeUriPreview`, `Viber`). Они уважают `robots.txt`, и при одном общем `Disallow: /` карточка ссылки не отрисовывалась бы вовсе. Индексации это не даёт — они лишь читают `<head>`. `<meta name="robots" content="noindex">` при этом остаётся: Telegram/WhatsApp/Facebook его для превью игнорируют (X/Twitter может не показать карточку — приватность важнее).
+- **В `robots.txt` для краулеров соцсетей и мессенджеров стоят отдельные `Allow: /`-группы** (`facebookexternalhit`, `TelegramBot`, `WhatsApp`, `Twitterbot`, `Slackbot`, `Discordbot`, `vkShare`, `LinkedInBot`, `SkypeUriPreview`, `Viber`). Они уважают `robots.txt`, и при одном общем `Disallow: /` карточка ссылки не отрисовывалась бы вовсе. Индексации это не даёт — они лишь читают `<head>`.
+- **`<meta name="robots" content="noindex, nofollow">` удалён из root layout.** Исходно предполагалось, что мессенджеры его для превью игнорируют, — это оказалось неверно: парсер Telegram при `noindex` карточку не рисует вообще (теги и картинка при этом отдаются корректно, что и подтвердила диагностика через `curl -A "TelegramBot (like TwitterBot)"`). Ничего в защите не потеряно: краулер, который уважает `noindex`, уважает и `robots.txt`, а там страница уже закрыта `Disallow: /` — то есть он её не скачает и мета-тег всё равно не прочитает. Не возвращать `robots: { index: false, follow: false }` в `metadata`, иначе превью сломается снова.
+- **Telegram кэширует превью и помнит прежний `noindex` даже после деплоя фикса.** После выкладки ссылку нужно один раз прогнать через [@WebpageBot](https://t.me/WebpageBot) (`/start` → отправить URL) — иначе в чатах останется старая пустая карточка. Альтернатива-фолбэк — отправить ссылку с новым query-параметром (`?v=2`), это другой URL и другой ключ кэша.
 
 `og:url` намеренно **не** задан: страниц две (`/` и `/invitation?n=Имя`), общий canonical увёл бы карточку персональной ссылки на ENTRY. Клиенты в этом случае используют фактический URL. `twitter:image` Next генерирует сам из того же файла — отдельный `twitter-image.jpg` не нужен.
 

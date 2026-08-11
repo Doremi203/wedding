@@ -118,7 +118,7 @@ unset KEY_JSON
 
 ```
 src/
-  app/            — App Router: layout, страница, globals.css, metadata (robots: noindex)
+  app/            — App Router: layout, страница, globals.css, metadata (Open Graph; от индексации закрывает robots.txt)
   components/      — React-компоненты (CSS Modules рядом с каждым)
   data/            — гости (сгенерировано) + контент события (даты, адрес, тексты)
   hooks/           — useReducedMotion, useScrollReveal
